@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Wcf_CeadChat_ServiceLibrary.AvatarGroup">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ClassGroup\AvatarGroup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.Channel">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ClassGroup\Channel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.Group">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACECAAAAAAEAAAAAAAAAQAAAAAAAAAEQAAAQAAAAA=</HashCode>
+      <FileName>ClassGroup\Group.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.FileChat">
+    <Position X="13.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAACAAAAAAIAAIAAAAAAAAQAACAAAEAAAAAAAAAAIAA=</HashCode>
+      <FileName>ClassMessage\FileChat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.Message">
+    <Position X="13.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACIEAAAAAAEAAAAAAAEAAAAAAAAAQAAAAACAAIAAA=</HashCode>
+      <FileName>ClassMessage\Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.MessageFile">
+    <Position X="15.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>ClassMessage\MessageFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.Package">
+    <Position X="15.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAEAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>ClassMessage\Package.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.Avatar">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgCAAAAAAAIAAAAAAAAAAAAAAgAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>ClassUser\Avatar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.AvatarUser">
+    <Position X="7.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ClassUser\AvatarUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.BlackList">
+    <Position X="17.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>ClassUser\BlackList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.Friends">
+    <Position X="19.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>ClassUser\Friends.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.Recovery">
+    <Position X="9.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAIAAAAAAAAAAAAAAAgAAAACMAAAAAAAAAAAABA=</HashCode>
+      <FileName>ClassUser\Recovery.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.User">
+    <Position X="19.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAGAAEAAACAAAAAAAAAAAAAAAAgAAAAAAAAEAAABAAA=</HashCode>
+      <FileName>ClassUser\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wcf_CeadChat_ServiceLibrary.UserBase">
+    <Position X="17.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACEAAAAAAAAAAAAAAAAAAAAACAAAAAAAAQAAAAEAA=</HashCode>
+      <FileName>ClassUser\UserBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Wcf_CeadChat_ServiceLibrary.GroupType">
+    <Position X="11.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAgAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ClassGroup\GroupType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Wcf_CeadChat_ServiceLibrary.FileType">
+    <Position X="15.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAAAAAAAA=</HashCode>
+      <FileName>ClassMessage\FileType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

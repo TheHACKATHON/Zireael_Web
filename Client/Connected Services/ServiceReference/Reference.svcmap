@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="644deb2a-c62a-4ec4-9626-73306c6f6a9d" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/Design_Time_Addresses/Wcf_CeadChat_ServiceLibrary/Chat/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="568cdd1c-a48a-4882-917c-be0146395a71" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Wcf_CeadChat_ServiceLibrary/Chat/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="b0f3a81b-56f7-44b6-94fe-669fd59c1cd2" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Wcf_CeadChat_ServiceLibrary/Chat/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="6769014b-ae2b-42a7-81e5-015df8b9830c" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Wcf_CeadChat_ServiceLibrary/Chat/mex" />
+    <MetadataFile FileName="Wcf_CeadChat_ServiceLibrary.xsd" MetadataType="Schema" ID="477ac860-84ff-4518-b1e5-029deaa4375f" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Wcf_CeadChat_ServiceLibrary/Chat/mex" />
+    <MetadataFile FileName="Arrays.xsd" MetadataType="Schema" ID="c3bc9fa9-a33d-4cc8-aacf-38c6af663e78" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Wcf_CeadChat_ServiceLibrary/Chat/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

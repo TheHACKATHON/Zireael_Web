@@ -1,0 +1,988 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CeadChatService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetTcpBinding_ICeadChatService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy">
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import namespace="http://tempuri.org/" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ICeadChatService_Registration_InputMessage">
+    <wsdl:part name="parameters" element="tns:Registration" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_Registration_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegistrationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_LoginExist_InputMessage">
+    <wsdl:part name="parameters" element="tns:LoginExist" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_LoginExist_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginExistResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_LogIn_InputMessage">
+    <wsdl:part name="parameters" element="tns:LogIn" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_LogIn_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LogInResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_CreateGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateGroup" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_CreateGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_CreateChat_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateChat" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_CreateChat_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateChatResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_Find_InputMessage">
+    <wsdl:part name="parameters" element="tns:Find" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_Find_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_FindAll_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindAll" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_FindAll_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendMessage" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_DeleteMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteMessage" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_DeleteMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_AddFriendsToGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddFriendsToGroup" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_AddFriendsToGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddFriendsToGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_AddFriend_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddFriend" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_AddFriend_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddFriendResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RemoveFriend_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveFriend" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RemoveFriend_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveFriendResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetMessagesFromGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMessagesFromGroup" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetMessagesFromGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMessagesFromGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RemoveGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveGroup" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RemoveGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetPackageFromFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPackageFromFile" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetPackageFromFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPackageFromFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendPackageToFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendPackageToFile" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendPackageToFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendPackageToFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetFriends_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFriends" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetFriends_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFriendsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SetAvatarUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetAvatarUser" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SetAvatarUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetAvatarUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetAvatarUsers_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvatarUsers" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetAvatarUsers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvatarUsersResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetDontReadMessagesFromGroups_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDontReadMessagesFromGroups" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetDontReadMessagesFromGroups_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDontReadMessagesFromGroupsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ReadAllMessagesInGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadAllMessagesInGroup" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ReadAllMessagesInGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadAllMessagesInGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ReadAllMessagesInAllGroups_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadAllMessagesInAllGroups" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ReadAllMessagesInAllGroups_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadAllMessagesInAllGroupsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SetAvatarGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetAvatarGroup" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SetAvatarGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetAvatarGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetAvatarGroups_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvatarGroups" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetAvatarGroups_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvatarGroupsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ChangeProfileInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeProfileInfo" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ChangeProfileInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeProfileInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ChangePassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangePassword" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ChangePassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangePasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_LogOut_InputMessage">
+    <wsdl:part name="parameters" element="tns:LogOut" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_LogOut_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LogOutResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetMessagesBetween_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMessagesBetween" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetMessagesBetween_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMessagesBetweenResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ChangeTextInMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeTextInMessage" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ChangeTextInMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeTextInMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendCodeForRestorePassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendCodeForRestorePassword" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendCodeForRestorePassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendCodeForRestorePasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RestorePassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:RestorePassword" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RestorePassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RestorePasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendCodeForSetNewEmail_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendCodeForSetNewEmail" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendCodeForSetNewEmail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendCodeForSetNewEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SetNewEmail_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetNewEmail" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SetNewEmail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetNewEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RemoveOrExitFromGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveOrExitFromGroup" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RemoveOrExitFromGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveOrExitFromGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_AddToBlackList_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddToBlackList" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_AddToBlackList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddToBlackListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RemoveFromBlackList_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveFromBlackList" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RemoveFromBlackList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveFromBlackListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetBlackList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBlackList" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetBlackList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBlackListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_CreateChatCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:CreateChatCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_CreateMessageCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:CreateMessageCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_DeleteMessageCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:DeleteMessageCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_NewLastMessageCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:NewLastMessageCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_AddFriendToGroupCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:AddFriendToGroupCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RemoveGroupCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RemoveGroupCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SetAvatarCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SetAvatarCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SetAvatarForGroupCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SetAvatarForGroupCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ReadedMessagesCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:ReadedMessagesCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendedPackageCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendedPackageCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ChangeOnlineStatusCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:ChangeOnlineStatusCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_IsOnlineCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:IsOnlineCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_ChangeTextInMessageCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:ChangeTextInMessageCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RemoveOrExitUserFromGroupCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RemoveOrExitUserFromGroupCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_LogOutCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:LogOutCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_AddUserToBlackListCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:AddUserToBlackListCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RemoveUserFromBlackListCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RemoveUserFromBlackListCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_AddContactCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:AddContactCallback" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_RemoveContactCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RemoveContactCallback" />
+  </wsdl:message>
+  <wsdl:portType name="ICeadChatService">
+    <wsdl:operation name="Registration">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/Registration" message="tns:ICeadChatService_Registration_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/RegistrationResponse" message="tns:ICeadChatService_Registration_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoginExist">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/LoginExist" message="tns:ICeadChatService_LoginExist_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/LoginExistResponse" message="tns:ICeadChatService_LoginExist_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LogIn">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/LogIn" message="tns:ICeadChatService_LogIn_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/LogInResponse" message="tns:ICeadChatService_LogIn_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateGroup">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/CreateGroup" message="tns:ICeadChatService_CreateGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/CreateGroupResponse" message="tns:ICeadChatService_CreateGroup_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateChat">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/CreateChat" message="tns:ICeadChatService_CreateChat_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/CreateChatResponse" message="tns:ICeadChatService_CreateChat_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Find">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/Find" message="tns:ICeadChatService_Find_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/FindResponse" message="tns:ICeadChatService_Find_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindAll">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/FindAll" message="tns:ICeadChatService_FindAll_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/FindAllResponse" message="tns:ICeadChatService_FindAll_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/SendMessage" message="tns:ICeadChatService_SendMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SendMessageResponse" message="tns:ICeadChatService_SendMessage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/DeleteMessage" message="tns:ICeadChatService_DeleteMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/DeleteMessageResponse" message="tns:ICeadChatService_DeleteMessage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddFriendsToGroup">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/AddFriendsToGroup" message="tns:ICeadChatService_AddFriendsToGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/AddFriendsToGroupResponse" message="tns:ICeadChatService_AddFriendsToGroup_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddFriend">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/AddFriend" message="tns:ICeadChatService_AddFriend_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/AddFriendResponse" message="tns:ICeadChatService_AddFriend_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFriend">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/RemoveFriend" message="tns:ICeadChatService_RemoveFriend_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/RemoveFriendResponse" message="tns:ICeadChatService_RemoveFriend_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMessagesFromGroup">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetMessagesFromGroup" message="tns:ICeadChatService_GetMessagesFromGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetMessagesFromGroupResponse" message="tns:ICeadChatService_GetMessagesFromGroup_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveGroup">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/RemoveGroup" message="tns:ICeadChatService_RemoveGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/RemoveGroupResponse" message="tns:ICeadChatService_RemoveGroup_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPackageFromFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetPackageFromFile" message="tns:ICeadChatService_GetPackageFromFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetPackageFromFileResponse" message="tns:ICeadChatService_GetPackageFromFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendPackageToFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/SendPackageToFile" message="tns:ICeadChatService_SendPackageToFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SendPackageToFileResponse" message="tns:ICeadChatService_SendPackageToFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFriends">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetFriends" message="tns:ICeadChatService_GetFriends_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetFriendsResponse" message="tns:ICeadChatService_GetFriends_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetAvatarUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/SetAvatarUser" message="tns:ICeadChatService_SetAvatarUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SetAvatarUserResponse" message="tns:ICeadChatService_SetAvatarUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAvatarUsers">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetAvatarUsers" message="tns:ICeadChatService_GetAvatarUsers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetAvatarUsersResponse" message="tns:ICeadChatService_GetAvatarUsers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDontReadMessagesFromGroups">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetDontReadMessagesFromGroups" message="tns:ICeadChatService_GetDontReadMessagesFromGroups_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetDontReadMessagesFromGroupsResponse" message="tns:ICeadChatService_GetDontReadMessagesFromGroups_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadAllMessagesInGroup">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/ReadAllMessagesInGroup" message="tns:ICeadChatService_ReadAllMessagesInGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/ReadAllMessagesInGroupResponse" message="tns:ICeadChatService_ReadAllMessagesInGroup_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadAllMessagesInAllGroups">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/ReadAllMessagesInAllGroups" message="tns:ICeadChatService_ReadAllMessagesInAllGroups_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/ReadAllMessagesInAllGroupsResponse" message="tns:ICeadChatService_ReadAllMessagesInAllGroups_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetAvatarGroup">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/SetAvatarGroup" message="tns:ICeadChatService_SetAvatarGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SetAvatarGroupResponse" message="tns:ICeadChatService_SetAvatarGroup_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAvatarGroups">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetAvatarGroups" message="tns:ICeadChatService_GetAvatarGroups_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetAvatarGroupsResponse" message="tns:ICeadChatService_GetAvatarGroups_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeProfileInfo">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/ChangeProfileInfo" message="tns:ICeadChatService_ChangeProfileInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/ChangeProfileInfoResponse" message="tns:ICeadChatService_ChangeProfileInfo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangePassword">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/ChangePassword" message="tns:ICeadChatService_ChangePassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/ChangePasswordResponse" message="tns:ICeadChatService_ChangePassword_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LogOut">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/LogOut" message="tns:ICeadChatService_LogOut_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/LogOutResponse" message="tns:ICeadChatService_LogOut_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMessagesBetween">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetMessagesBetween" message="tns:ICeadChatService_GetMessagesBetween_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetMessagesBetweenResponse" message="tns:ICeadChatService_GetMessagesBetween_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeTextInMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/ChangeTextInMessage" message="tns:ICeadChatService_ChangeTextInMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/ChangeTextInMessageResponse" message="tns:ICeadChatService_ChangeTextInMessage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendCodeForRestorePassword">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/SendCodeForRestorePassword" message="tns:ICeadChatService_SendCodeForRestorePassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SendCodeForRestorePasswordResponse" message="tns:ICeadChatService_SendCodeForRestorePassword_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RestorePassword">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/RestorePassword" message="tns:ICeadChatService_RestorePassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/RestorePasswordResponse" message="tns:ICeadChatService_RestorePassword_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendCodeForSetNewEmail">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/SendCodeForSetNewEmail" message="tns:ICeadChatService_SendCodeForSetNewEmail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SendCodeForSetNewEmailResponse" message="tns:ICeadChatService_SendCodeForSetNewEmail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetNewEmail">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/SetNewEmail" message="tns:ICeadChatService_SetNewEmail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SetNewEmailResponse" message="tns:ICeadChatService_SetNewEmail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveOrExitFromGroup">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/RemoveOrExitFromGroup" message="tns:ICeadChatService_RemoveOrExitFromGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/RemoveOrExitFromGroupResponse" message="tns:ICeadChatService_RemoveOrExitFromGroup_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddToBlackList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/AddToBlackList" message="tns:ICeadChatService_AddToBlackList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/AddToBlackListResponse" message="tns:ICeadChatService_AddToBlackList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFromBlackList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/RemoveFromBlackList" message="tns:ICeadChatService_RemoveFromBlackList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/RemoveFromBlackListResponse" message="tns:ICeadChatService_RemoveFromBlackList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBlackList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetBlackList" message="tns:ICeadChatService_GetBlackList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetBlackListResponse" message="tns:ICeadChatService_GetBlackList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateChatCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/CreateChatCallback" message="tns:ICeadChatService_CreateChatCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateMessageCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/CreateMessageCallback" message="tns:ICeadChatService_CreateMessageCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteMessageCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/DeleteMessageCallback" message="tns:ICeadChatService_DeleteMessageCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NewLastMessageCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/NewLastMessageCallback" message="tns:ICeadChatService_NewLastMessageCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddFriendToGroupCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/AddFriendToGroupCallback" message="tns:ICeadChatService_AddFriendToGroupCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveGroupCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/RemoveGroupCallback" message="tns:ICeadChatService_RemoveGroupCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetAvatarCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SetAvatarCallback" message="tns:ICeadChatService_SetAvatarCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetAvatarForGroupCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SetAvatarForGroupCallback" message="tns:ICeadChatService_SetAvatarForGroupCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadedMessagesCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/ReadedMessagesCallback" message="tns:ICeadChatService_ReadedMessagesCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendedPackageCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SendedPackageCallback" message="tns:ICeadChatService_SendedPackageCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeOnlineStatusCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/ChangeOnlineStatusCallback" message="tns:ICeadChatService_ChangeOnlineStatusCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IsOnlineCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/IsOnlineCallback" message="tns:ICeadChatService_IsOnlineCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeTextInMessageCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/ChangeTextInMessageCallback" message="tns:ICeadChatService_ChangeTextInMessageCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveOrExitUserFromGroupCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/RemoveOrExitUserFromGroupCallback" message="tns:ICeadChatService_RemoveOrExitUserFromGroupCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LogOutCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/LogOutCallback" message="tns:ICeadChatService_LogOutCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddUserToBlackListCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/AddUserToBlackListCallback" message="tns:ICeadChatService_AddUserToBlackListCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUserFromBlackListCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/RemoveUserFromBlackListCallback" message="tns:ICeadChatService_RemoveUserFromBlackListCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddContactCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/AddContactCallback" message="tns:ICeadChatService_AddContactCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveContactCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/RemoveContactCallback" message="tns:ICeadChatService_RemoveContactCallback_OutputCallbackMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NetTcpBinding_ICeadChatService" type="tns:ICeadChatService">
+    <wsp:PolicyReference URI="#NetTcpBinding_ICeadChatService_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="Registration">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/Registration" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginExist">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/LoginExist" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LogIn">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/LogIn" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateGroup">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/CreateGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateChat">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/CreateChat" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Find">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/Find" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindAll">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/FindAll" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendMessage">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SendMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteMessage">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/DeleteMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddFriendsToGroup">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/AddFriendsToGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddFriend">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/AddFriend" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFriend">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/RemoveFriend" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessagesFromGroup">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetMessagesFromGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveGroup">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/RemoveGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPackageFromFile">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetPackageFromFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendPackageToFile">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SendPackageToFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFriends">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetFriends" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetAvatarUser">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SetAvatarUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAvatarUsers">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetAvatarUsers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDontReadMessagesFromGroups">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetDontReadMessagesFromGroups" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadAllMessagesInGroup">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/ReadAllMessagesInGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadAllMessagesInAllGroups">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/ReadAllMessagesInAllGroups" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetAvatarGroup">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SetAvatarGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAvatarGroups">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetAvatarGroups" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeProfileInfo">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/ChangeProfileInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangePassword">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/ChangePassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LogOut">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/LogOut" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessagesBetween">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetMessagesBetween" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeTextInMessage">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/ChangeTextInMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCodeForRestorePassword">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SendCodeForRestorePassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RestorePassword">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/RestorePassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCodeForSetNewEmail">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SendCodeForSetNewEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetNewEmail">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SetNewEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveOrExitFromGroup">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/RemoveOrExitFromGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddToBlackList">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/AddToBlackList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFromBlackList">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/RemoveFromBlackList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBlackList">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetBlackList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateChatCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/CreateChatCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateMessageCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/CreateMessageCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteMessageCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/DeleteMessageCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewLastMessageCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/NewLastMessageCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddFriendToGroupCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/AddFriendToGroupCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveGroupCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/RemoveGroupCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetAvatarCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SetAvatarCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetAvatarForGroupCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SetAvatarForGroupCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadedMessagesCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/ReadedMessagesCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendedPackageCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SendedPackageCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeOnlineStatusCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/ChangeOnlineStatusCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsOnlineCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/IsOnlineCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeTextInMessageCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/ChangeTextInMessageCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveOrExitUserFromGroupCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/RemoveOrExitUserFromGroupCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LogOutCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/LogOutCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUserToBlackListCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/AddUserToBlackListCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUserFromBlackListCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/RemoveUserFromBlackListCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddContactCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/AddContactCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveContactCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/RemoveContactCallback" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CeadChatService">
+    <wsdl:port name="NetTcpBinding_ICeadChatService" binding="tns:NetTcpBinding_ICeadChatService">
+      <soap12:address location="net.tcp://localhost:8743/Design_Time_Addresses/Wcf_CeadChat_ServiceLibrary/Chat/" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.tcp://localhost:8743/Design_Time_Addresses/Wcf_CeadChat_ServiceLibrary/Chat/</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Dns>localhost</Dns>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

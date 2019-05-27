@@ -1,0 +1,4 @@
+*/bin/
+*/obj/
+*.svclog
+.vs/
