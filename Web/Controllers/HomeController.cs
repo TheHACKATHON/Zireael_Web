@@ -71,6 +71,12 @@ namespace Web.Controllers
             return View();
         }
 
+        public async Task<ActionResult> Auth()
+        {
+
+            return View();
+        }
+
         public void CreateChatCallback(GroupWCF group, int creatorId)
         {
             //throw new NotImplementedException();
