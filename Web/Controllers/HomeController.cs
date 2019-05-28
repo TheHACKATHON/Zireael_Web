@@ -55,6 +55,40 @@ namespace Web.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<ActionResult> AuthAjax(string type = "log")
+        {
+            var view = string.Empty;
+            switch (type)
+            {
+                case "reg":
+                    {
+                        view = "PartialRegistration";
+
+                    }
+                    break;
+                case "log":
+                    {
+                        view = "PartialLogin";
+
+                    }
+                    break;
+                case "pass":
+                    {
+                        view = "PartialPassword";
+
+                    }
+                    break;
+                case "learn":
+                    {
+                        view = "PartialLearnMore";
+                    }
+                    break;
+                default: goto case "log";
+            }
+            return PartialView(view);
+        }
+
         public async Task<ActionResult> Callback()
         {
             var k = Request.Cookies["3eqew"];
@@ -73,10 +107,11 @@ namespace Web.Controllers
 
         public async Task<ActionResult> Auth()
         {
-
-            return View();
+            // код
+            return View("Auth");
         }
 
+        #region callback
         public void CreateChatCallback(GroupWCF group, int creatorId)
         {
             //throw new NotImplementedException();
@@ -171,5 +206,7 @@ namespace Web.Controllers
         {
             //throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

@@ -274,6 +274,11 @@
     <Content Include="Views\Home\Callback.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Auth.cshtml" />
+    <Content Include="Views\Home\AuthAjax.cshtml" />
+    <Content Include="Views\Home\PartialRegistration.cshtml" />
+    <Content Include="Views\Home\PartialLogin.cshtml" />
+    <Content Include="Views\Home\PartialPassword.cshtml" />
+    <Content Include="Views\Home\PartialLearnMore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
