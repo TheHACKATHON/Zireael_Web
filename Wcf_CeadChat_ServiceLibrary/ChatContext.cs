@@ -27,6 +27,7 @@ namespace Wcf_CeadChat_ServiceLibrary
         public DbSet<AvatarGroup> AvatarGroups { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<Recovery> Recoveries { get; set; }
+        public DbSet<Session> Sessions{ get; set; }
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{

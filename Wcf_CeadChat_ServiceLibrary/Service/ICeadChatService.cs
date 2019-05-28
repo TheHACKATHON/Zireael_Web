@@ -15,7 +15,7 @@ namespace Wcf_CeadChat_ServiceLibrary
         #region WPF Client methods
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        bool CheckSession(string session);
+        UserWCF CheckSession(string session);
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         //[WebGet(UriTemplate = "/get-books", ResponseFormat = WebMessageFormat.Json)]
         bool Registration(UserWCF newUser);//получаем нового юзера для регистрации, возвращает true, если успешно

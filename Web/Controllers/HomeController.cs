@@ -22,9 +22,10 @@ namespace Web.Controllers
         {
             if(Session["token"] != null)
             {
-                if (await _client.CheckSessionAsync($"{Session["token"]}"))
+                var user = await _client.CheckSessionAsync($"{Session["token"]}");
+                if (user != null)
                 {
-                    ViewBag.A = "OK";
+                    ViewBag.A = user.DisplayName;
                     return View("Index");
                 }
             }

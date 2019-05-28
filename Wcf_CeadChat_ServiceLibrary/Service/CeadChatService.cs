@@ -1223,7 +1223,8 @@ namespace Wcf_CeadChat_ServiceLibrary
 
         #region login and profile
 
-        public bool CheckSession(string session) => OperationContext.Current.InstanceContext.GetHashCode().ToString().Equals(session);
+        public UserWCF CheckSession(string session) => OperationContext.Current.InstanceContext.GetHashCode().ToString().Equals(session, StringComparison.OrdinalIgnoreCase) ?
+            new UserWCF(Context(OperationContext.Current.GetCallbackChannel<IUserChanged>()).Sessions.FirstOrDefault(s => s.SessionId.Equals(session)).User, session) : null;
 
         public UserWCF LogIn(string login, string password, string token) //user == null если нет совпадений
         {
@@ -1258,7 +1259,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                  user.IsOnline = true;
                  user.Token = CreateToken(user);
                  var session = OperationContext.Current.InstanceContext.GetHashCode().ToString();
-                 user.Sessions.Add(session);
+                 context.Sessions.Add(new Session(user, session));
                  context.SaveChanges();
 
                  if (_onlineUsers.ContainsKey(userChanged))

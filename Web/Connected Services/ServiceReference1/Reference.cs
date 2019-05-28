@@ -953,10 +953,10 @@ namespace Web.ServiceReference1 {
     public interface ICeadChatService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/CheckSession", ReplyAction="http://tempuri.org/ICeadChatService/CheckSessionResponse")]
-        bool CheckSession(string session);
+        Web.ServiceReference1.UserWCF CheckSession(string session);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/CheckSession", ReplyAction="http://tempuri.org/ICeadChatService/CheckSessionResponse")]
-        System.Threading.Tasks.Task<bool> CheckSessionAsync(string session);
+        System.Threading.Tasks.Task<Web.ServiceReference1.UserWCF> CheckSessionAsync(string session);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/Registration", ReplyAction="http://tempuri.org/ICeadChatService/RegistrationResponse")]
         bool Registration(Web.ServiceReference1.UserWCF newUser);
@@ -1270,11 +1270,11 @@ namespace Web.ServiceReference1 {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public bool CheckSession(string session) {
+        public Web.ServiceReference1.UserWCF CheckSession(string session) {
             return base.Channel.CheckSession(session);
         }
         
-        public System.Threading.Tasks.Task<bool> CheckSessionAsync(string session) {
+        public System.Threading.Tasks.Task<Web.ServiceReference1.UserWCF> CheckSessionAsync(string session) {
             return base.Channel.CheckSessionAsync(session);
         }
         
