@@ -1,2 +1,4 @@
-﻿body {
+﻿input[disabled], input[disabled].md-input {
+    background-color: #e0dede;
+    margin: 7px, 0!important;
 }
