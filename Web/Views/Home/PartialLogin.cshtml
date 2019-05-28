@@ -1,21 +1,42 @@
 ﻿<h3 class="login_form_head">Вход</h3>
 <div class="login_phone_groups_wrap clearfix">
-    <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
-        <label class="md-input-label">Логин</label>
-        <input required="" autocomplete="off" class="md-input" name="phone_number" type="text">
-    </div>
+    @using (Ajax.BeginForm("SendCode", "Home", new { },
+       new AjaxOptions { UpdateTargetId = "restoreCode", LoadingElementId = "loading", LoadingElementDuration = 50, OnBegin = "OnBegin", OnSuccess = "OnSuccess", OnFailure = "OnFailure", HttpMethod = "POST" },
+       new { @class = "form" }))
+    {
+        <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
+            <label class="md-input-label">Логин</label>
+            <input required="" autocomplete="off" class="md-input" name="phone_number" type="text">
+        </div>
 
-    <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
-        <label class="md-input-label">Пароль</label>
-        <input required="" autocomplete="off" class="md-input" name="phone_number" type="text">
-    </div>
+        <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
+            <label class="md-input-label">Пароль</label>
+            <input required="" autocomplete="off" class="md-input" name="phone_number" type="text">
+        </div>
 
-    <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value non_border">
-        <input type="submit" value="Войти">
-    </div>
-
+        <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value non_border">
+            <input type="submit" value="Войти">
+        </div>
+    }
+    }
     <div class="login_footer_wrap">
         @Ajax.ActionLink("Забыли пароль?", "AuthAjax", "Home", new { type = "pass" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 50, OnSuccess = "OnSuccess", OnFailure = "OnFailure", HttpMethod = "POST" }, new { @class = "logo_footer_learn_more_link" })
         @Ajax.ActionLink("Регистрация", "AuthAjax", "Home", new { type = "reg" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 50, OnSuccess = "OnSuccess", OnFailure = "OnFailure", HttpMethod = "POST" }, new { @class = "logo_footer_learn_more_link" })
     </div>
 </div>
+
+<script>
+    function OnSuccess(data) {
+        if (data) {
+            if (data.code === "OK") {
+                location.pathname = "/";
+            }
+            else if (data.code === "ERROR") {
+                Popup(data.error, true);
+            }
+            else {
+                Popup("Мы потеряли связь с космосом, пытаемся восстановить квантовый соединитель. Попробуй позже", true);
+            }
+        }
+    }
+</script>

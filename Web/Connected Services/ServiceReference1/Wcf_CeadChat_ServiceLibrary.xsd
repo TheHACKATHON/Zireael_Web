@@ -8,6 +8,7 @@
           <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Groups" nillable="true" type="tns:ArrayOfGroupWCF" />
           <xs:element minOccurs="0" name="PasswordHash" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Session" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Token" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:extension>

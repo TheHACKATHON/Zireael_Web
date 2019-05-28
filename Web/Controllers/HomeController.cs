@@ -12,7 +12,6 @@ namespace Web.Controllers
 {
     public partial class HomeController : Controller, ICeadChatServiceCallback
     {
-        private int id = 0;
         private CeadChatServiceClient _client;
         public HomeController(CeadChatServiceClient client)
         {
@@ -21,31 +20,15 @@ namespace Web.Controllers
         }
         public async Task<ActionResult> Index()
         {
-            /*UserWCF user = null;
-            if(Session["token"] == null)
+            if(Session["token"] != null)
             {
-                user = await _client.LogInAsync("qwerty14", "QwertyQwerty", null);
-                if (user != null)
+                if (await _client.CheckSessionAsync($"{Session["token"]}"))
                 {
-                    Session.Add("token", _client.InnerChannel.SessionId);
+                    ViewBag.A = "OK";
+                    return View("Index");
                 }
             }
-            else
-            {
-                user = await _client.LogInAsync(null, null, Session["token"].ToString());
-                Session["token"] = _client.InnerChannel.SessionId;
-            }
-            
-            if(user != null)
-            {
-                ViewBag.UserS = user.Token;
-            }
-            else
-            {
-                ViewBag.User = new { Login = "null" };
-            }
-            //id = user.Id;
-            ViewBag.SessionId = Session.SessionID;*/
+
             return View("Auth");
         }
 
@@ -89,11 +72,19 @@ namespace Web.Controllers
             return PartialView(view);
         }
 
-        public async Task<JsonResult> Login()
+        [HttpPost]
+        public async Task<JsonResult> Login(string login, string password)
         {
+            UserWCF user = null;
 
-
-            return Json(null);
+            user = await _client.LogInAsync(login, password, null);
+            if (user != null)
+            {
+                Session.Add("token", user.Session);
+            }
+            
+            if (user is null) return Json(new { code = "ERROR", error = "Неверный пароль." });
+            return Json(new { code = "OK" });
         }
 
         public async Task<ActionResult> Callback()
@@ -107,7 +98,7 @@ namespace Web.Controllers
             //    DateTime = DateTime.Now,
             //    Sender = new UserWCF() { Id = 16 }
             //};
-            
+
             //ViewBag.id = await _client.SendMessageAsync(msg, DateTime.Now.Ticks);
             return View();
         }

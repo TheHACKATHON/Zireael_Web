@@ -142,6 +142,9 @@ namespace Web.ServiceReference1 {
         private string PasswordHashField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SessionField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TokenField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
@@ -192,6 +195,19 @@ namespace Web.ServiceReference1 {
                 if ((object.ReferenceEquals(this.PasswordHashField, value) != true)) {
                     this.PasswordHashField = value;
                     this.RaisePropertyChanged("PasswordHash");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Session {
+            get {
+                return this.SessionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SessionField, value) != true)) {
+                    this.SessionField = value;
+                    this.RaisePropertyChanged("Session");
                 }
             }
         }
@@ -933,8 +949,14 @@ namespace Web.ServiceReference1 {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.ICeadChatService", CallbackContract=typeof(Web.ServiceReference1.ICeadChatServiceCallback))]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.ICeadChatService", CallbackContract=typeof(Web.ServiceReference1.ICeadChatServiceCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
     public interface ICeadChatService {
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/CheckSession", ReplyAction="http://tempuri.org/ICeadChatService/CheckSessionResponse")]
+        bool CheckSession(string session);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/CheckSession", ReplyAction="http://tempuri.org/ICeadChatService/CheckSessionResponse")]
+        System.Threading.Tasks.Task<bool> CheckSessionAsync(string session);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/Registration", ReplyAction="http://tempuri.org/ICeadChatService/RegistrationResponse")]
         bool Registration(Web.ServiceReference1.UserWCF newUser);
@@ -1246,6 +1268,14 @@ namespace Web.ServiceReference1 {
         
         public CeadChatServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(callbackInstance, binding, remoteAddress) {
+        }
+        
+        public bool CheckSession(string session) {
+            return base.Channel.CheckSession(session);
+        }
+        
+        public System.Threading.Tasks.Task<bool> CheckSessionAsync(string session) {
+            return base.Channel.CheckSessionAsync(session);
         }
         
         public bool Registration(Web.ServiceReference1.UserWCF newUser) {

@@ -24,6 +24,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                 TokenDate = DateTime.Now;
             }}
         public DateTime TokenDate { get; set; }
+        public ICollection<string> Sessions{ get; set; }
         public User() : base()
         {
             DateCreated = DateTime.Now;

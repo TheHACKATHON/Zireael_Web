@@ -22,13 +22,15 @@ namespace Wcf_CeadChat_ServiceLibrary
         public string Token { get; set; }
         [DataMember]
         public DateTime DateCreated { get; set; }
+        [DataMember]
+        public string Session { get; set; }
         public UserWCF() : base()
         {
             DateCreated = DateTime.Now;
             // Friends = new List<UserBaseWCF>();
             Groups = new List<GroupWCF>();
         }
-        public UserWCF(User user)
+        public UserWCF(User user, string session = null)
         {
             Groups = new List<GroupWCF>();
             Id = user.Id;
@@ -37,6 +39,7 @@ namespace Wcf_CeadChat_ServiceLibrary
             DisplayName = user.DisplayName;
             Email = user.Email;
             PasswordHash = user.PasswordHash;
+            Session = session;
             DateCreated = user.DateCreated;
             //Friends = new List<UserBaseWCF>();
             foreach (var item in user.Groups.Where(g=> g.IsVisible))
