@@ -282,7 +282,6 @@ input[type=submit] {
     width: 100%;
     padding: 10px;
     font-size: 14px;
-    text-transform: uppercase;
 }
 
     input[type=submit]:hover {
