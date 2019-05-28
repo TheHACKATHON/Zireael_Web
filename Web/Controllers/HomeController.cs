@@ -10,7 +10,7 @@ using Web.ServiceReference1;
 
 namespace Web.Controllers
 {
-    public class HomeController : Controller, ICeadChatServiceCallback
+    public partial class HomeController : Controller, ICeadChatServiceCallback
     {
         private int id = 0;
         private CeadChatServiceClient _client;
@@ -21,7 +21,7 @@ namespace Web.Controllers
         }
         public async Task<ActionResult> Index()
         {
-            UserWCF user = null;
+            /*UserWCF user = null;
             if(Session["token"] == null)
             {
                 user = await _client.LogInAsync("qwerty14", "QwertyQwerty", null);
@@ -45,8 +45,8 @@ namespace Web.Controllers
                 ViewBag.User = new { Login = "null" };
             }
             //id = user.Id;
-            ViewBag.SessionId = Session.SessionID;
-            return View();
+            ViewBag.SessionId = Session.SessionID;*/
+            return View("Auth");
         }
 
         public async Task<ActionResult> About()
@@ -87,6 +87,13 @@ namespace Web.Controllers
                 default: goto case "log";
             }
             return PartialView(view);
+        }
+
+        public async Task<JsonResult> Login()
+        {
+
+
+            return Json(null);
         }
 
         public async Task<ActionResult> Callback()
