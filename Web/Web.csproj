@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Controllers\HomeControllerPart2.cs" />
     <Compile Include="Models\Clients.cs" />
     <Compile Include="App_Start\CustomControllerFactory.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -276,11 +277,11 @@
     <Content Include="Views\Home\Callback.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Auth.cshtml" />
-    <Content Include="Views\Home\AuthAjax.cshtml" />
     <Content Include="Views\Home\PartialRegistration.cshtml" />
     <Content Include="Views\Home\PartialLogin.cshtml" />
     <Content Include="Views\Home\PartialPassword.cshtml" />
     <Content Include="Views\Home\PartialLearnMore.cshtml" />
+    <Content Include="Views\Home\PartialSendCode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

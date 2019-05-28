@@ -10,28 +10,16 @@
             </div>
 
             <div class="login_form_wrap">
-                @using (Ajax.BeginForm("AuthAjax", "Home", new { }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 50, OnSuccess = "OnSuccess", OnFailure = "OnFailure", HttpMethod="POST" }, new { @class = "form" }))
-                {
-                    <div id="replace">
-                        @*<input id="ibofg" type="submit" style="display:none" />
+                <div id="replace">
+                    @*<input id="ibofg" type="submit" style="display:none" />
                         <script>
                             document.querySelector("#ibofg").click();
                         </script>*@
-                        @{Html.RenderPartial("PartialLogin");}
-                    </div>
-                }
-                <script>
-                    function OnSuccess(data) {
-                        console.log(data);
-                    }
-                </script>
-            </div>
-            <div>
-                <div class="login_footer_wrap">
-                    <p>Welcome to the official Zireael web-client.</p>
-                    @Ajax.ActionLink("Learn more", "AuthAjax", "Home", new { type = "learn" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 50, OnSuccess = "OnSuccess", OnFailure = "OnFailure", HttpMethod = "POST" }, new { @class = "logo_footer_learn_more_link" })
-
+                    @{Html.RenderPartial("PartialLogin");}
                 </div>
             </div>
+            <div class="login_footer_wrap">
+                <p>Welcome to the official Zireael web-client.</p>
+                @Ajax.ActionLink("Learn more", "AuthAjax", "Home", new { type = "learn" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 50, OnSuccess = "OnSuccess", OnFailure = "OnFailure", HttpMethod = "POST" }, new { @class = "logo_footer_learn_more_link" })
+            </div>
         </div>
-    </div>
