@@ -11,15 +11,37 @@ namespace Web.Controllers
     public partial class HomeController
     {
         [HttpPost]
-        public async Task<ActionResult> SendCode(string loginOrEmail)
+        public async Task<ActionResult> SendCodeForChangePassword(string loginOrEmail)
         {
-            return PartialView("PartialSendCode");
+            if(await _client.SendCodeForRestorePasswordAsync(loginOrEmail))
+            {
+                ViewBag.Email = loginOrEmail;
+                return PartialView("PartialSendCode");
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
         }
         
         [HttpPost]
-        public async Task<JsonResult> ChangePassword(string loginOrEmail)
+        public async Task<JsonResult> ChangePassword(string loginOrEmail, string pass, string repPass, string code)
         {
-            return Json(new {message = "Пароль успешно изменен!", type=ErrorType.OK.ToString() });
+            if (pass == repPass)
+            {
+                if (_client.RestorePassword(loginOrEmail, code, pass))
+                {
+                    return Json(new { message = "Пароль успешно изменен!", type = ErrorType.OK.ToString() });
+                }
+                else
+                {
+                    return Json(new { message = "Ошибка! Проверте правильность введенных данных.", type = ErrorType.ERROR.ToString() });
+                }
+            }
+            else
+            {
+                return Json(new { message = "Пароли не совпадают!", type = ErrorType.ERROR.ToString() });
+            }
         }
     }
 }

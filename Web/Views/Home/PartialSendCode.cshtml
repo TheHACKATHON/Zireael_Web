@@ -3,6 +3,10 @@ new AjaxOptions { LoadingElementId = "loading", LoadingElementDuration = 50, OnB
 new { @class = "form" }))
 {
     <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
+        <label class="md-input-label">Введите логин или почту</label>
+        <input  disabled class="md-input" name="loginOrEmail" type="email" value="@ViewBag.Email">
+    </div>
+    <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
         <label class="md-input-label">Введите новый пароль</label>
         <input required="" class="md-input" name="pass" type="password">
     </div>
@@ -12,7 +16,7 @@ new { @class = "form" }))
     </div>
     <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
         <label class="md-input-label">Введите код отправленный на почту</label>
-        <input required="" class="md-input" name="code" type="text">
+        <input required="" autocomplete="off" class="md-input" name="code" type="text">
     </div>
     <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value non_border">
         <input type="submit" value="Сменить пароль">

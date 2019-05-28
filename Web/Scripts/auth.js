@@ -6,7 +6,18 @@
 function ChangePasswordSuccess(data) {
     if (data) {
         if (data.type) {
-            console.log(data.type);
+            switch (data.type) {
+                case "ERROR": {
+                    $("input:not([type='email'])").removeAttr("disabled");
+                    console.log(data.message);
+                    break;
+                }
+                case "OK": {
+                    console.log(data.message);
+                    break;
+                }
+                default: console.log(data.message);
+            }
         }
     }
 }
