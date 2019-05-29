@@ -35,16 +35,16 @@ namespace Web.Controllers
             {
                 if (await _client.RestorePasswordAsync(loginOrEmail, code, pass))
                 {
-                    return Json(new { message = "Пароль успешно изменен!", type = ErrorType.Error.ToString() });
+                    return Json(new { message = "Пароль успешно изменен!", type = NotifyType.Error.ToString() });
                 }
                 else
                 {
-                    return Json(new { message = "Ошибка! Проверте правильность введенных данных.", type = ErrorType.Error.ToString() });
+                    return Json(new { message = "Ошибка! Проверте правильность введенных данных.", type = NotifyType.Error.ToString() });
                 }
             }
             else
             {
-                return Json(new { message = "Пароли не совпадают!", type = ErrorType.Error.ToString() });
+                return Json(new { message = "Пароли не совпадают!", type = NotifyType.Error.ToString() });
             }
         }
         public async Task<JsonResult> RegistrationSendCode(string email)
@@ -53,11 +53,11 @@ namespace Web.Controllers
             if (await _client.SendCodeOnEmailAsync(email, token) != null)
             {
                 Response.Cookies.Add(new HttpCookie(_nameEmailTokenCookie, token));
-                return Json(new { message = $"Код отправлен на {email.ToLower()}!", type = ErrorType.Success.ToString() });
+                return Json(new { message = $"Код отправлен на {email.ToLower()}!", type = NotifyType.Success.ToString() });
             }
             else
             {
-                return Json(new { message = $"Ошибка! Код НЕ отправлен на {email.ToLower()}!", type = ErrorType.Error.ToString()});
+                return Json(new { message = $"Ошибка! Код НЕ отправлен на {email.ToLower()}!", type = NotifyType.Error.ToString()});
             }
         }
         [HttpPost]
@@ -74,16 +74,16 @@ namespace Web.Controllers
                         {
                             if (await _client.RegistrationAsync(new UserWCF() { Email = emailFromDB, Login = login, PasswordHash = password }))
                             {
-                                return Json(new { message = "Вы зарегистрированы УСПЕШНО", type = ErrorType.Success.ToString() });
+                                return Json(new { message = "Вы зарегистрированы УСПЕШНО", type = NotifyType.Success.ToString() });
                             }
                             else
                             {
-                                return Json(new { message = "Уупс... Ошибка при регистрации...", type = ErrorType.Error.ToString() });
+                                return Json(new { message = "Уупс... Ошибка при регистрации...", type = NotifyType.Error.ToString() });
                             }
                         }
                         else
                         {
-                            return Json(new { message = "Не верный код с почты", type = ErrorType.Warning.ToString() });
+                            return Json(new { message = "Не верный код с почты", type = NotifyType.Warning.ToString() });
                         }
                     }
                     else
@@ -94,13 +94,13 @@ namespace Web.Controllers
                             "может состоять только из латинских символов и цифр\n" +
                             "минимум 6 символов\n" +
                             "максимум 24 символа",
-                            type = ErrorType.Warning.ToString()
+                            type = NotifyType.Warning.ToString()
                         });
                     }
                 }
                 else
                 {
-                    return Json(new { message = "Пароли не совпадают!", type = ErrorType.Warning.ToString() });
+                    return Json(new { message = "Пароли не совпадают!", type = NotifyType.Warning.ToString() });
                 }
             }
             else
@@ -112,7 +112,7 @@ namespace Web.Controllers
                     "максимум 32 символа\n" +
                     "буква в нижнем регистре\n" +
                     "буква в верхнем регистре",
-                    type = ErrorType.Warning.ToString()
+                    type = NotifyType.Warning.ToString()
                 });
             }
         }

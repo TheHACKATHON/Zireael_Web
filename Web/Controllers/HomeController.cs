@@ -84,8 +84,8 @@ namespace Web.Controllers
                 Session.Add("token", user.Session);
             }
             
-            if (user is null) return Json(new { code = "ERROR", error = "Неверный пароль." });
-            return Json(new { code = "OK" });
+            if (user is null) return Json(new { code = NotifyType.Error.ToString(), error = "Неверный пароль." });
+            return Json(new { code = NotifyType.Success.ToString() });
         }
 
         public async Task<ActionResult> Callback()
