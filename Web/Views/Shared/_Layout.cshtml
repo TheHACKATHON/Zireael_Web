@@ -8,11 +8,15 @@
     @Styles.Render("~/Content/vlad.css")
     @Styles.Render("~/Content/nikita.css")
     @Styles.Render("~/Content/loading.css")
+    @Styles.Render("~/Content/notifications.css")
+    @Scripts.Render("~/Scripts/notifications.js")
     @Scripts.Render("~/Scripts/jquery-3.4.1.min.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 </head>
 <body>
     @RenderBody()
+
+    <div class="notify"></div>
 
     <div id="loading" style="display:none">
         @{

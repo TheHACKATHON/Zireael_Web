@@ -1,5 +1,5 @@
 ﻿@using (Ajax.BeginForm("ChangePassword", "Home", new { },
-new AjaxOptions { LoadingElementId = "loading", LoadingElementDuration = 50, OnBegin = "OnBegin", OnSuccess = "ChangePasswordSuccess", OnFailure = "OnFailure", HttpMethod = "POST" },
+new AjaxOptions { LoadingElementId = "loading", LoadingElementDuration = 1000, OnBegin = "OnBegin", OnSuccess = "ChangePasswordSuccess", OnFailure = "OnFailure", HttpMethod = "POST" },
 new { @class = "form" }))
 {
     <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
