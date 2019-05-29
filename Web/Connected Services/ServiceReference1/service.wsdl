@@ -265,6 +265,18 @@
   <wsdl:message name="ICeadChatService_GetBlackList_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetBlackListResponse" />
   </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendCodeOnEmail_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendCodeOnEmail" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendCodeOnEmail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendCodeOnEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetEmailByCookieAndCode_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetEmailByCookieAndCode" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetEmailByCookieAndCode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetEmailByCookieAndCodeResponse" />
+  </wsdl:message>
   <wsdl:message name="ICeadChatService_CreateChatCallback_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:CreateChatCallback" />
   </wsdl:message>
@@ -474,6 +486,14 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetBlackList">
       <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetBlackList" message="tns:ICeadChatService_GetBlackList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetBlackListResponse" message="tns:ICeadChatService_GetBlackList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendCodeOnEmail">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/SendCodeOnEmail" message="tns:ICeadChatService_SendCodeOnEmail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SendCodeOnEmailResponse" message="tns:ICeadChatService_SendCodeOnEmail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetEmailByCookieAndCode">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCode" message="tns:ICeadChatService_GetEmailByCookieAndCode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCodeResponse" message="tns:ICeadChatService_GetEmailByCookieAndCode_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="CreateChatCallback">
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/CreateChatCallback" message="tns:ICeadChatService_CreateChatCallback_OutputCallbackMessage" />
@@ -871,6 +891,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetBlackList">
       <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetBlackList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCodeOnEmail">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SendCodeOnEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEmailByCookieAndCode">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCode" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

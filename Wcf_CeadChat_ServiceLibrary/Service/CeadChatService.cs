@@ -29,8 +29,8 @@ using Liphsoft.Crypto.Argon2;
 
 namespace Wcf_CeadChat_ServiceLibrary
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)] 
-    
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
+
     public class CeadChatService : ICeadChatService
     {
         private Dictionary<IUserChanged, User> _onlineUsers;//онлайн пользователи
@@ -65,12 +65,12 @@ namespace Wcf_CeadChat_ServiceLibrary
         }
 
         #region system
-        
+
         ChatContext Context(IUserChanged userChanged)
         {
             try
             {
-                
+
                 ChatContext context = null;
                 if (_onlineUsers.FirstOrDefault(o => o.Key == userChanged).Value != null)//получаем учетку по текущему подключению, для проверки может ли юзер выполнять команды
                 {
@@ -1258,6 +1258,8 @@ namespace Wcf_CeadChat_ServiceLibrary
                  user.LastTimeOnline = DateTime.Now;
                  user.IsOnline = true;
                  user.Token = CreateToken(user);
+                 context.SaveChanges();
+
                  var session = OperationContext.Current.InstanceContext.GetHashCode().ToString();
                  context.Sessions.Add(new Session(user, session));
                  context.SaveChanges();
@@ -1944,6 +1946,49 @@ namespace Wcf_CeadChat_ServiceLibrary
             return false;
         }//проверка логина на содержание в группе
 
+
         #endregion
+
+        public string SendCodeOnEmail(string email, string cookie)
+        {
+            var result = TryExecute(() =>
+            {
+                var newRestoreCode = RandomString(_lenghtRecoveryCode);
+                SendMessageToMail(email,
+                    $"Код подверждения для регистрации",
+                    $"Код подтверждения: {newRestoreCode}");
+                var context = new ChatContext();
+
+                var emailCode = new EmailCode()
+                { ConfirmationCode = newRestoreCode,
+                    Cookie = cookie,
+                    RequestTime = DateTime.Now,
+                    Email = email
+                };
+                context.EmailCodes.Add(emailCode);
+                context.SaveChanges();
+                return newRestoreCode;
+            });
+            if (result is string str)
+            {
+                return str;
+            }
+            return null;
+        }
+
+        public string GetEmailByCookieAndCode(string cookie, string code)
+        {
+            var result = TryExecute(() =>
+            {
+                var context = new ChatContext();
+                return context.EmailCodes.FirstOrDefault(e => e.Cookie.Equals(cookie, StringComparison.OrdinalIgnoreCase)
+                && e.ConfirmationCode == code.ToUpper());
+            });
+            if (result is string str)
+            {
+                return str;
+            }
+            return null;
+        }
     }
 }

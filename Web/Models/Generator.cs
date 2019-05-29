@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ASP_Articles.Models
+namespace Web.Models
 {
     public class Generator
     {

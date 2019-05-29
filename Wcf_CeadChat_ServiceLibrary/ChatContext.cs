@@ -28,7 +28,7 @@ namespace Wcf_CeadChat_ServiceLibrary
         public DbSet<Package> Packages { get; set; }
         public DbSet<Recovery> Recoveries { get; set; }
         public DbSet<Session> Sessions{ get; set; }
-
+        public DbSet<EmailCode> EmailCodes { get; set; }
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
         //    //modelBuilder.Entity<User>().HasMany(d => d.Users).WithMany(f => f.Users);

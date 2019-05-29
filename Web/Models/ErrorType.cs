@@ -1,4 +1,4 @@
 ﻿namespace Web.Models
 {
-        public enum ErrorType { ERROR = 0, OK};
+    public enum ErrorType { Error = 0, Success, Notice, Warning };
 }

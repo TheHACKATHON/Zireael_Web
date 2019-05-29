@@ -71,6 +71,7 @@
     <Compile Include="ClassUser\Avatar.cs" />
     <Compile Include="ClassUser\AvatarUser.cs" />
     <Compile Include="ClassUser\BlackList.cs" />
+    <Compile Include="ClassUser\EmailCode.cs" />
     <Compile Include="ClassUser\Session.cs" />
     <Compile Include="ClassUser\Recovery.cs" />
     <Compile Include="ClassWCF\ChannelWCF.cs" />

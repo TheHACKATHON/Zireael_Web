@@ -127,6 +127,13 @@ namespace Wcf_CeadChat_ServiceLibrary
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         IEnumerable<UserBaseWCF> GetBlackList();//получить черный список
         #endregion
+
+        #region WEB Client
+        [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
+        string SendCodeOnEmail(string email, string cookie);//отправка сообщения на почту
+        [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
+        string GetEmailByCookieAndCode(string cookie, string code);//пролучить почту, если кук и кода совпадают. Иначе возвращает null
+        #endregion
     }
 
     public interface IUserChanged

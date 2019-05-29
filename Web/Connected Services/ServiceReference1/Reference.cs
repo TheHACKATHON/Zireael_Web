@@ -1179,6 +1179,18 @@ namespace Web.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetBlackList", ReplyAction="http://tempuri.org/ICeadChatService/GetBlackListResponse")]
         System.Threading.Tasks.Task<Web.ServiceReference1.UserBaseWCF[]> GetBlackListAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/SendCodeOnEmail", ReplyAction="http://tempuri.org/ICeadChatService/SendCodeOnEmailResponse")]
+        string SendCodeOnEmail(string email, string cookie);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/SendCodeOnEmail", ReplyAction="http://tempuri.org/ICeadChatService/SendCodeOnEmailResponse")]
+        System.Threading.Tasks.Task<string> SendCodeOnEmailAsync(string email, string cookie);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCode", ReplyAction="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCodeResponse")]
+        string GetEmailByCookieAndCode(string cookie, string code);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCode", ReplyAction="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCodeResponse")]
+        System.Threading.Tasks.Task<string> GetEmailByCookieAndCodeAsync(string cookie, string code);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1572,6 +1584,22 @@ namespace Web.ServiceReference1 {
         
         public System.Threading.Tasks.Task<Web.ServiceReference1.UserBaseWCF[]> GetBlackListAsync() {
             return base.Channel.GetBlackListAsync();
+        }
+        
+        public string SendCodeOnEmail(string email, string cookie) {
+            return base.Channel.SendCodeOnEmail(email, cookie);
+        }
+        
+        public System.Threading.Tasks.Task<string> SendCodeOnEmailAsync(string email, string cookie) {
+            return base.Channel.SendCodeOnEmailAsync(email, cookie);
+        }
+        
+        public string GetEmailByCookieAndCode(string cookie, string code) {
+            return base.Channel.GetEmailByCookieAndCode(cookie, code);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetEmailByCookieAndCodeAsync(string cookie, string code) {
+            return base.Channel.GetEmailByCookieAndCodeAsync(cookie, code);
         }
     }
 }

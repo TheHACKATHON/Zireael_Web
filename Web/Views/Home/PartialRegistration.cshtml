@@ -1,2 +1,50 @@
 ﻿<h3 class="login_form_head">Регистрация</h3>
-@Ajax.ActionLink("Назад", "AuthAjax", "Home", new { type = "log" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 50, OnSuccess = "OnSuccess", OnFailure = "OnFailure", HttpMethod = "POST" }, new { @class = "logo_footer_learn_more_link" })
+<div class="login_phone_groups_wrap clearfix">
+    <div id="restoreCode">
+        @using (Ajax.BeginForm("Registration", "Home", new { },
+       new AjaxOptions { UpdateTargetId = "restoreCode", LoadingElementId = "loading", LoadingElementDuration = 50, OnBegin = "OnBegin", OnSuccess = "SendCodeSuccess", OnFailure = "OnFailure", HttpMethod = "POST" },
+       new { @class = "form" }))
+        {
+            <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
+                <label class="md-input-label">Введите логин*</label>
+                <input required="" autocomplete="login" class="md-input" name="login" type="text">
+            </div>
+            <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
+                <label class="md-input-label">Почта*</label>
+                <div class="emailFlex">
+                    <input required="" id="email" autocomplete="email" class="md-input" name="email" type="email">
+                    @Ajax.ActionLink("отправить", "RegistrationSendCode", "Home", new { email = "log" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 50, OnSuccess = "OnSuccess", OnFailure = "OnFailure", HttpMethod = "POST" }, new { id="email-btn", @class = "logo_footer_learn_more_link" })
+                </div>
+            </div>
+            <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
+                <label class="md-input-label">Код отправленный на почту*</label>
+                <input required="" class="md-input" name="password" type="password">
+            </div>
+            <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
+                <label class="md-input-label">Пароль*</label>
+                <input required="" class="md-input" name="password" type="password">
+            </div>
+            <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
+                <label class="md-input-label">Подтверждение пароля*</label>
+                <input required="" class="md-input" name="repPassword" type="password">
+            </div>
+            <p class="login_footer_wrap">*поля обязательные для заполнения</p>
+            <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value non_border">
+                <input type="submit" value="Зарегистрироваться">
+            </div>
+        }
+    </div>
+</div>
+<div class="login_footer_wrap">
+    @Ajax.ActionLink("Назад", "AuthAjax", "Home", new { type = "log" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 50, OnSuccess = "OnSuccess", OnFailure = "OnFailure", HttpMethod = "POST" }, new { @class = "logo_footer_learn_more_link" })
+</div>
+
+<script>
+    $("#email-btn").on("click", function () {
+        let mail = $("#email").val();
+        $(this).attr("href", "/registrationsendcode?email=" + mail);
+    })
+
+</script>
+
+//href="/registrationsendcode?type=log"
