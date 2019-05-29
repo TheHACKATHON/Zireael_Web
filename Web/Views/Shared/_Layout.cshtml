@@ -7,27 +7,136 @@
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/vlad.css")
     @Styles.Render("~/Content/nikita.css")
+    @Styles.Render("~/Content/loading.css")
     @Scripts.Render("~/Scripts/jquery-3.4.1.min.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 </head>
 <body>
     @RenderBody()
 
-    @*<div id="loading">
-        <div my-arc-progress="" stroke="3" width="26" class="progress-arc-wrap progress-arc-intermediate" style="width: 26px; height: 26px;">
-            <svg class="progress-arc" viewport="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" width="26" height="26">
-                <defs>
-                    <linearGradient id="grad_intermediate2" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" class="stop0"></stop>
-                        <stop offset="60%" class="stop60"></stop>
-                        <stop offset="100%" class="stop100"></stop>
-                    </linearGradient>
-                </defs>
-                <circle class="progress-arc-bar" cx="13" cy="13" r="11.5" style="stroke-width: 3; stroke-dasharray: 31.7929, 40.4637; stroke: url(&quot;#grad_intermediate2&quot;);"></circle>
-            </svg>
-        </div>
+    <div id="loading" style="display:none">
+        @{
+            var rnd = new Random().Next(0, 11);
+            switch (rnd)
+            {
+                case 0:
+                    <section>
+                        <div class='sk-rotating-plane'></div>
+                    </section>
+                    break;
+                case 1:
+                    <section>
+                        <div class='sk-double-bounce'>
+                            <div class='sk-child sk-double-bounce-1'></div>
+                            <div class='sk-child sk-double-bounce-2'></div>
+                        </div>
+                    </section>
+                    break;
+                case 2:
+                    <section>
+                        <div class='sk-wave'>
+                            <div class='sk-rect sk-rect-1'></div>
+                            <div class='sk-rect sk-rect-2'></div>
+                            <div class='sk-rect sk-rect-3'></div>
+                            <div class='sk-rect sk-rect-4'></div>
+                            <div class='sk-rect sk-rect-5'></div>
+                        </div>
+                    </section>
+                    break;
+                case 3:
+                    <section>
+                        <div class='sk-spinner sk-spinner-pulse'></div>
+                    </section>
+                    break;
+                case 4:
+                    <section>
+                        <div class='sk-chasing-dots'>
+                            <div class='sk-child sk-dot-1'></div>
+                            <div class='sk-child sk-dot-2'></div>
+                        </div>
+                    </section>
+                    break;
+                case 5:
+                    <section>
+                        <div class='sk-three-bounce'>
+                            <div class='sk-bounce-1 sk-child'></div>
+                            <div class='sk-bounce-2 sk-child'></div>
+                            <div class='sk-bounce-3 sk-child'></div>
+                        </div>
+                    </section>
+                    break;
+                case 6:
+                    <section>
+                        <div class='sk-circle-bounce'>
+                            <div class='sk-child sk-circle-1'></div>
+                            <div class='sk-child sk-circle-2'></div>
+                            <div class='sk-child sk-circle-3'></div>
+                            <div class='sk-child sk-circle-4'></div>
+                            <div class='sk-child sk-circle-5'></div>
+                            <div class='sk-child sk-circle-6'></div>
+                            <div class='sk-child sk-circle-7'></div>
+                            <div class='sk-child sk-circle-8'></div>
+                            <div class='sk-child sk-circle-9'></div>
+                            <div class='sk-child sk-circle-10'></div>
+                            <div class='sk-child sk-circle-11'></div>
+                            <div class='sk-child sk-circle-12'></div>
+                        </div>
+                    </section>
+                    break;
+                case 7:
+                    <section>
+                        <div class='sk-cube-grid'>
+                            <div class='sk-cube sk-cube-1'></div>
+                            <div class='sk-cube sk-cube-2'></div>
+                            <div class='sk-cube sk-cube-3'></div>
+                            <div class='sk-cube sk-cube-4'></div>
+                            <div class='sk-cube sk-cube-5'></div>
+                            <div class='sk-cube sk-cube-6'></div>
+                            <div class='sk-cube sk-cube-7'></div>
+                            <div class='sk-cube sk-cube-8'></div>
+                            <div class='sk-cube sk-cube-9'></div>
+                        </div>
+                    </section>
+                    break;
+                case 8:
+                    <section>
+                        <div class='sk-fading-circle'>
+                            <div class='sk-circle sk-circle-1'></div>
+                            <div class='sk-circle sk-circle-2'></div>
+                            <div class='sk-circle sk-circle-3'></div>
+                            <div class='sk-circle sk-circle-4'></div>
+                            <div class='sk-circle sk-circle-5'></div>
+                            <div class='sk-circle sk-circle-6'></div>
+                            <div class='sk-circle sk-circle-7'></div>
+                            <div class='sk-circle sk-circle-8'></div>
+                            <div class='sk-circle sk-circle-9'></div>
+                            <div class='sk-circle sk-circle-10'></div>
+                            <div class='sk-circle sk-circle-11'></div>
+                            <div class='sk-circle sk-circle-12'></div>
+                        </div>
+                    </section>
+                    break;
+                case 9:
+                    <section>
+                        <div class='sk-folding-cube'>
+                            <div class='sk-cube sk-cube-1'></div>
+                            <div class='sk-cube sk-cube-2'></div>
+                            <div class='sk-cube sk-cube-4'></div>
+                            <div class='sk-cube sk-cube-3'></div>
+                        </div>
+                    </section>
+                    break;
+                case 10:
+                    <section>
+                        <div class='sk-wandering-cubes'>
+                            <div class='sk-cube sk-cube-1'></div>
+                            <div class='sk-cube sk-cube-2'></div>
+                        </div>
+                    </section>
+                    break;
+            }
+        }
         <div class="background"></div>
-
-    </div>*@
+    </div>
 </body>
 </html>

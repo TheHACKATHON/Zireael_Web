@@ -206,6 +206,7 @@
     <Content Include="Content\Images\Zireael_logo.512.png" />
     <Content Include="Content\Images\Zireael_logo.64.png" />
     <Content Include="Content\Images\Zireael_logo.original.png" />
+    <Content Include="Content\loading.css" />
     <Content Include="Content\nikita.css" />
     <Content Include="Content\vlad.css" />
     <Content Include="favicon.ico" />
