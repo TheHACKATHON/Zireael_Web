@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Web.Models;
+using Web.ServiceReference1;
 
 namespace Web.Controllers
 {
@@ -32,7 +33,7 @@ namespace Web.Controllers
         {
             if (pass == repPass)
             {
-                if (_client.RestorePassword(loginOrEmail, code, pass))
+                if (await _client.RestorePasswordAsync(loginOrEmail, code, pass))
                 {
                     return Json(new { message = "Пароль успешно изменен!", type = ErrorType.Error.ToString() });
                 }
@@ -49,14 +50,14 @@ namespace Web.Controllers
         public async Task<JsonResult> RegistrationSendCode(string email)
         {
             var token = Generator.String(_emailTokenLenght);
-            if (_client.SendCodeOnEmail(email, token) != null)
+            if (await _client.SendCodeOnEmailAsync(email, token) != null)
             {
                 Response.Cookies.Add(new HttpCookie(_nameEmailTokenCookie, token));
-                return Json(new { message = $"Пароль УСПЕШНО отправлен на {email.ToLower()}!", type = ErrorType.Success.ToString() });
+                return Json(new { message = $"Код отправлен на {email.ToLower()}!", type = ErrorType.Success.ToString() });
             }
             else
             {
-                return Json(new { message = $"Ошибка! Пароль НЕ отправлен на {email.ToLower()}!", type = ErrorType.Error.ToString() });
+                return Json(new { message = $"Ошибка! Код НЕ отправлен на {email.ToLower()}!", type = ErrorType.Error.ToString()});
             }
         }
         [HttpPost]
@@ -69,7 +70,21 @@ namespace Web.Controllers
                     if (Regex.IsMatch(login, @"^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d]{5,24}$"))
                     {
                         string emailFromDB = await _client.GetEmailByCookieAndCodeAsync(Request.Cookies[_nameEmailTokenCookie].Value, code);
-                        return Json(new { message = "Вы зарегистрированы УСПЕШНО", type = ErrorType.Error.ToString() });
+                        if (emailFromDB != null)
+                        {
+                            if (await _client.RegistrationAsync(new UserWCF() { Email = emailFromDB, Login = login, PasswordHash = password }))
+                            {
+                                return Json(new { message = "Вы зарегистрированы УСПЕШНО", type = ErrorType.Success.ToString() });
+                            }
+                            else
+                            {
+                                return Json(new { message = "Уупс... Ошибка при регистрации...", type = ErrorType.Error.ToString() });
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { message = "Не верный код с почты", type = ErrorType.Warning.ToString() });
+                        }
                     }
                     else
                     {
@@ -79,13 +94,13 @@ namespace Web.Controllers
                             "может состоять только из латинских символов и цифр\n" +
                             "минимум 6 символов\n" +
                             "максимум 24 символа",
-                            type = ErrorType.Error.ToString()
+                            type = ErrorType.Warning.ToString()
                         });
                     }
                 }
                 else
                 {
-                    return Json(new { message = "Пароли не совпадают!", type = ErrorType.Error.ToString() });
+                    return Json(new { message = "Пароли не совпадают!", type = ErrorType.Warning.ToString() });
                 }
             }
             else
@@ -97,7 +112,7 @@ namespace Web.Controllers
                     "максимум 32 символа\n" +
                     "буква в нижнем регистре\n" +
                     "буква в верхнем регистре",
-                    type = ErrorType.Error.ToString()
+                    type = ErrorType.Warning.ToString()
                 });
             }
         }
