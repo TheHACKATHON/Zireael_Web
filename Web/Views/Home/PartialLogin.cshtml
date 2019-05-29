@@ -19,8 +19,8 @@
         </div>
     }
     <div class="login_footer_wrap">
-        @Ajax.ActionLink("Забыли пароль?", "AuthAjax", "Home", new { type = "pass" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 1000, OnFailure = "OnFailure", HttpMethod = "POST" }, new { @class = "logo_footer_learn_more_link" })
-        @Ajax.ActionLink("Регистрация", "AuthAjax", "Home", new { type = "reg" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 1000, OnFailure = "OnFailure", HttpMethod = "POST" }, new { @class = "logo_footer_learn_more_link" })
+        @Ajax.ActionLink("Забыли пароль?", "AuthAjax", "Home", new { type = "pass" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 0, OnFailure = "OnFailure", HttpMethod = "POST" }, new { @class = "logo_footer_learn_more_link" })
+        @Ajax.ActionLink("Регистрация", "AuthAjax", "Home", new { type = "reg" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 0, OnFailure = "OnFailure", HttpMethod = "POST" }, new { @class = "logo_footer_learn_more_link" })
     </div>
 </div>
 

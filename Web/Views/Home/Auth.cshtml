@@ -22,7 +22,7 @@
             </div>
             <div class="login_footer_wrap">
                 <p>Welcome to the official Zireael web-client.</p>
-                @Ajax.ActionLink("Learn more", "AuthAjax", "Home", new { type = "learn" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 1000, OnFailure = "OnFailure", HttpMethod = "POST" }, new { @class = "logo_footer_learn_more_link" })
+                @Ajax.ActionLink("Learn more", "AuthAjax", "Home", new { type = "learn" }, new AjaxOptions { UpdateTargetId = "replace", LoadingElementId = "loading", LoadingElementDuration = 0, OnFailure = "OnFailure", HttpMethod = "POST" }, new { @class = "logo_footer_learn_more_link" })
             </div>
         </div>
     </div>
