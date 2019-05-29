@@ -187,6 +187,7 @@
     </Compile>
     <Compile Include="Models\ChatHub.cs" />
     <Compile Include="Models\ChatUser.cs" />
+    <Compile Include="Models\Generator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
