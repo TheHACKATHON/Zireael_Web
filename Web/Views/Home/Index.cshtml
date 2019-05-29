@@ -1,5 +1,95 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+@Styles.Render("~/Content/main_style.css")
+<div my-head="">
+    <div class="tg_page_head tg_head_wrap noselect clearfix">
+        <div class="tg_head_split">
 
-<h1>@ViewBag.A</h1>
+            <div class="tg_head_logo_wrap">
+                <div class="tg_head_logo_dropdown dropdown" dropdown="" style="">
+                    <a class="tg_head_btn dropdown-toggle" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+                        <div class="icon-hamburger-wrap">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </div><p class="icon icon-tg-title">Zireael</p>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a>
+                                <i class="icon icon-new-group"></i><span my-i18n="im_new_group">New group</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <i class="icon icon-contacts"></i><span my-i18n="im_contacts">Contacts</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <i class="icon icon-settings"></i><span my-i18n="im_settings">Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <i class="icon icon-faq"></i><span my-i18n="head_telegram_faq">Telegram FAQ</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="icon icon-about"></i><span my-i18n="head_about">About</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tg_head_main_wrap">
+                <div class="tg_head_main_peer_wrap" style="">
+
+                    <div class="tg_head_peer_dropdown tg_head_peer_media_dropdown dropdown" dropdown="">
+                        <a class="tg_head_btn dropdown-toggle" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a my-i18n="head_select_messages">Select messages</a></li>
+                            <li class="divider ng-scope"></li>
+                            <li><a my-i18n="head_media_photos">Photos</a></li>
+                            <li><a my-i18n="head_media_video">Videos</a></li>
+                            <li><a my-i18n="head_media_documents">Files</a></li>
+                            <li><a my-i18n="head_media_music">Audio</a></li>
+                            <li><a my-i18n="head_media_links">Shared links</a></li>
+                            <li><a my-i18n="head_media_audio">Voice messages</a></li>
+                            <li><a my-i18n="head_media_round">Video messages</a></li>
+                        </ul>
+                    </div>
+
+                    <a class="tg_head_btn tg_head_peer_search_btn">
+                        <i class="icon icon-search"></i>
+                    </a>
+
+                    <a class="tg_head_btn tg_head_peer_return_btn ng-hide">
+                        <span my-i18n="im_show_all_messages">Show all messages</span>
+                        <strong class="tg_head_peer_return_count ng-hide">+0</strong>
+                    </a>
+
+                    <div class="tg_head_peer_title_wrap">
+                        <a class="tg_head_btn">
+                            <div class="tg_head_peer_info">
+                                <span class="tg_head_peer_title" my-peer-link="historyPeer.id" peer-watch="true" dir="auto" for-dialog="true">Telegram</span>
+                                <span class="tg_head_peer_status">
+                                    <span my-user-status="historyPeer.id" for-dialog="true">service notifications</span>
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

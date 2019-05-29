@@ -208,6 +208,7 @@
     <Content Include="Content\Images\Zireael_logo.64.png" />
     <Content Include="Content\Images\Zireael_logo.original.png" />
     <Content Include="Content\loading.css" />
+    <Content Include="Content\main_style.css" />
     <Content Include="Content\nikita.css" />
     <Content Include="Content\notifications.css" />
     <Content Include="Content\vlad.css" />

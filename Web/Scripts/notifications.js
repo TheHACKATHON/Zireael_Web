@@ -1,6 +1,6 @@
 ﻿function popup(string, status) {// success, notice, warning, error
     var type = "bottom-right";
-
+    status = status.toLowerCase();
     if (!$('.notify').hasClass('do-show')) {
         $('.notify')
             .text(string)

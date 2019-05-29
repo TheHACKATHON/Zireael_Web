@@ -27,10 +27,10 @@
 <script>
     function OnSuccess(data) {
         if (data) {
-            if (data.code === "OK") {
+            if (data.code === "Success") {
                 location.pathname = "/";
             }
-            else if (data.code === "ERROR") {
+            else if (data.code === "Error") {
                 //console.log(data.error, true);
                 popup(data.error, 'error')
             }
