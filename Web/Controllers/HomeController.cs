@@ -130,8 +130,8 @@ namespace Web.Controllers
             {
                 Session.Add("token", user.Session);
             }
-
-            if (user is null) return Json(new { code = NotifyType.Error.ToString(), error = "Неверный пароль." });
+            
+            if (user is null) return Json(new { code = NotifyType.Error.ToString(), error = "Неверный логин или пароль" });
             return Json(new { code = NotifyType.Success.ToString() });
         }
 
