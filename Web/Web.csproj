@@ -198,10 +198,14 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Content\Images\1.png" />
+    <Content Include="Content\Images\Icons.png" />
+    <Content Include="Content\Images\Icons2.png" />
     <Content Include="Content\Images\NonBack_Zireael_logo.128.png" />
     <Content Include="Content\Images\NonBack_Zireael_logo.256.png" />
     <Content Include="Content\Images\NonBack_Zireael_logo.32.png" />
     <Content Include="Content\Images\NonBack_Zireael_logo.64.png" />
+    <Content Include="Content\Images\Zireael_back.png" />
     <Content Include="Content\Images\Zireael_logo.128.png" />
     <Content Include="Content\Images\Zireael_logo.256.png" />
     <Content Include="Content\Images\Zireael_logo.32.png" />
@@ -291,6 +295,7 @@
     <Content Include="Views\Home\PartialPassword.cshtml" />
     <Content Include="Views\Home\PartialLearnMore.cshtml" />
     <Content Include="Views\Home\PartialSendCode.cshtml" />
+    <Content Include="Views\Home\error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

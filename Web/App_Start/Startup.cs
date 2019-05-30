@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Owin;
 using Owin;
+using Web.Models;
 
 [assembly: OwinStartup(typeof(Web.App_Start.Startup))]
 

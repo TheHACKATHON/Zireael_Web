@@ -11,8 +11,9 @@ using Web.ServiceReference1;
 
 namespace Web.Controllers
 {
-    public partial class HomeController : Controller, ICeadChatServiceCallback
+    public partial class HomeController : Controller
     {
+        private string _defaultAvatar = "/Content/Images/Zireael_back.png";
         private CeadChatServiceClient _client;
         public HomeController(CeadChatServiceClient client)
         {
@@ -20,14 +21,58 @@ namespace Web.Controllers
 
         }
 
+        public ActionResult UserImage(int userId = 0, int id = 1)
+        {
+            var avatar = _client.GetAvatarUsers(new[] { new UserBaseWCF { Id = userId } }).SingleOrDefault();
+            if (avatar is null) throw new HttpException(404, "Файл не найден");
+            return File(avatar.BigData, "image/png");
+        }
+
         public async Task<ActionResult> Index()
         {
-            if(Session["token"] != null)
+            if (Session["token"] != null)
             {
                 var user = await _client.CheckSessionAsync($"{Session["token"]}");
                 if (user != null)
                 {
-                    ViewBag.A = user.DisplayName;
+                    var avatars = new Dictionary<int, string>();
+                    foreach (var group in user.Groups)
+                    {
+                        var stringAvatar = string.Empty;
+                        var userType = string.Empty;
+                        var id = -1;
+                        AvatarWCF avatar = null;
+                        if (group.Type.Equals(GroupType.SingleUser))
+                        {
+                            var userNoNeEtot = group.Users.SingleOrDefault(u => u.Id != user.Id);
+                            group.Name = userNoNeEtot.DisplayName;
+                            avatar = _client.GetAvatarUsers(new[] { new UserBaseWCF { Id = userNoNeEtot.Id } }).SingleOrDefault();
+                            userType = "user";
+                            id = userNoNeEtot.Id;
+
+                        }
+                        else
+                        {
+                            avatar = _client.GetAvatarGroups(new[] { new GroupWCF{ Id = group.Id } }).SingleOrDefault();
+                            userType = "group";
+                            id = group.Id;
+                        }
+
+                        if (avatar is null)
+                        {
+                            stringAvatar = _defaultAvatar;
+                        }
+                        else
+                        {
+                            stringAvatar = $"/{userType}/{id}";
+                        }
+                        avatars.Add(group.Id, stringAvatar);
+                    }
+
+                    ViewBag.DefaultAvatar = _defaultAvatar;
+                    ViewBag.Avatars = avatars;
+                    ViewBag.DontReaded = _client.GetDontReadMessagesFromGroups(user.Groups.Select(g => g.Id).ToArray());
+                    ViewBag.Groups = user.Groups;
                     return View("Index");
                 }
             }
@@ -85,7 +130,7 @@ namespace Web.Controllers
             {
                 Session.Add("token", user.Session);
             }
-            
+
             if (user is null) return Json(new { code = NotifyType.Error.ToString(), error = "Неверный пароль." });
             return Json(new { code = NotifyType.Success.ToString() });
         }

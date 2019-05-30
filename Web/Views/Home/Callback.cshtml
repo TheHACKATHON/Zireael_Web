@@ -7,33 +7,34 @@
     <title></title>
 </head>
 <body>
-<h2>Чат-комната</h2>
- 
-<div class="main">
-    <div id="loginBlock">
-        Введите логин:<br />
-        <input id="txtUserName" type="text" />
-        <input id="btnLogin" type="button" value="Войти" />
-    </div>
-    <div id="chatBody">
-        <div id="header"></div>
-        <div id="inputForm">
-            <input type="text" id="message" />
-            <input type="button" id="sendmessage" value="Отправить" />
+    <h2>Чат-комната</h2>
+
+    <div class="main">
+        <div id="loginBlock">
+            Введите логин:<br />
+            <input id="txtUserName" type="text" />
+            <input id="btnLogin" type="button" value="Войти" />
         </div>
-        <div id="chatroom"></div>
- 
-        <div id="chatusers">
-            <p><b>Все пользователи</b></p>
+        <div id="chatBody">
+            <div id="header"></div>
+            <div id="inputForm">
+                <input type="text" id="message" />
+                <input type="button" id="sendmessage" value="Отправить" />
+            </div>
+            <div id="chatroom"></div>
+
+            <div id="chatusers">
+                <p><b>Все пользователи</b></p>
+            </div>
         </div>
+        <input id="hdId" type="hidden" />
+        <input id="username" type="hidden" />
     </div>
-    <input id="hdId" type="hidden" />
-    <input id="username" type="hidden" />
-</div>
- 
-<script src="~/Scripts/jquery-3.3.1.min.js"></script>
-<script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>>
-<script src="~/signalr/hubs"></script>
-<script src="~/Scripts/utils.js"></script>
+
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>>
+    <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/utils.js"></script>
 </body>
 </html>

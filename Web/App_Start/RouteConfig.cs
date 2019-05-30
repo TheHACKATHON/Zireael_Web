@@ -17,6 +17,18 @@ namespace Web
                 url: "{action}",
                 defaults: new { controller = "Home", action = "Index" }
             );
+            routes.MapRoute(
+               name: "UserImage",
+               url: "user/{userId}/{id}",
+                defaults: new { controller = "Home", action = "UserImage", userId = UrlParameter.Optional, id = UrlParameter.Optional }
+
+           );
+            routes.MapRoute(
+              name: "GroupImage",
+              url: "group/{groupId}/{id}",
+                defaults: new { controller = "Home", action = "GroupImage", groupId = UrlParameter.Optional, id = UrlParameter.Optional }
+
+          );
         }
     }
 }
