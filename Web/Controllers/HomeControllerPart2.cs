@@ -14,8 +14,9 @@ namespace Web.Controllers
     {
         private int _emailTokenLenght = 64;
         private string _nameEmailTokenCookie = "emailToken";
-        private string patternLogin = @"^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d]{5,24}$";
-        private string patternPassword = @"^(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,32}$";
+        private string _patternLogin = @"^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d]{5,24}$";
+        private string _patternPassword = @"^(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,32}$";
+        private string _fatalError = "Мы потеряли связь с космосом, пытаемся восстановить квантовый соединитель. Попробуйте позже";
 
         [HttpPost]
         public async Task<ActionResult> SendCodeForChangePassword(string loginOrEmail)
@@ -74,13 +75,13 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<JsonResult> Registration(string login, string password, string repPassword, string email, string code)
         {
-            if (Regex.IsMatch(login, patternLogin))
+            if (Regex.IsMatch(login, _patternLogin))
             {
                 if (!await _client.LoginExistAsync(login))
                 {
                     if (!await _client.EmailExistAsync(email))
                     {
-                        if (Regex.IsMatch(password, patternPassword))
+                        if (Regex.IsMatch(password, _patternPassword))
                         {
                             if (password == repPassword)
                             {
@@ -98,7 +99,7 @@ namespace Web.Controllers
                                         }
                                         else
                                         {
-                                            return Json(new { message = "Уупс... Ошибка при регистрации...", type = NotifyType.Error.ToString() });
+                                            return Json(new { message = _fatalError, type = NotifyType.Error.ToString() });
                                         }
                                     }
                                     else
