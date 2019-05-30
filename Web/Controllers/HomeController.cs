@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace Web.Controllers
             _client = client;
 
         }
+
         public async Task<ActionResult> Index()
         {
             if(Session["token"] != null)
@@ -90,17 +92,6 @@ namespace Web.Controllers
 
         public async Task<ActionResult> Callback()
         {
-            var k = Request.Cookies["3eqew"];
-            //Response.Cookies["3eqew"] = 1312312;
-            //var msg = new MessageWCF
-            //{
-            //    Text = "text",
-            //    GroupId = 1,
-            //    DateTime = DateTime.Now,
-            //    Sender = new UserWCF() { Id = 16 }
-            //};
-
-            //ViewBag.id = await _client.SendMessageAsync(msg, DateTime.Now.Ticks);
             return View();
         }
 
@@ -109,6 +100,7 @@ namespace Web.Controllers
             // код
             return View("Auth");
         }
+
 
         #region callback
         public void CreateChatCallback(GroupWCF group, int creatorId)

@@ -8,6 +8,7 @@ namespace Wcf_CeadChat_ServiceLibrary
 {
     public class Session
     {
+        public int Id { get; set; }
         public virtual User User { get; set; }
         public string SessionId { get; set; }
         public DateTime Date { get; set; }
