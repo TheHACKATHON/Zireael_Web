@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,6 +14,9 @@ namespace Web.Controllers
     {
         private int _emailTokenLenght = 64;
         private string _nameEmailTokenCookie = "emailToken";
+        private string patternLogin = @"^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d]{5,24}$";
+        private string patternPassword = @"^(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,32}$";
+
         [HttpPost]
         public async Task<ActionResult> SendCodeForChangePassword(string loginOrEmail)
         {
@@ -72,13 +74,13 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<JsonResult> Registration(string login, string password, string repPassword, string email, string code)
         {
-            if (Regex.IsMatch(login, @"^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d]{5,24}$"))
+            if (Regex.IsMatch(login, patternLogin))
             {
                 if (!await _client.LoginExistAsync(login))
                 {
                     if (!await _client.EmailExistAsync(email))
                     {
-                        if (Regex.IsMatch(password, @"^(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,32}$"))
+                        if (Regex.IsMatch(password, patternPassword))
                         {
                             if (password == repPassword)
                             {
@@ -148,35 +150,6 @@ namespace Web.Controllers
                     type = NotifyType.Warning.ToString()
                 });
             }
-        }
-    }
-
-    public static class RazorViewToStringFormat
-    {
-        /// <summary>  
-        /// Render razorview to string   
-        /// </summary>  
-        /// <param name="controller"></param>  
-        /// <param name="viewName"></param>  
-        /// <param name="model"></param>  
-        /// <returns></returns>  
-        public static string RenderRazorViewToString(Controller controller, string viewName, object model)
-        {
-            controller.ViewData.Model = model;
-            var viewResult = ViewEngines.Engines.FindPartialView(controller.ControllerContext, viewName);
-            // checking the view inside the controller  
-            if (viewResult.View != null)
-            {
-                using (var sw = new StringWriter())
-                {
-                    var viewContext = new ViewContext(controller.ControllerContext, viewResult.View, controller.ViewData, controller.TempData, sw);
-                    viewResult.View.Render(viewContext, sw);
-                    viewResult.ViewEngine.ReleaseView(controller.ControllerContext, viewResult.View);
-                    return sw.GetStringBuilder().ToString();
-                }
-            }
-            else
-                return "View cannot be found.";
         }
     }
 }

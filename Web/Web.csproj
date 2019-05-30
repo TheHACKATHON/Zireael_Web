@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Models\RazorViewToStringFormat.cs" />
     <Compile Include="Models\NotifyType.cs" />
     <Compile Include="Controllers\HomeControllerPart2.cs" />
     <Compile Include="Models\Clients.cs" />
