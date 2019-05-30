@@ -1387,10 +1387,9 @@ namespace Wcf_CeadChat_ServiceLibrary
                 newUser.LastTimeOnline = DateTime.Now;
                 newUser.IsOnline = true;
                 newUser.PasswordHash = GeneratePasswordHash(newUser.PasswordHash);
-                if (!LoginExist(newUser.Login))
+                if (!LoginExist(newUser.Login) && !EmailExist(newUser.Email))
                 {
                     context.Users.Add(new User(newUser));//добавляем в контекст
-
                     WriteLog($"Добавлен пользователь: {newUser.Login}");
                     context.SaveChanges();
                     return true;
@@ -1944,8 +1943,30 @@ namespace Wcf_CeadChat_ServiceLibrary
                 return (bool)result;
             }
             return false;
-        }//проверка логина на содержание в группе
-
+        }//проверка логина на существование
+        public bool EmailExist(string email)
+        {
+            var result = TryExecute(() =>
+            {
+                ChatContext context = new ChatContext();
+                context.Database.Log += WriteLog;
+                if (context.Users.FirstOrDefault(u => string.Equals(u.Email.ToLower(), email.ToLower())) != null)//проверка email на существование
+                {
+                    WriteLog($"Почта: {email} - занят");
+                    return true;
+                }
+                else
+                {
+                    WriteLog($"Почта: {email} - свободен");
+                    return false;
+                }
+            });
+            if (result is bool)
+            {
+                return (bool)result;
+            }
+            return false;
+        }//проверка email на существование
 
         #endregion
 
@@ -1953,21 +1974,32 @@ namespace Wcf_CeadChat_ServiceLibrary
         {
             var result = TryExecute(() =>
             {
-                var newRestoreCode = RandomString(_lenghtRecoveryCode);
-                SendMessageToMail(email,
-                    $"Код подверждения для регистрации",
-                    $"Код подтверждения: {newRestoreCode}");
-                var context = new ChatContext();
+                if (!EmailExist(email))
+                {
+                    var newRestoreCode = RandomString(_lenghtRecoveryCode);
+                    SendMessageToMail(email,
+                        $"Код подверждения для регистрации",
+                        $"Код подтверждения: {newRestoreCode}");
+                    var context = new ChatContext();
 
-                var emailCode = new EmailCode()
-                { ConfirmationCode = newRestoreCode,
-                    Cookie = cookie,
-                    RequestTime = DateTime.Now,
-                    Email = email
-                };
-                context.EmailCodes.Add(emailCode);
-                context.SaveChanges();
-                return newRestoreCode;
+                    var emailCode = new EmailCode()
+                    {
+                        ConfirmationCode = newRestoreCode,
+                        Cookie = cookie,
+                        RequestTime = DateTime.Now,
+                        Email = email
+                    };
+                    context.EmailCodes.Add(emailCode);
+                    context.SaveChanges();
+                    return newRestoreCode;
+                }
+                else
+                {
+                    //SendMessageToMail(email,
+                    //        $"Код подверждения для регистрации",
+                    //        $"Вы уже и так зарегистрированы!");
+                    return "";
+                }
             });
             if (result is string str)
             {
@@ -1981,8 +2013,10 @@ namespace Wcf_CeadChat_ServiceLibrary
             var result = TryExecute(() =>
             {
                 var context = new ChatContext();
-                return context.EmailCodes.FirstOrDefault(e => e.Cookie.Equals(cookie, StringComparison.OrdinalIgnoreCase)
-                && e.ConfirmationCode == code.ToUpper());
+                var codes = context.EmailCodes.ToList();
+                var email = codes.FirstOrDefault(e => e.Cookie.Equals(cookie, StringComparison.OrdinalIgnoreCase)
+                    && e.ConfirmationCode == code.ToUpper());
+                return email.Email;
             });
             if (result is string str)
             {

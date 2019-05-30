@@ -23,6 +23,8 @@ namespace Wcf_CeadChat_ServiceLibrary
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         bool LoginExist(string login);//проверка, есть ли пользователь с таким логином
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
+        bool EmailExist(string email);//проверка, есть ли пользователь с таким email
+        [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         UserWCF LogIn(string login, string password, string token);//вход в учетку. Получаем данные юзера у которого совпадаю логин и пароль
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]

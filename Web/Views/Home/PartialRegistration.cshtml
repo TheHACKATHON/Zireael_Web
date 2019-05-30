@@ -46,7 +46,14 @@
     }
     function RegistrationSuccess(data) {
         popup(data.message, data.type);
-        $("input").removeAttr("disabled");
+        if (data.type.toLowerCase() == "success") {
+            console.log(data.html);
+            $("#replace").empty()
+                         .append(data.html);
+        } else {
+            $("input").removeAttr("disabled");
+        }
+
     }
     $("#email-btn").on("click", function () {
         let mail = $("#email").val();

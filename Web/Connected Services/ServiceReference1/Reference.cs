@@ -970,6 +970,12 @@ namespace Web.ServiceReference1 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/LoginExist", ReplyAction="http://tempuri.org/ICeadChatService/LoginExistResponse")]
         System.Threading.Tasks.Task<bool> LoginExistAsync(string login);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/EmailExist", ReplyAction="http://tempuri.org/ICeadChatService/EmailExistResponse")]
+        bool EmailExist(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/EmailExist", ReplyAction="http://tempuri.org/ICeadChatService/EmailExistResponse")]
+        System.Threading.Tasks.Task<bool> EmailExistAsync(string email);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/LogIn", ReplyAction="http://tempuri.org/ICeadChatService/LogInResponse")]
         Web.ServiceReference1.UserWCF LogIn([System.ServiceModel.MessageParameterAttribute(Name="login")] string login1, string password, string token);
         
@@ -1304,6 +1310,14 @@ namespace Web.ServiceReference1 {
         
         public System.Threading.Tasks.Task<bool> LoginExistAsync(string login) {
             return base.Channel.LoginExistAsync(login);
+        }
+        
+        public bool EmailExist(string email) {
+            return base.Channel.EmailExist(email);
+        }
+        
+        public System.Threading.Tasks.Task<bool> EmailExistAsync(string email) {
+            return base.Channel.EmailExistAsync(email);
         }
         
         public Web.ServiceReference1.UserWCF LogIn(string login1, string password, string token) {

@@ -44,6 +44,20 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="EmailExist">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EmailExistResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="EmailExistResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="LogIn">
     <xs:complexType>
       <xs:sequence>

@@ -55,6 +55,12 @@
   <wsdl:message name="ICeadChatService_LoginExist_OutputMessage">
     <wsdl:part name="parameters" element="tns:LoginExistResponse" />
   </wsdl:message>
+  <wsdl:message name="ICeadChatService_EmailExist_InputMessage">
+    <wsdl:part name="parameters" element="tns:EmailExist" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_EmailExist_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EmailExistResponse" />
+  </wsdl:message>
   <wsdl:message name="ICeadChatService_LogIn_InputMessage">
     <wsdl:part name="parameters" element="tns:LogIn" />
   </wsdl:message>
@@ -347,6 +353,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/LoginExist" message="tns:ICeadChatService_LoginExist_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/LoginExistResponse" message="tns:ICeadChatService_LoginExist_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="EmailExist">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/EmailExist" message="tns:ICeadChatService_EmailExist_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/EmailExistResponse" message="tns:ICeadChatService_EmailExist_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="LogIn">
       <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/LogIn" message="tns:ICeadChatService_LogIn_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/LogInResponse" message="tns:ICeadChatService_LogIn_OutputMessage" />
@@ -576,6 +586,15 @@
     </wsdl:operation>
     <wsdl:operation name="LoginExist">
       <soap12:operation soapAction="http://tempuri.org/ICeadChatService/LoginExist" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EmailExist">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/EmailExist" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
