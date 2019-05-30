@@ -69,21 +69,29 @@ namespace Web.Controllers
                 {
                     if (Regex.IsMatch(login, @"^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d]{5,24}$"))
                     {
-                        string emailFromDB = await _client.GetEmailByCookieAndCodeAsync(Request.Cookies[_nameEmailTokenCookie].Value, code);
-                        if (emailFromDB != null)
+                        var cook = Request.Cookies[_nameEmailTokenCookie]?.Value;
+                        if (cook != null)
                         {
-                            if (await _client.RegistrationAsync(new UserWCF() { Email = emailFromDB, Login = login, PasswordHash = password }))
+                            string emailFromDB = await _client.GetEmailByCookieAndCodeAsync(cook, code);
+                            if (emailFromDB != null)
                             {
-                                return Json(new { message = "Вы зарегистрированы УСПЕШНО", type = NotifyType.Success.ToString() });
+                                if (await _client.RegistrationAsync(new UserWCF() { Email = emailFromDB, Login = login, PasswordHash = password }))
+                                {
+                                    return Json(new { message = "Вы зарегистрированы УСПЕШНО", type = NotifyType.Success.ToString() });
+                                }
+                                else
+                                {
+                                    return Json(new { message = "Уупс... Ошибка при регистрации...", type = NotifyType.Error.ToString() });
+                                }
                             }
                             else
                             {
-                                return Json(new { message = "Уупс... Ошибка при регистрации...", type = NotifyType.Error.ToString() });
+                                return Json(new { message = "Не верный код с почты", type = NotifyType.Warning.ToString() });
                             }
                         }
                         else
                         {
-                            return Json(new { message = "Не верный код с почты", type = NotifyType.Warning.ToString() });
+                            return Json(new { message = "Отправьте код на ВАШУ почту!", type = NotifyType.Warning.ToString() });
                         }
                     }
                     else

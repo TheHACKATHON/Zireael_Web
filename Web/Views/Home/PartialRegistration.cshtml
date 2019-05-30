@@ -17,7 +17,7 @@
         </div>
         <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
             <label class="md-input-label">Код отправленный на почту*</label>
-            <input required="" class="md-input" name="password" type="password">
+            <input required="" class="md-input" name="code" type="password">
         </div>
         <div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value">
             <label class="md-input-label">Пароль*</label>
@@ -40,12 +40,13 @@
 <script>
     function SendCodeSuccess(data) {
         popup(data.message, data.type);
-        //if (data.type === "Success") {
-        //    $("input[type=email]").attr("disabled", "disabled");
+        //if (data.type.toLowerCase() != "success") {
+        $("input").removeAttr("disabled");
         //}
     }
     function RegistrationSuccess(data) {
         popup(data.message, data.type);
+        $("input").removeAttr("disabled");
     }
     $("#email-btn").on("click", function () {
         let mail = $("#email").val();
