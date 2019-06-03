@@ -243,7 +243,6 @@ body {
 .tg_head_main_wrap {
     position:relative;
     white-space: nowrap;
-    z-index:9999;
 }
 
 .dropdown.open .tg_head_btn {

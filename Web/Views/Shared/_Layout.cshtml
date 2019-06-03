@@ -7,6 +7,7 @@
     <meta http-equiv="Cache-Control" content="max-age=3600, must-revalidate" />
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/vlad.css")
+    @Styles.Render("~/Content/modal-dialogs.css")
     @Styles.Render("~/Content/nikita.css")
     @Styles.Render("~/Content/loading.css")
     @Styles.Render("~/Content/notifications.css")
@@ -18,6 +19,183 @@
     @RenderBody()
 
     <div class="notify"></div>
+
+    <div class="modal-backdrop fade  in" style="z-index: 1040;"></div>
+
+    <div tabindex="-1" role="dialog" class="modal fade settings_modal_window mobile_modal in" style="z-index: 1050; display: block;">
+        <div class="modal_close_wrap">
+            <div class="modal_close"></div>
+        </div>
+        <div class="modal-dialog">
+            <div class="modal-content modal-content-animated" modal-transclude="">
+
+               <div class="settings_modal_wrap md_modal_wrap" my-modal-position="">
+
+                   <div class="md_modal_head">
+                       <div class="md_modal_title_wrap">
+                           <div class="md_modal_actions_wrap clearfix">
+                               <a class="md_modal_action md_modal_action_close"  my-i18n="modal_close">Close</a>
+                               <a class="md_modal_action"  my-i18n="modal_edit">Edit</a>
+                           </div>
+                           <div class="md_modal_title" my-i18n="settings_modal_title">Settings</div>
+                       </div>
+
+                       <div class="peer_modal_profile_wrap clearfix">
+                <div class="peer_modal_photo_wrap pull-left" >
+                    
+                    <a openUserPic()" class="peer_modal_photo peer_photo_init" my-peer-photolink="::profile.id" img-class="peer_modal_photo" watch="true" no-open="true"   style=""><img class="peer_modal_photo" src="blob:https://web.telegram.org/7cf3b33c-852b-4765-b710-2072b0e6282c"></a><!---->
+                </div>
+                <div class="peer_modal_profile">
+                    <div class="peer_modal_profile_name" my-peer-link="profile.id">Кверти<span class="emoji  emoji-spritesheet-2" style="background-position: -252px -90px;" title="wine_glass">:wine_glass:</span></div>
+                    <div class="peer_modal_profile_description" my-user-status="::profile.id">last seen 7 minutes ago</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="md_modal_split_actions_wrap">
+            <div class="md_modal_split_actions">
+                <div class="md_modal_split_action">
+                    <input my-file-upload="" type="file" multiple="false" class="im_attach_input" size="120" accept="image/x-png, image/png, image/gif, image/jpeg" title="Set profile photo">
+                    <i class="md_modal_split_action_camera"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="md_modal_body">
+
+            <div class="md_modal_sections clearfix">
+
+                <div class="md_modal_iconed_section_wrap md_modal_iconed_section_number">
+                    <i class="md_modal_section_icon md_modal_section_icon_phone"></i>
+
+                    <div class="md_modal_section_param_wrap">
+                        <div class="md_modal_section_param_value" >+380980109536</div>
+                        <div class="md_modal_section_param_name" my-i18n="user_modal_phone">Phone</div>
+                    </div>
+
+                    <div class="md_modal_section_param_wrap">
+                        <div class="md_modal_section_param_value" >
+                            <!----><a  class="settings_modal_username_link"   style="">thehackathon</a><!---->
+                            <!---->
+                        </div>
+                        <div class="md_modal_section_param_name" my-i18n="user_modal_username">Username</div>
+                    </div>
+                </div>
+
+                <div class="md_modal_iconed_section_wrap md_modal_iconed_section_toggle">
+                    <i class="md_modal_section_icon md_modal_section_icon_notification"></i>
+
+                    <a class="md_modal_section_toggle_wrap tg_checkbox tg_checkbox_on"   style="">
+                        <span class="icon icon-checkbox-outer"><i class="icon-checkbox-inner"></i></span>
+                        <span class="tg_checkbox_label" my-i18n="settings_modal_notifications">Desktop notifications</span>
+                    </a>
+
+                    <!----><a  class="md_modal_section_toggle_wrap tg_checkbox tg_checkbox_on"   style="">
+                        <span class="icon icon-checkbox-outer"><i class="icon-checkbox-inner"></i></span>
+                        <span class="tg_checkbox_label" my-i18n="settings_modal_pushes">Background notifications</span>
+                    </a><!---->
+
+
+
+                    <a class="md_modal_section_toggle_wrap tg_checkbox tg_checkbox_on"  >
+                        <span class="icon icon-checkbox-outer"><i class="icon-checkbox-inner"></i></span>
+                        <span class="tg_checkbox_label" my-i18n="settings_modal_message_preview">Message preview</span>
+                    </a>
+
+                    <a class="md_modal_section_toggle_wrap tg_checkbox tg_checkbox_on"  >
+                        <span class="icon icon-checkbox-outer"><i class="icon-checkbox-inner"></i></span>
+                        <span class="tg_checkbox_label" my-i18n="settings_modal_sound">Sound</span>
+                    </a>
+
+                    <div class="md_modal_section_range_wrap tg_range_wrap" >
+                        <div my-slider="" slider-model="notify.volume">
+                            <div class="tg_slider_wrap">
+                                <div class="tg_slider_thumb" style="left: 57.3171%;"></div>
+                                <div class="tg_slider_track">
+                                    <div class="tg_slider_track_fill" style="width: 57.3171%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="md_modal_iconed_section_wrap md_modal_iconed_section_radio">
+                    <i class="md_modal_section_icon md_modal_section_icon_keyboard"></i>
+
+                    <div class="tg_radios_wrap">
+                        <a class="md_modal_section_radio_wrap tg_radio tg_radio_on"   style="">
+                            <span class="icon icon-radio-outer"><i class="icon-radio"></i></span>
+                            <span my-i18n="settings_modal_enter_send_description_md"><strong>Enter</strong> - send message, <strong>Shift + Enter</strong> - new line</span>
+                        </a>
+
+                        <a class="md_modal_section_radio_wrap tg_radio"  >
+                            <span class="icon icon-radio-outer"><i class="icon-radio"></i></span>
+                            <span my-i18n="settings_modal_ctrl_enter_send_description_md"><strong>Ctrl + Enter</strong> - send message, <strong>Enter</strong> - new line</span>
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="md_modal_iconed_section_wrap  md_modal_iconed_section_link">
+                    <i class="md_modal_section_icon md_modal_section_icon_more"></i>
+
+                    <div class="md_modal_section_select_wrap" >
+                        <div class="dropdown md_modal_section_select" dropdown="">
+                            <button class="btn btn-link dropdown-toggle" dropdown-toggle=""  aria-haspopup="true" aria-expanded="false">English</button>
+                            <ul class="dropdown-menu dropdown-menu-to-up">
+                                <!---->
+                                <li  class="" style="">
+                                    <a  >English</a>
+                                </li><!---->
+                                <li  class="">
+                                    <a  >Español</a>
+                                </li><!---->
+                                <li  class="">
+                                    <a  >Deutsch</a>
+                                </li><!---->
+                                <li  class="">
+                                    <a  >Italiano</a>
+                                </li><!---->
+                                <li  class="">
+                                    <a  >Nederlands</a>
+                                </li><!---->
+                                <li  class="">
+                                    <a  >Português (Brazil)</a>
+                                </li><!---->
+                            </ul>
+                        </div>
+
+                        <div class="md_modal_section_param_name" my-i18n="settings_modal_language">Language</div>
+                    </div>
+
+                    <div class="md_modal_section_link_wrap">
+                        <!---->
+                        <!---->
+                        <!---->
+                        <!----><a  class="md_modal_section_link pull-right"  my-i18n="settings_modal_disable_password" style="">Turn off</a><!---->
+                        <!----><a  class="md_modal_section_link"  my-i18n="settings_modal_change_password" style="">Change password</a><!---->
+                    </div>
+
+                    <div class="md_modal_section_link_wrap">
+                        <a class="md_modal_section_link"  my-i18n="settings_modal_active_sessions">Active sessions</a>
+                    </div>
+
+                    <div class="md_modal_section_link_wrap">
+                        <a class="md_modal_section_link"  my-i18n="head_log_out">Log out</a>
+                    </div>
+
+                </div>
+
+            </div>
+
+                   </div>
+
+        </div>
+
+                   </div>
+        </div>
+    </div>
 
     <div id="loading" style="display:none">
         @{
