@@ -23,6 +23,10 @@ namespace Web
 
         public static CeadChatServiceClient Add(string sessionId)
         {
+            if(sessionId is null)
+            {
+                return new CeadChatServiceClient(new InstanceContext(_chatHub));
+            }
             var client = new CeadChatServiceClient(new InstanceContext(_chatHub));
             client.Endpoint.Binding.SendTimeout = new TimeSpan(1, 0, 0);
             client.Open();
