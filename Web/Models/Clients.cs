@@ -46,9 +46,12 @@ namespace Web
         }
         public static void Remove(CeadChatServiceClient client)
         {
-            _instanse.Remove(_instanse.FirstOrDefault(i => i.Value == client).Key);
+            var user = _instanse.FirstOrDefault(i => i.Value == client).Key;
+            if (user != null)
+            {
+                _instanse.Remove(user);
+            }
         }
-
 
         public static CeadChatServiceClient Get(string sessionId)
         {
