@@ -48,7 +48,7 @@ namespace Web
 
         public static CeadChatServiceClient Get(string sessionId)
         {
-            return _instanse.ContainsKey(sessionId) ? _instanse[sessionId] : Add(sessionId);
+            return _instanse.ContainsKey(sessionId ?? string.Empty) ? _instanse[sessionId] : Add(sessionId);
         }
     }
 }
