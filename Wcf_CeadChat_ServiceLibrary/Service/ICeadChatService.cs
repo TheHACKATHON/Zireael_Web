@@ -13,6 +13,8 @@ namespace Wcf_CeadChat_ServiceLibrary
     public interface ICeadChatService
     {
         #region WPF Client methods
+        [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
+        bool Connect(string sessionId, string connectionId);
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         UserWCF CheckSession(string session);
@@ -142,17 +144,17 @@ namespace Wcf_CeadChat_ServiceLibrary
     {
         #region WPF Client callbacks
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void CreateChatCallback(GroupWCF group, int creatorId);//оповещение о добавлении пользователя в чат
+        void CreateChatCallback(GroupWCF group, int creatorId, string sessionId);//оповещение о добавлении пользователя в чат
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void CreateMessageCallback(MessageWCF message, long hash);//оповещение о добавлении сообщения
+        void CreateMessageCallback(MessageWCF message, long hash, string sessionId);//оповещение о добавлении сообщения
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void DeleteMessageCallback(MessageWCF message);//оповещение о удалении сообщения
+        void DeleteMessageCallback(MessageWCF message, string sessionId);//оповещение о удалении сообщения
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void NewLastMessageCallback(MessageWCF message);//оповещение о обновлении последнего сообщения
+        void NewLastMessageCallback(MessageWCF message, string sessionId);//оповещение о обновлении последнего сообщения
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void AddFriendToGroupCallback(UserBaseWCF user, GroupWCF group);//оповещение о добавлении в группу
+        void AddFriendToGroupCallback(UserBaseWCF user, GroupWCF group, string sessionId);//оповещение о добавлении в группу
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void RemoveGroupCallback(GroupWCF group);//оповещение о удалении группы
+        void RemoveGroupCallback(GroupWCF group, string sessionId);//оповещение о удалении группы
         //[OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         //void CreateMessageFileCallback(MessageFileWCF messageFile);//оповещение о добавлении файлового сообщения
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
@@ -160,27 +162,27 @@ namespace Wcf_CeadChat_ServiceLibrary
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         void SetAvatarForGroupCallback(AvatarWCF avatar, GroupWCF group);//оповещение о установки аватарки для пользователя
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void ReadedMessagesCallback(GroupWCF group, UserBaseWCF sender);//оповещение о прочитке сообщений в группе
+        void ReadedMessagesCallback(GroupWCF group, UserBaseWCF sender, string sessionId);//оповещение о прочитке сообщений в группе
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         void SendedPackageCallback(int msgId, int numberPackage);//оповещение о приеме пакета
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void ChangeOnlineStatusCallback(UserBaseWCF user);//оповещение о изменения статуса онлайн
+        void ChangeOnlineStatusCallback(UserBaseWCF user, string sessionId);//оповещение о изменения статуса онлайн
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void IsOnlineCallback();//проверка статуса онлайн
+        void IsOnlineCallback(string sessionId);//проверка статуса онлайн
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void ChangeTextInMessageCallback(MessageWCF message);//оповещение о изменении текста сообщения
+        void ChangeTextInMessageCallback(MessageWCF message, string sessionId);//оповещение о изменении текста сообщения
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void RemoveOrExitUserFromGroupCallback(int groupId, UserBaseWCF user);//оповещение о исключении/подидании группы
+        void RemoveOrExitUserFromGroupCallback(int groupId, UserBaseWCF user, string sessionId);//оповещение о исключении/подидании группы
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void LogOutCallback();//оповещение для выхода с учетки
+        void LogOutCallback(string sessionId);//оповещение для выхода с учетки
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void AddUserToBlackListCallback(UserBaseWCF user);
+        void AddUserToBlackListCallback(UserBaseWCF user, string sessionId);
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void RemoveUserFromBlackListCallback(UserBaseWCF user);
+        void RemoveUserFromBlackListCallback(UserBaseWCF user, string sessionId);
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void AddContactCallback(UserBaseWCF user);
+        void AddContactCallback(UserBaseWCF user, string sessionId);
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        void RemoveContactCallback(UserBaseWCF user);
+        void RemoveContactCallback(UserBaseWCF user, string sessionId);
         #endregion
     }
 }

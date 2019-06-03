@@ -113,6 +113,30 @@ namespace Wcf_CeadChat_ServiceLibrary
             var uc = _onlineUsers.FirstOrDefault(o => o.Key == userChanged);
             return uc.Value;//получаем учетку по текущему подключению
         }
+    
+        private string GetConnectionId(IUserChanged user)
+        {
+            var context = new ChatContext();
+            var session = context.Sessions.ToList().FirstOrDefault(s => s.User.Id.Equals(_onlineUsers[user].Id))?.ConnectionId;
+            return session;
+        }
+
+        public bool Connect(string sessionId, string connectionId)
+        {
+            var result = TryExecute(() =>
+            {
+                var context = new ChatContext();
+                var session = context.Sessions.FirstOrDefault(s => s.SessionId.Equals(sessionId, StringComparison.OrdinalIgnoreCase));
+                session.ConnectionId = connectionId;
+                context.SaveChanges();
+                return true;
+            });
+            if (result is bool)
+            {
+                return (bool)result;
+            }
+            return false;
+        }
         private string GeneratePasswordHash(string password)
         {
             //var hasherConfig = new Argon2Config
@@ -177,7 +201,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     {
                         try
                         {
-                            item.Key.IsOnlineCallback();
+                            item.Key.IsOnlineCallback(GetConnectionId(item.Key));
                         }
                         catch
                         {
@@ -247,7 +271,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                         {
                             action.Invoke(user.Key);
                         }
-                        catch
+                        catch(Exception e)
                         {
                             ChatContext context = new ChatContext();
                             context.Database.Log += WriteLog;
@@ -319,8 +343,8 @@ namespace Wcf_CeadChat_ServiceLibrary
                               {
                                   if (!(message is MessageFileWCF))
                                   {
-                                      user.CreateMessageCallback(new MessageWCF(msg), hash);//передаем сообщение всем пользователям которые онлайн(в этой группе)
-                                      user.NewLastMessageCallback(new MessageWCF(msg));
+                                      user.CreateMessageCallback(new MessageWCF(msg), hash, GetConnectionId(user));//передаем сообщение всем пользователям которые онлайн(в этой группе)
+                                      user.NewLastMessageCallback(new MessageWCF(msg), GetConnectionId(user));
                                   }
                               });
                             }
@@ -362,14 +386,14 @@ namespace Wcf_CeadChat_ServiceLibrary
                 group = Messenger.GetGroupById(message.GroupId, sender.Id);
                 CallUsersInGroup(group.Users, (user) =>
                 {
-                    user.DeleteMessageCallback(new MessageWCF(messageFromContex));//передаем сообщение всем пользователям которые онлайн(в этой группе)
+                    user.DeleteMessageCallback(new MessageWCF(messageFromContex), GetConnectionId(user));//передаем сообщение всем пользователям которые онлайн(в этой группе)
                 });
                 if (group.LastMessage.Id == message.Id)
                 {
                     newLastMessage = Messenger.GetLastMessage(group.Id);
                     CallUsersInGroup(group.Users, (user) =>
                     {
-                        user.NewLastMessageCallback(new MessageWCF(newLastMessage));//передаем новое последнее сообщение всем пользователям которые онлайн(в этой группе)
+                        user.NewLastMessageCallback(new MessageWCF(newLastMessage), GetConnectionId(user));//передаем новое последнее сообщение всем пользователям которые онлайн(в этой группе)
                     });
                 }
                 return true;
@@ -415,8 +439,8 @@ namespace Wcf_CeadChat_ServiceLibrary
                         CallUsersInGroup(group.Users, (user) =>
                         {
                             Messenger.SetVisible(message.Id, true, sender.Id);
-                            user.CreateMessageCallback(new MessageFileWCF(message), messageId);//передаем новое последнее сообщение всем пользователям которые онлайн(в этой группе)
-                            user.NewLastMessageCallback(new MessageFileWCF(message));
+                            user.CreateMessageCallback(new MessageFileWCF(message), messageId, GetConnectionId(user));//передаем новое последнее сообщение всем пользователям которые онлайн(в этой группе)
+                            user.NewLastMessageCallback(new MessageFileWCF(message), GetConnectionId(user));
                         });
                     }
                 }
@@ -457,7 +481,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                 var group = Messenger.ReadAllMessagesInGroup(groupId, sender.Id);
                 CallUsersInGroup(group.Users, (user) =>
                 {
-                    user.ReadedMessagesCallback(new GroupWCF(group), new UserBaseWCF(sender));
+                    user.ReadedMessagesCallback(new GroupWCF(group), new UserBaseWCF(sender), GetConnectionId(user));
                 });
                 return true;
             });
@@ -476,7 +500,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                 {
                     CallUsersInGroup(group.Users, (user) =>
                     {
-                        user.ReadedMessagesCallback(new GroupWCF(group), new UserBaseWCF(sender));
+                        user.ReadedMessagesCallback(new GroupWCF(group), new UserBaseWCF(sender), GetConnectionId(user));
                     });
                 }
                 return true;
@@ -544,7 +568,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     }
                     CallUsersInGroup(selectedMessage.Group.Users, (user) =>
                     {
-                        user.ChangeTextInMessageCallback(new MessageWCF(selectedMessage));
+                        user.ChangeTextInMessageCallback(new MessageWCF(selectedMessage), GetConnectionId(user));
                     });
                     sender.LastTimeOnline = DateTime.Now;
                     sender.IsOnline = true;
@@ -620,9 +644,9 @@ namespace Wcf_CeadChat_ServiceLibrary
                     // что бы коллбек пришел всем пользователям а не только создателю
 
                     CallUsersInGroup(group.Users, (user) =>
-        {
-            user.CreateChatCallback(new GroupWCF(group), sender.Id);
-        });
+                         {
+                             user.CreateChatCallback(new GroupWCF(group), sender.Id, context.Sessions.ToList().FirstOrDefault(s => s.User.Id.Equals(_onlineUsers[user].Id))?.ConnectionId);
+                         });
 
                     return true;
                 }
@@ -684,7 +708,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                                 context.SaveChanges();
                                 CallUsersInGroup(group.Users, (user) =>
                                 {
-                                    user.CreateChatCallback(new GroupWCF(group), sender.Id);
+                                    user.CreateChatCallback(new GroupWCF(group), sender.Id, Context(userChanged).Sessions.FirstOrDefault(s => s.User.Id.Equals(sender.Id))?.ConnectionId);
                                 });
                             }
                             else
@@ -704,7 +728,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                                 context.SaveChanges();
                                 CallUsersInGroup(oldGroup.Users, (user) =>
                                 {
-                                    user.CreateChatCallback(new GroupWCF(oldGroup), sender.Id);
+                                    user.CreateChatCallback(new GroupWCF(oldGroup), sender.Id, Context(userChanged).Sessions.FirstOrDefault(s => s.User.Id.Equals(sender.Id))?.ConnectionId);
                                 });
                             }
                         }
@@ -751,7 +775,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                                 context.SaveChanges();
                                 CallUsersInGroup(groupContext.Users, (user) =>
                                 {
-                                    user.RemoveGroupCallback(group);
+                                    user.RemoveGroupCallback(group, GetConnectionId(user));
                                 });
                                 return true;
                             }
@@ -768,7 +792,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                                     context.SaveChanges();
                                     CallUsersInGroup(groupContext.Users, (user) =>
                                     {
-                                        user.RemoveGroupCallback(group);
+                                        user.RemoveGroupCallback(group, GetConnectionId(user));
                                     });
                                 }
                                 return true;
@@ -829,15 +853,15 @@ namespace Wcf_CeadChat_ServiceLibrary
                             list.Add(friendContext);
                             CallUsersInGroup(list, (user) =>
                             {
-                                user.CreateChatCallback(new GroupWCF(groupContext), sender.Id);
+                                user.CreateChatCallback(new GroupWCF(groupContext), sender.Id, Context(userChanged).Sessions.FirstOrDefault(s => s.User.Id.Equals(sender.Id))?.ConnectionId);
                             });
                             CallUsersInGroup(groupContext.Users.Where(g => g.Id != friendContext.Id).ToList(), (user) =>
                               {
-                                  user.AddFriendToGroupCallback(new UserBaseWCF(friendContext), new GroupWCF(groupContext));
+                                  user.AddFriendToGroupCallback(new UserBaseWCF(friendContext), new GroupWCF(groupContext), GetConnectionId(user));
                               });
                             CallUsersInGroup(groupContext.Users.Where(g => g.Id != friendContext.Id).ToList(), (user) =>
                             {
-                                user.CreateMessageCallback(new MessageWCF(systemMessage), systemMessage.Id);
+                                user.CreateMessageCallback(new MessageWCF(systemMessage), systemMessage.Id, GetConnectionId(user));
                             });
                         }
                     }
@@ -936,11 +960,11 @@ namespace Wcf_CeadChat_ServiceLibrary
                         context.SaveChanges();
                         CallUsersInGroup(groupContext.Users, (user) =>
                         {
-                            user.RemoveOrExitUserFromGroupCallback(groupContext.Id, new UserBaseWCF(userContext));
+                            user.RemoveOrExitUserFromGroupCallback(groupContext.Id, new UserBaseWCF(userContext), GetConnectionId(user));
                         });
                         CallUsersInGroup(groupContext.Users, (user) =>
                         {
-                            user.CreateMessageCallback(new MessageWCF(systemMessage), systemMessage.Id);
+                            user.CreateMessageCallback(new MessageWCF(systemMessage), systemMessage.Id, GetConnectionId(user));
                         });
                         return true;
                     }
@@ -990,7 +1014,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                             {
                                 try
                                 {
-                                    user.Key.AddContactCallback(new UserBaseWCF(friend));
+                                    user.Key.AddContactCallback(new UserBaseWCF(friend), GetConnectionId(user.Key));
                                 }
                                 catch
                                 {
@@ -1039,7 +1063,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                         {
                             try
                             {
-                                user.Key.RemoveContactCallback(friend);
+                                user.Key.RemoveContactCallback(friend, GetConnectionId(user.Key));
                             }
                             catch
                             {
@@ -1113,7 +1137,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                             {
                                 try
                                 {
-                                    user.Key.AddUserToBlackListCallback(new UserBaseWCF(blocked));
+                                    user.Key.AddUserToBlackListCallback(new UserBaseWCF(blocked), GetConnectionId(user.Key));
                                 }
                                 catch
                                 {
@@ -1165,7 +1189,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                             {
                                 try
                                 {
-                                    user.Key.RemoveUserFromBlackListCallback(new UserBaseWCF(blocked));
+                                    user.Key.RemoveUserFromBlackListCallback(new UserBaseWCF(blocked), GetConnectionId(user.Key));
                                 }
                                 catch
                                 {
@@ -1225,7 +1249,22 @@ namespace Wcf_CeadChat_ServiceLibrary
 
         public UserWCF CheckSession(string session)
         {
-            return new UserWCF(Context(OperationContext.Current.GetCallbackChannel<IUserChanged>()).Sessions.FirstOrDefault(s => s.SessionId.Equals(session)).User, session);
+            var result = TryExecute(() =>
+            {
+                var context = new ChatContext();
+                var user = context.Sessions.FirstOrDefault(s => s.SessionId.Equals(session)).User;
+                var userWc = new UserWCF(user, session);
+                if(userWc != null && !_onlineUsers.ContainsKey(OperationContext.Current.GetCallbackChannel<IUserChanged>()))
+                {
+                    _onlineUsers.Add(OperationContext.Current.GetCallbackChannel<IUserChanged>(), user);
+                }
+                return userWc;
+            }, true);
+            if(result is UserWCF userWcf)
+            {
+                return userWcf;
+            }
+            return null;
         }
 
         public UserWCF LogIn(string login, string password, string token) //user == null если нет совпадений
@@ -1329,7 +1368,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     {
                         try
                         {
-                            user.Key.ChangeOnlineStatusCallback(new UserBaseWCF(sender));//передаем сообщение всем пользователям которые онлайн(в этой группе)
+                            user.Key.ChangeOnlineStatusCallback(new UserBaseWCF(sender), GetConnectionId(user.Key));//передаем сообщение всем пользователям которые онлайн(в этой группе)
                         }
                         catch
                         {
@@ -1461,7 +1500,7 @@ namespace Wcf_CeadChat_ServiceLibrary
 
                         CallUsersInGroup(_onlineUsers.Where(u => u.Key != userChanged && u.Value.Id == sender.Id).Select(u => u.Value).ToList(), (user) =>
                           {
-                              user.LogOutCallback();
+                              user.LogOutCallback(GetConnectionId(user));
                           });
 
                         var list = _onlineUsers.Where(u => u.Value.Id == sender.Id).ToList();

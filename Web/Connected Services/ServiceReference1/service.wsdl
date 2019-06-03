@@ -37,6 +37,12 @@
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
+  <wsdl:message name="ICeadChatService_Connect_InputMessage">
+    <wsdl:part name="parameters" element="tns:Connect" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_Connect_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ConnectResponse" />
+  </wsdl:message>
   <wsdl:message name="ICeadChatService_CheckSession_InputMessage">
     <wsdl:part name="parameters" element="tns:CheckSession" />
   </wsdl:message>
@@ -341,6 +347,10 @@
     <wsdl:part name="parameters" element="tns:RemoveContactCallback" />
   </wsdl:message>
   <wsdl:portType msc:usingSession="true" name="ICeadChatService">
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Connect">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/Connect" message="tns:ICeadChatService_Connect_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/ConnectResponse" message="tns:ICeadChatService_Connect_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="CheckSession">
       <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/CheckSession" message="tns:ICeadChatService_CheckSession_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/CheckSessionResponse" message="tns:ICeadChatService_CheckSession_OutputMessage" />
@@ -566,6 +576,15 @@
   <wsdl:binding name="NetTcpBinding_ICeadChatService" type="tns:ICeadChatService">
     <wsp:PolicyReference URI="#NetTcpBinding_ICeadChatService_policy" />
     <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="Connect">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/Connect" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="CheckSession">
       <soap12:operation soapAction="http://tempuri.org/ICeadChatService/CheckSession" style="document" />
       <wsdl:input>

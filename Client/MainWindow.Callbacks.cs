@@ -10,7 +10,7 @@ namespace Client
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public partial class MainWindow : ICeadChatServiceCallback
     {
-        public async void DeleteMessageCallback(MessageWCF message)
+        public async void DeleteMessageCallback(MessageWCF message, string connectionId)
         {
             if (LoginedUser != null)
             {
@@ -40,7 +40,7 @@ namespace Client
             }
         }
 
-        public void NewLastMessageCallback(MessageWCF message)
+        public void NewLastMessageCallback(MessageWCF message, string connectionId)
         {
             if (LoginedUser != null)
             {
@@ -54,7 +54,7 @@ namespace Client
             }
         }
 
-        public void RemoveGroupCallback(GroupWCF group)
+        public void RemoveGroupCallback(GroupWCF group, string connectionId)
         {
             if (LoginedUser != null)
             {
@@ -90,7 +90,7 @@ namespace Client
             }
         }
 
-        public async void CreateChatCallback(GroupWCF group, int creatorId)
+        public async void CreateChatCallback(GroupWCF group, int creatorId, string connectionId)
         {
             if (LoginedUser != null)
             {
@@ -123,7 +123,7 @@ namespace Client
             }
         }
 
-        public async void CreateMessageCallback(MessageWCF message, long hash)
+        public async void CreateMessageCallback(MessageWCF message, long hash, string connectionId)
         {
             if (LoginedUser != null && message != null)
             {
@@ -210,7 +210,7 @@ namespace Client
             }
         }
 
-        public void AddFriendToGroupCallback(UserBaseWCF user, GroupWCF group)
+        public void AddFriendToGroupCallback(UserBaseWCF user, GroupWCF group, string connectionId)
         {
             if (LoginedUser != null)
             {
@@ -227,7 +227,7 @@ namespace Client
             }
         }
 
-        public async void ReadedMessagesCallback(GroupWCF group, UserBaseWCF sender)
+        public async void ReadedMessagesCallback(GroupWCF group, UserBaseWCF sender, string connectionId)
         {
             if (LoginedUser != null)
             {
@@ -278,7 +278,7 @@ namespace Client
             }
         }
 
-        public void ChangeOnlineStatusCallback(UserBaseWCF user)
+        public void ChangeOnlineStatusCallback(UserBaseWCF user, string connectionId)
         {
             if (LoginedUser != null)
             {
@@ -286,7 +286,7 @@ namespace Client
             }
         }
 
-        public async void IsOnlineCallback()
+        public async void IsOnlineCallback(string connectionId)
         {
             var users = new List<UserBaseWCF>();
 
@@ -347,7 +347,7 @@ namespace Client
             UpdateOnlineStatus(users);
         }
 
-        public void ChangeTextInMessageCallback(MessageWCF message)
+        public void ChangeTextInMessageCallback(MessageWCF message, string connectionId)
         {
             // todo change text in message
             if (LoginedUser != null)
@@ -356,7 +356,7 @@ namespace Client
             }
         }
 
-        public void RemoveOrExitUserFromGroupCallback(int groupId, UserBaseWCF user)
+        public void RemoveOrExitUserFromGroupCallback(int groupId, UserBaseWCF user, string connectionId)
         {
             // todo: RemoveOrExitUserFromGroupCallback
             if (LoginedUser != null)
@@ -365,13 +365,13 @@ namespace Client
             }
         }
 
-        public async void LogOutCallback()
+        public async void LogOutCallback(string connectionId)
         {
             await LogOut();
             MessageBox("Сессия завершена");
         }
 
-        public async void AddContactCallback(UserBaseWCF user)
+        public async void AddContactCallback(UserBaseWCF user, string connectionId)
         {
             if (LoginedUser != null)
             {
@@ -410,7 +410,7 @@ namespace Client
             }
         }
 
-        public void RemoveContactCallback(UserBaseWCF user)
+        public void RemoveContactCallback(UserBaseWCF user, string connectionId)
         {
             if (LoginedUser != null)
             {
@@ -424,7 +424,7 @@ namespace Client
             }
         }
 
-        public async void AddUserToBlackListCallback(UserBaseWCF user)
+        public async void AddUserToBlackListCallback(UserBaseWCF user, string connectionId)
         {
             if (LoginedUser != null)
             {
@@ -464,7 +464,7 @@ namespace Client
             }
         }
 
-        public void RemoveUserFromBlackListCallback(UserBaseWCF user)
+        public void RemoveUserFromBlackListCallback(UserBaseWCF user, string connectionId)
         {
             if (LoginedUser != null)
             {

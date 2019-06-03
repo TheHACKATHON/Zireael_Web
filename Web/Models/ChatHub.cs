@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using Web.ServiceReference1;
@@ -13,46 +14,44 @@ namespace Web.Models
         {
 
         }
-        public ChatUser User { get; set; }
 
         public void Send(string name, string message)
         {}
  
         public void Connect(int userId)
         {
-            
-            User = new ChatUser();
-            User.ConnectionId = Context.ConnectionId;
-            User.Id = userId;
+            new CeadChatServiceClient(new InstanceContext(this)).Connect(Context.RequestCookies["SessionId"].Value, Context.ConnectionId);
         }
 
-        public void CreateChatCallback(GroupWCF group, int creatorId)
+        public void CreateChatCallback(GroupWCF group, int creatorId, string connectionId)
         {
-            var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-            context.Clients.All.addChat(group, creatorId);
+            if (!string.IsNullOrWhiteSpace(connectionId))
+            {
+                var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                context.Clients.Client(connectionId).addChat(group, creatorId);
+            }
         }
-
-        public void CreateMessageCallback(MessageWCF message, long hash)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void DeleteMessageCallback(MessageWCF message)
+        public void CreateMessageCallback(MessageWCF message, long hash, string sessionId)
         {
             //throw new NotImplementedException();
         }
 
-        public void NewLastMessageCallback(MessageWCF message)
+        public void DeleteMessageCallback(MessageWCF message, string sessionId)
         {
             //throw new NotImplementedException();
         }
 
-        public void AddFriendToGroupCallback(UserBaseWCF user, GroupWCF group)
+        public void NewLastMessageCallback(MessageWCF message, string sessionId)
         {
             //throw new NotImplementedException();
         }
 
-        public void RemoveGroupCallback(GroupWCF group)
+        public void AddFriendToGroupCallback(UserBaseWCF user, GroupWCF group, string sessionId)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void RemoveGroupCallback(GroupWCF group, string sessionId)
         {
             //throw new NotImplementedException();
         }
@@ -67,7 +66,7 @@ namespace Web.Models
             //throw new NotImplementedException();
         }
 
-        public void ReadedMessagesCallback(GroupWCF group, UserBaseWCF sender)
+        public void ReadedMessagesCallback(GroupWCF group, UserBaseWCF sender, string sessionId)
         {
             //throw new NotImplementedException();
         }
@@ -77,47 +76,47 @@ namespace Web.Models
             //throw new NotImplementedException();
         }
 
-        public void ChangeOnlineStatusCallback(UserBaseWCF user)
+        public void ChangeOnlineStatusCallback(UserBaseWCF user, string sessionId)
         {
             //throw new NotImplementedException();
         }
 
-        public void IsOnlineCallback()
+        public void IsOnlineCallback(string sessionId)
         {
             //throw new NotImplementedException();
         }
 
-        public void ChangeTextInMessageCallback(MessageWCF message)
+        public void ChangeTextInMessageCallback(MessageWCF message, string sessionId)
         {
             //throw new NotImplementedException();
         }
 
-        public void RemoveOrExitUserFromGroupCallback(int groupId, UserBaseWCF user)
+        public void RemoveOrExitUserFromGroupCallback(int groupId, UserBaseWCF user, string sessionId)
         {
             //throw new NotImplementedException();
         }
 
-        public void LogOutCallback()
+        public void LogOutCallback(string sessionId)
         {
             //throw new NotImplementedException();
         }
 
-        public void AddUserToBlackListCallback(UserBaseWCF user)
+        public void AddUserToBlackListCallback(UserBaseWCF user, string sessionId)
         {
             //throw new NotImplementedException();
         }
 
-        public void RemoveUserFromBlackListCallback(UserBaseWCF user)
+        public void RemoveUserFromBlackListCallback(UserBaseWCF user, string sessionId)
         {
             //throw new NotImplementedException();
         }
 
-        public void AddContactCallback(UserBaseWCF user)
+        public void AddContactCallback(UserBaseWCF user, string sessionId)
         {
             //throw new NotImplementedException();
         }
 
-        public void RemoveContactCallback(UserBaseWCF user)
+        public void RemoveContactCallback(UserBaseWCF user, string sessionId)
         {
             //throw new NotImplementedException();
         }

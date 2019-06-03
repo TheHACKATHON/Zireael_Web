@@ -11,6 +11,7 @@ namespace Wcf_CeadChat_ServiceLibrary
         public int Id { get; set; }
         public virtual User User { get; set; }
         public string SessionId { get; set; }
+        public string ConnectionId { get; set; }
         public DateTime Date { get; set; }
         public Session()
         {

@@ -30,9 +30,9 @@ namespace Web.Controllers
 
         public async Task<ActionResult> Index()
         {
-            if (Session["token"] != null)
+            if (Request.Cookies["SessionId"] != null)
             {
-                var user = await _client.CheckSessionAsync($"{Session["token"]}");
+                var user = await _client.CheckSessionAsync($"{Request.Cookies["SessionId"].Value}");
                 if (user != null)
                 {
                     var avatars = new Dictionary<int, string>();
@@ -82,7 +82,7 @@ namespace Web.Controllers
 
         public async Task<ActionResult> About()
         {
-            ViewBag.SessionId = Session.SessionID;
+            ViewBag.SessionId = Request.Cookies["SessionId"].Value;
             return View();
         }
 
@@ -128,7 +128,11 @@ namespace Web.Controllers
             user = await _client.LogInAsync(login, password, null);
             if (user != null)
             {
-                Session.Add("token", user.Session);
+                //Session.Add("token", user.Session);
+                Response.Cookies.Add(new HttpCookie("SessionId", user.Session));
+                Response.Cookies["SessionId"].Expires = DateTime.Now + new TimeSpan(30, 0, 0, 0);
+                Clients.Remove(_client);
+                Clients.Add(Response.Cookies["SessionId"].Value, _client);
             }
             
             if (user is null) return Json(new { code = NotifyType.Error.ToString(), error = "Неверный логин или пароль" });
