@@ -10,7 +10,7 @@ namespace Web
     {
         public IController CreateController(RequestContext requestContext, string controllerName)
         {
-             return new HomeController(Clients.Get(requestContext.HttpContext.Request.Cookies["SessionId"].Value));
+             return new HomeController(Clients.Get(requestContext.HttpContext.Request.Cookies["SessionId"]?.Value));
         }
 
         public SessionStateBehavior GetControllerSessionBehavior(RequestContext requestContext, string controllerName)
