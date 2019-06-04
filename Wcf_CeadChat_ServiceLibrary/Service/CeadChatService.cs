@@ -523,7 +523,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     var messages = new List<MessageWCF>();
                     var sender = _onlineUsers.FirstOrDefault(u => u.Key == userChanged).Value;
                     sender = context.Users.FirstOrDefault(u => u.Id == sender.Id);
-                    var selectedMessages = context.Messages.Where(m => m.Group.Id == groupId && m.Group.Users.Contains(sender) && m.IsVisible)
+                    var selectedMessages = context.Messages.ToList().Where(m => m.Group.Id == groupId && m.Group.Users.Contains(sender) && m.IsVisible)
                                                            .Skip(startIdx)
                                                            .Take(count);
                     foreach (var item in selectedMessages)

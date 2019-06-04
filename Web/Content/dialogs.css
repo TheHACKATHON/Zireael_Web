@@ -140,8 +140,13 @@ span.count-unred-messages {
 
 */
 
+.mega{
+    display:flex;
+    justify-content:space-between;
+}
+
 .panel-write {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .checked-btn {
@@ -182,6 +187,11 @@ a.checked-btn-on {
 
 .mega-right {
     width: 150px;
+}
+
+.mega-left {
+    width: calc(100% - 300px);
+    padding-right: 10px;
 }
 
 .mega-left h3 {

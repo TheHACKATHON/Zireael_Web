@@ -11,6 +11,22 @@ using Web.ServiceReference1;
 
 namespace Web.Controllers
 {
+    public class UserComparer : IEqualityComparer<UserBaseWCF>
+    {
+        public bool Equals(UserBaseWCF x, UserBaseWCF y)
+        {
+            if (x.Id.Equals(y.Id))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public int GetHashCode(UserBaseWCF obj)
+        {
+            return obj.Id;
+        }
+    }
     public partial class HomeController : Controller
     {
         private string _defaultAvatar = "/Content/Images/Zireael_back.png";
@@ -19,6 +35,26 @@ namespace Web.Controllers
         {
             _client = client;
 
+        }
+        [HttpPost]
+        public async Task<JsonResult> GetMessages(int groupId)
+        {
+            var messages = await _client.GetMessagesBetweenAsync(groupId, 0, 10);
+
+            var avatarsDictionary = new List<object>();
+
+            var avatars = _client.GetAvatarUsers( messages.Select(m => m.Sender).Distinct(new UserComparer()).ToArray() );
+            foreach (var user in messages.Select(m => m.Sender).Distinct(new UserComparer()))
+            {
+                if (avatars.Any(a => a.User.Id.Equals(user.Id)))
+                {
+                    avatarsDictionary.Add(new { userId = user.Id, avatar = $"/user/{user.Id}" });
+                }
+                else {
+                    avatarsDictionary.Add(new { userId = user.Id, avatar = _defaultAvatar });
+                }
+            }
+            return Json(new { messages, avatarsDictionary, _defaultAvatar});
         }
 
         public async Task<JsonResult> Logout()
@@ -152,13 +188,6 @@ namespace Web.Controllers
         {
             return View();
         }
-
-        public async Task<ActionResult> Auth()
-        {
-            // код
-            return View("Auth");
-        }
-
 
         #region callback
         public void CreateChatCallback(GroupWCF group, int creatorId)
