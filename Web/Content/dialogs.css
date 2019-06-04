@@ -254,7 +254,7 @@ ul.message-list {
 
 .my-head {
     position: relative;
-    z-index: 10000;
+    z-index: 1550;
 }
 
 textarea[name=msg]:focus {
@@ -266,3 +266,4 @@ a.send {
     height: 30px;
     background: #000;
 }
+

@@ -20,6 +20,9 @@ document.addEventListener('click', function (e) {
         $(".tg_head_logo_dropdown.dropdown").removeClass("open");
         $(".tg_head_peer_dropdown.tg_head_peer_media_dropdown.dropdown").toggleClass("open");
     }
+    else if (target.closest(".menu-settings")) {
+        document.querySelector(".modal-backdrop").classList.remove("hide");
+    }
     else {
         $(".tg_head_logo_dropdown.dropdown").
             add(".tg_head_peer_dropdown.tg_head_peer_media_dropdown.dropdown").

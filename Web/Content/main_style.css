@@ -18,7 +18,7 @@
     background: #284665;
     display:flex;
     justify-content:space-between;
-    z-index: 09999;
+    z-index: 1500;
 }
 
 .tg_head_logo_wrap {
