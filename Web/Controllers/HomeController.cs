@@ -11,22 +11,6 @@ using Web.ServiceReference1;
 
 namespace Web.Controllers
 {
-    public class UserComparer : IEqualityComparer<UserBaseWCF>
-    {
-        public bool Equals(UserBaseWCF x, UserBaseWCF y)
-        {
-            if (x.Id.Equals(y.Id))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public int GetHashCode(UserBaseWCF obj)
-        {
-            return obj.Id;
-        }
-    }
     public partial class HomeController : Controller
     {
         private string _defaultAvatar = "/Content/Images/Zireael_back.png";
@@ -117,7 +101,7 @@ namespace Web.Controllers
                     ViewBag.DefaultAvatar = _defaultAvatar;
                     ViewBag.Avatars = avatars;
                     ViewBag.DontReaded = _client.GetDontReadMessagesFromGroups(user.Groups.Select(g => g.Id).ToArray());
-                    ViewBag.Groups = user.Groups;
+                    ViewBag.Groups = user.Groups.OrderByDescending(g => g.LastMessage.DateTime);
                     return View("Index");
                 }
             }
@@ -125,10 +109,12 @@ namespace Web.Controllers
             return View("Auth");
         }
 
-        public async Task<ActionResult> About()
+        public async Task<JsonResult> GetAvatars(int[] ids)
         {
-            ViewBag.SessionId = Request.Cookies["SessionId"].Value;
-            return View();
+            // todo получение ссылок на аватары
+            // формат: { Id, Path }
+
+            return Json(null);
         }
 
         [HttpPost]
@@ -183,108 +169,5 @@ namespace Web.Controllers
             if (user is null) return Json(new { code = NotifyType.Error.ToString(), error = "Неверный логин или пароль" });
             return Json(new { code = NotifyType.Success.ToString() });
         }
-
-        public async Task<ActionResult> Callback()
-        {
-            return View();
-        }
-
-        #region callback
-        public void CreateChatCallback(GroupWCF group, int creatorId)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void CreateMessageCallback(MessageWCF message, long hash)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void DeleteMessageCallback(MessageWCF message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void NewLastMessageCallback(MessageWCF message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void AddFriendToGroupCallback(UserBaseWCF user, GroupWCF group)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void RemoveGroupCallback(GroupWCF group)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void SetAvatarCallback(AvatarWCF avatar, UserBaseWCF user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void SetAvatarForGroupCallback(AvatarWCF avatar, GroupWCF group)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void ReadedMessagesCallback(GroupWCF group, UserBaseWCF sender)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void SendedPackageCallback(int msgId, int numberPackage)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void ChangeOnlineStatusCallback(UserBaseWCF user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void IsOnlineCallback()
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void ChangeTextInMessageCallback(MessageWCF message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void RemoveOrExitUserFromGroupCallback(int groupId, UserBaseWCF user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void LogOutCallback()
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void AddUserToBlackListCallback(UserBaseWCF user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void RemoveUserFromBlackListCallback(UserBaseWCF user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void AddContactCallback(UserBaseWCF user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void RemoveContactCallback(UserBaseWCF user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }

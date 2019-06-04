@@ -1,16 +1,9 @@
-﻿$(function () {
-   
-    // Объявление функции, которая хаб вызывает при получении сообщений
-   
-    
-        // Открываем соединение
-    
-});
-
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
     var chat = $.connection.chatHub; 
     chat.client.addChat = function (group, creatorId) {
-        console.log(group, creatorId);
+        let chats = document.querySelector(".chats ul");
+        chats.insertBefore(Generator.DialogHTML(group), chats.firstChild);
+
     };
 
     chat.client.logout = function () {
@@ -23,11 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Кодирование тегов
-function htmlEncode(value) {
-    var encodedValue = $('<div />').text(value).html();
-    return encodedValue;
-}
+// #region cookie
 function deleteCookie(name) {
     setCookie(name, "", {
         expires: -1
@@ -62,3 +51,5 @@ function setCookie(name, value, options) {
 
     document.cookie = updatedCookie;
 }
+
+//#endregion

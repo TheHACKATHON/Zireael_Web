@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Models\UserComparer.cs" />
     <Compile Include="Models\RazorViewToStringFormat.cs" />
     <Compile Include="Models\NotifyType.cs" />
     <Compile Include="Controllers\HomeControllerPart2.cs" />
@@ -216,12 +217,12 @@
     <Content Include="Content\loading.css" />
     <Content Include="Content\main_style.css" />
     <Content Include="Content\modal-dialogs.css" />
-    <Content Include="Content\nikita.css" />
+    <Content Include="Content\temp-nikita.css" />
     <Content Include="Content\notifications.css" />
-    <Content Include="Content\vlad.css" />
+    <Content Include="Content\temp-vlad.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\auth.css" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -258,6 +259,7 @@
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\auth.js" />
+    <Content Include="Scripts\generator.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -277,7 +279,7 @@
     <Content Include="Scripts\modal-dialogs.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\notifications.js" />
-    <Content Include="Scripts\utils.js" />
+    <Content Include="Scripts\signal-callback.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -289,8 +291,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Callback.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Auth.cshtml" />
     <Content Include="Views\Home\PartialRegistration.cshtml" />
@@ -298,7 +298,6 @@
     <Content Include="Views\Home\PartialPassword.cshtml" />
     <Content Include="Views\Home\PartialLearnMore.cshtml" />
     <Content Include="Views\Home\PartialSendCode.cshtml" />
-    <Content Include="Views\Home\error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

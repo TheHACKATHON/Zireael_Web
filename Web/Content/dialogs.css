@@ -9,10 +9,12 @@
 }
 
 .chats {
+    width: 340px;
+    /*TODO адаптивность*/
 }
 
     .chats ul {
-        overflow-y: scroll;
+        overflow-y: auto;
         height: 100%;
     }
 

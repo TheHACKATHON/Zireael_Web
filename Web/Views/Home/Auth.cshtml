@@ -1,5 +1,5 @@
 ﻿<script async src="~/Scripts/auth.js"></script>
-@Styles.Render("~/Content/Site.css")
+@Styles.Render("~/Content/auth.css")
 <div class="page_wrap" ng-view="">
     <div class="login_page_wrap" my-custom-background="#e7ebf0">
         <div class="login_head_bg"></div>
@@ -10,13 +10,8 @@
                     <p class="icon-tg-title">Zireael</p>
                 </a>
             </div>
-
             <div class="login_form_wrap">
                 <div id="replace">
-                    @*<input id="ibofg" type="submit" style="display:none" />
-                        <script>
-                            document.querySelector("#ibofg").click();
-                        </script>*@
                     @{Html.RenderPartial("PartialLogin");}
                 </div>
             </div>

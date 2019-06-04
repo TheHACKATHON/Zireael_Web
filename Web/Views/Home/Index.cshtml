@@ -1,6 +1,8 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+
+@Styles.Render("~/Content/modal-dialogs.css")
 @Styles.Render("~/Content/main_style.css")
 @Styles.Render("~/Content/dialogs.css")
 <div class="my-head" my-head="">
@@ -138,13 +140,13 @@
                     <div class="wrap-img">
                         <img src="/Content/Images/Zireael_logo.128.png" alt="logo">
                     </div>
-                        <div class="mega-left">
-                            <h3>Title</h3>
-                            <p>Lorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds df</p>
-                        </div>
-                        <div class="mega-right">
-                            <p class="time">10.01.01</p>
-                        </div>
+                    <div class="mega-left">
+                        <h3>Title</h3>
+                        <p>Lorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds df</p>
+                    </div>
+                    <div class="mega-right">
+                        <p class="time">10.01.01</p>
+                    </div>
                 </li>
 
             </ul>
@@ -160,7 +162,22 @@
     </div>
 </div>
 
+<div class="modal-backdrop hide">
+    <div class="modal-backdrop-dialog">
+        <div class="dialog">
+            <div class="dialog-header">
+                <div class="setting-title"><h2>Настройки</h2></div>
+                <a class="md_modal_action md_modal_action_close">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/jquery.signalR-2.4.1.min.js")
+@Scripts.Render("~/signalr/hubs")
+
+@Scripts.Render("~/Scripts/generator.js")
+
+@Scripts.Render("~/Scripts/signal-callback.js")
 @Scripts.Render("~/Scripts/main.js")
-<script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
-<script src="~/signalr/hubs"></script>
-<script src="~/Scripts/utils.js"></script>
+@Scripts.Render("~/Scripts/modal-dialogs.js")
