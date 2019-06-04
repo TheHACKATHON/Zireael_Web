@@ -23,6 +23,11 @@ document.addEventListener('click', function (e) {
     else if (target.closest(".menu-settings")) {
         document.querySelector(".modal-backdrop").classList.remove("hide");
     }
+    else if (target.closest(".menu-exit")) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', `/logout`);
+        xhr.send();
+    }
     else {
         $(".tg_head_logo_dropdown.dropdown").
             add(".tg_head_peer_dropdown.tg_head_peer_media_dropdown.dropdown").

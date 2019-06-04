@@ -21,6 +21,15 @@ namespace Web.Controllers
 
         }
 
+        public async Task<JsonResult> Logout()
+        {
+            if(await _client.LogOutAsync())
+            {
+                return Json(true);
+            }
+            return Json(false);
+        }
+
         public ActionResult UserImage(int userId = 0, int id = 1)
         {
             var avatar = _client.GetAvatarUsers(new[] { new UserBaseWCF { Id = userId } }).SingleOrDefault();
