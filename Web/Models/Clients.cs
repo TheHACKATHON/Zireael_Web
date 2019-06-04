@@ -30,6 +30,10 @@ namespace Web
             var client = new CeadChatServiceClient(new InstanceContext(_chatHub));
             client.Endpoint.Binding.SendTimeout = new TimeSpan(1, 0, 0);
             client.Open();
+            if (_instanse.ContainsKey(sessionId))
+            {
+                _instanse.Remove(sessionId);
+            }
             _instanse.Add(sessionId, client);
             return _instanse[sessionId];
         }

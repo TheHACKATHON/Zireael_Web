@@ -2,7 +2,8 @@
     ViewBag.Title = "Home Page";
 }
 @Styles.Render("~/Content/main_style.css")
-<div my-head="">
+@Styles.Render("~/Content/dialogs.css")
+<div class="my-head" my-head="">
     <div class="tg_page_head tg_head_wrap noselect clearfix">
         <div class="tg_head_split">
 
@@ -73,138 +74,6 @@
 </div>
 
 <style>
-
-    .wrap {
-        margin: auto;
-        width: 1010px;
-        display: flex;
-        border: 1px solid rgba(40, 70, 101, 0.17);
-        border-top: 0;
-        height: calc(100vh - 66px);
-    }
-
-    .chats {
-    }
-
-        .chats ul {
-            overflow-y: scroll;
-            height: 100%;
-        }
-
-    .messages {
-        width: 100%;
-        border-left: 1px solid rgba(40, 70, 101, 0.17);
-    }
-
-    .chats a {
-        display: flex;
-        align-items: stretch;
-        text-decoration: none;
-        padding: 7px;
-        /*border-bottom: 1px solid rgba(40, 70, 101, 0.17);*/
-    }
-
-    .wrap-img {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 10px;
-    }
-
-        .wrap-img img {
-            max-height: 100%;
-        }
-
-
-
-    .super {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 5px 0;
-    }
-
-        .super > div {
-            margin-right: 5px;
-        }
-
-    .super-top, .super-bottom {
-        display: flex;
-        width: 250px;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-
-        .super-top h3 {
-            color: #000;
-        }
-
-    p.time {
-        color: #00000059;
-        font-size: 10px;
-        line-height: 10px;
-    }
-
-    p.last-message {
-        color: #00000059;
-        font-size: 14px;
-        line-height: 14px;
-    }
-
-    .super-bottom {
-        align-items: flex-end;
-    }
-
-    span.count-unred-messages {
-        background: #00000059;
-        color: #fff;
-        border-radius: 20px;
-        padding: 1px 5px;
-        font-size: 11px;
-    }
-
-    .chats .active a {
-        background: #284665;
-        /* color: #fff; */
-    }
-
-    .active span.count-unred-messages {
-        display: none;
-    }
-
-    .active p.last-message {
-    }
-
-    .active .super-top h3, .active .time, .active p.last-message {
-        color: #fff;
-    }
-
-    .chats li.active a:hover {
-        background: rgba(40, 70, 101, 1);
-    }
-
-    .chats li a:hover {
-        background: rgba(40, 70, 101, 0.1);
-    }
-
-    .wrap-img.letter h2 {
-        float: none;
-        position: absolute;
-        font-size: 35px;
-        color: WHITE;
-        width: 48px;
-        height: 48px;
-        text-align: center;
-        padding-top: 16px;
-    }
-
-    .wrap-img.letter img {
-        float: none;
-    }
 </style>
 
 <div class="wrap">
@@ -260,38 +129,90 @@
     </div>
 
     <div class="messages">
-        <ul class="message-list">
-            <li>
-                <div class="checked-btn">
-                    <a href="#" class="checked-btn-on" style="    background-image: url(../Content/Images/Icons2.png);background-repeat: no-repeat; background-position: -9px -481px;"></a>
-                </div>
-                <div class="wrap-img">
-                    <img src="/Content/Images/Zireael_logo.128.png" alt="logo">
-                </div>
-                <div class="mega">
-                    <div class="mega-top">
+        <div class="message-list-wrap">
+            <ul class="message-list">
+                <li>
+                    <div class="checked-btn">
+                        <a href="#" class="checked-btn-on" style="    background-image: url(../Content/Images/Icons2.png);background-repeat: no-repeat; background-position: -9px -481px;"></a>
+                    </div>
+                    <div class="wrap-img">
+                        <img src="/Content/Images/Zireael_logo.128.png" alt="logo">
+                    </div>
+                    <div class="mega-left" style="
+    width: calc(100% - 300px);
+    padding-right: 10px;
+">
                         <h3>Title</h3>
+                        <p>Lorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds df</p>
+                        <p>Lorem fdsfsdf dfsdf dfds df</p>
+                        <p>Lorem fdsfsdf dfsdf dfds df</p>
+                        <p>Lorem fdsfsdf dfsdf dfds df</p>
+                        <p>Lorem fdsfsdf dfsdf dfds df</p>
+
+
+                    </div>
+                    <div class="mega-right">
+
                         <p class="time">10.01.01</p>
                     </div>
-                </div>
-                <div class="mega-bottom">
-                    <p></p>
-                </div>
-            </li>
-        </ul>
+                </li>
+                <li>
+                    <div class="checked-btn">
+                        <a href="#" class="checked-btn-on" style="    background-image: url(../Content/Images/Icons2.png);background-repeat: no-repeat; background-position: -9px -481px;"></a>
+                    </div>
+                    <div class="wrap-img">
+                        <img src="/Content/Images/Zireael_logo.128.png" alt="logo">
+                    </div>
+                    <div class="mega-left" style="
+    width: calc(100% - 300px);
+    padding-right: 10px;
+">
+                        <h3>Title</h3>
+                        <p>Lorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds df</p>
+                        <p>Lorem fdsfsdf dfsdf dfds df</p>
+                        <p>Lorem fdsfsdf dfsdf dfds df</p>
+                        <p>Lorem fdsfsdf dfsdf dfds df</p>
+                        <p>Lorem fdsfsdf dfsdf dfds df</p>
+
+
+                    </div>
+                    <div class="mega-right">
+
+                        <p class="time">10.01.01</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="checked-btn">
+                        <a href="#" class="checked-btn-on" style="    background-image: url(../Content/Images/Icons2.png);background-repeat: no-repeat; background-position: -9px -481px;"></a>
+                    </div>
+                    <div class="wrap-img">
+                        <img src="/Content/Images/Zireael_logo.128.png" alt="logo">
+                    </div>
+                    <div class="mega-left" style="
+    width: calc(100% - 300px);
+    padding-right: 10px;
+">
+                        <h3>Title</h3>
+                        <p>Lorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds dfLorem fdsfsdf dfsdf dfds df</p>
+                        <p>Lorem fdsfsdf dfsdf dfds df</p>
+                        <p>Lorem fdsfsdf dfsdf dfds df</p>
+                        <p>Lorem fdsfsdf dfsdf dfds df</p>
+                        <p>Lorem fdsfsdf dfsdf dfds df</p>
+
+
+                    </div>
+                    <div class="mega-right">
+
+                        <p class="time">10.01.01</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
         <div class="panel-write">
-            <div class="line-write">
-                <div class="wrap-img">
-                    <img src="/Content/Images/Zireael_logo.128.png" alt="logo">
-                </div>
-                <textarea name="msg"></textarea>
-                <div class="wrap-img">
-                    <img src="/Content/Images/Zireael_logo.128.png" alt="logo">
-                </div>
-            </div>
             <div class="line-write">
                 <input type="file" id="file">
                 <label for="file"></label>
+                <textarea placeholder="Напишите сообщение..." name="msg"></textarea>
                 <a href="#" class="send"></a>
             </div>
         </div>
@@ -299,6 +220,6 @@
 </div>
 
 @Scripts.Render("~/Scripts/main.js")
-<script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>>
+<script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
 <script src="~/signalr/hubs"></script>
 <script src="~/Scripts/utils.js"></script>

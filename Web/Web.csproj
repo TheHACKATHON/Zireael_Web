@@ -198,6 +198,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Content\dialogs.css" />
     <Content Include="Content\Images\1.png" />
     <Content Include="Content\Images\Icons.png" />
     <Content Include="Content\Images\Icons2.png" />
