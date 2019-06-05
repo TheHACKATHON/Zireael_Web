@@ -279,6 +279,7 @@
     <Content Include="Scripts\modal-dialogs.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\notifications.js" />
+    <Content Include="Scripts\NotifyType.js" />
     <Content Include="Scripts\signal-callback.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

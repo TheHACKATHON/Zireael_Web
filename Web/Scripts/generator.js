@@ -6,7 +6,7 @@
         let notReadMessageElem = "";
         if (parseInt(notReadMessageCount) > 0) {
             notReadMessageElem =
-                `<span class="count-unred-messages">
+`<span class="count-unred-messages">
     ${notReadMessageCount}
 </span>`;
         }
@@ -14,8 +14,7 @@
 
         let li = document.createElement("li");
         li.innerHTML =
-            `<li>
-    <a data-id="${group.Id}" class="group">
+`<a data-id="${group.Id}" class="group">
         <div} class="wrap-img letter">
             <h2>${usernameLetter}</h2>
             <img src="avatar" alt="logo">
@@ -30,19 +29,28 @@
                 ${notReadMessageElem}
             </div>
         </div>
-    </a>
-</li>`;
+    </a>`;
 
         return li;
     },
-    MessageHTML: function(message, avatar, defaultAvatar) {
+    MessageHTML: function (message, avatar, defaultAvatar) {
+        let li = document.createElement("li");
+        li.setAttribute("data-id", message.Id);
+
+        if (message.Login === "system" && message.Sender.Id == 1) {
+            li.classList.add("systemMsg");
+            li.innerHTML =
+`
+    <span>${message.Text}</span>
+`;
+            return li;
+        }
+
         let tickdate = message.DateTime.substring(6, message.DateTime.indexOf(")"));
         let date = new Date(parseInt(tickdate));
         let usernameLetter = avatar.avatar == defaultAvatar ? message.Sender.DisplayName.substring(0, 1) : "";
-
-        let li = document.createElement("li");
         li.innerHTML =
-            `<div class="checked-btn">
+`<div class="checked-btn">
    <a href="#" class="checked-btn-on" style="background-image: url(../Content/Images/Icons2.png);background-repeat: no-repeat; background-position: -9px -481px;"></a>
 </div>
 <div class="wrap-img letter">
@@ -59,5 +67,10 @@
 
         return li;
     },
-
+    MessagesContainerHTML: function (groupId) {
+        let ul = document.createElement("ul");
+        ul.setAttribute("data-id", groupId);
+        ul.classList.add("message-list");
+        return ul;
+    },
 }

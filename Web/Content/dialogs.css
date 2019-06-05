@@ -249,15 +249,18 @@ textarea[name=msg] {
 ul.message-list {
     /* height: calc(100% - 57px); */
     /* overflow: scroll; */
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: flex-end;
     /* height: 100%; */
     position: absolute;
     bottom: 0;
 }
+ul.message-list.active {
+    display:flex;
+}
 
-.message-list-wrap {
+    .message-list-wrap {
     height: calc(100% - 81px);
     /* overflow-y: scroll; */
     position: relative;

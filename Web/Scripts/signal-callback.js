@@ -11,6 +11,14 @@
         location.reload();
     };
 
+    chat.client.addMessage = function (message, hash) {
+        
+        // если чат уже открыт то добавить в него сообщения
+        //if () {
+
+        //}
+    };
+
     $.connection.hub.start().done(function () {
         chat.server.connect(1);
     });

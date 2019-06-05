@@ -27,12 +27,29 @@
         xhr.send(data);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                let messagesUl = document.querySelector(".message-list");
-                messagesUl.innerHTML = "";
+                hideChats();
                 let data = JSON.parse(xhr.responseText);
-                data.messages.forEach((message) => {
-                    messagesUl.appendChild(Generator.MessageHTML(message, data.avatarsDictionary.find(a => a.userId == message.Sender.Id), data._defaultAvatar));
-                });
+                if (data.Code === NotifyType.Success) {
+                    let messages = data.messages;
+
+                    let chatsContainer = document.querySelector(".message-list-wrap");
+                    let groupUl = document.querySelector('.message-list-wrap ul[data-id="'+data.groupId+'"]');
+                    if (groupUl == null) {
+                        groupUl = Generator.MessagesContainerHTML(data.groupId);
+                        groupUl.classList.add("active");
+
+                        data.messages.forEach((message) => {
+                            groupUl.appendChild(Generator.MessageHTML(message, data.avatarsDictionary.find(a => a.userId == message.Sender.Id), data._defaultAvatar));
+                        });
+                        chatsContainer.appendChild(groupUl);
+                    }
+                    else {
+                        groupUl.classList.add("active");
+                    }
+                }
+                else {
+                    popup(data.Error, data.Code);
+                }
             }
         };
     }
@@ -42,3 +59,7 @@
             removeClass("open");
     }
 });
+
+function hideChats() {
+    $(".message-list-wrap ul").removeClass("active");
+}

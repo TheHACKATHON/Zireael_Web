@@ -33,7 +33,11 @@ namespace Web.Models
         }
         public void CreateMessageCallback(MessageWCF message, long hash, string connectionId)
         {
-            //throw new NotImplementedException();
+            if (!string.IsNullOrWhiteSpace(connectionId))
+            {
+                var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                context.Clients.Client(connectionId).addMessage(message, hash);
+            }
         }
 
         public void DeleteMessageCallback(MessageWCF message, string connectionId)

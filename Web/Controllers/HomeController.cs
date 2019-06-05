@@ -25,20 +25,26 @@ namespace Web.Controllers
         {
             var messages = await _client.GetMessagesBetweenAsync(groupId, 0, 10);
 
-            var avatarsDictionary = new List<object>();
-
-            var avatars = _client.GetAvatarUsers( messages.Select(m => m.Sender).Distinct(new UserComparer()).ToArray() );
-            foreach (var user in messages.Select(m => m.Sender).Distinct(new UserComparer()))
+            if(messages != null)
             {
-                if (avatars.Any(a => a.User.Id.Equals(user.Id)))
+                var avatarsDictionary = new List<object>();
+
+                var avatars = _client.GetAvatarUsers(messages.Select(m => m.Sender).Distinct(new UserComparer()).ToArray());
+                foreach (var user in messages.Select(m => m.Sender).Distinct(new UserComparer()))
                 {
-                    avatarsDictionary.Add(new { userId = user.Id, avatar = $"/user/{user.Id}" });
+                    if (avatars.Any(a => a.User.Id.Equals(user.Id)))
+                    {
+                        avatarsDictionary.Add(new { userId = user.Id, avatar = $"/user/{user.Id}" });
+                    }
+                    else
+                    {
+                        avatarsDictionary.Add(new { userId = user.Id, avatar = _defaultAvatar });
+                    }
                 }
-                else {
-                    avatarsDictionary.Add(new { userId = user.Id, avatar = _defaultAvatar });
-                }
+                messages = messages.OrderBy(m => m.DateTime).ToArray();
+                return Json(new { Code = NotifyType.Success.ToString(), messages, groupId, avatarsDictionary, _defaultAvatar });
             }
-            return Json(new { messages, avatarsDictionary, _defaultAvatar});
+            return Json(new { Code = NotifyType.Error.ToString(), Error = "Чат не найден, обновите страницу или попробуйте позже" });
         }
 
         public async Task<JsonResult> Logout()
