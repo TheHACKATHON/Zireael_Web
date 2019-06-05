@@ -14,7 +14,7 @@ namespace Wcf_CeadChat_ServiceLibrary
     {
         #region WPF Client methods
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        bool Connect(string sessionId, string connectionId);
+        UserWCF Connect(string sessionId, string connectionId);
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         UserWCF CheckSession(string session);
@@ -137,6 +137,9 @@ namespace Wcf_CeadChat_ServiceLibrary
         string SendCodeOnEmail(string email, string cookie);//отправка сообщения на почту
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         string GetEmailByCookieAndCode(string cookie, string code);//пролучить почту, если кук и кода совпадают. Иначе возвращает null
+        [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
+        string GetName(int id);
+
         #endregion
     }
 

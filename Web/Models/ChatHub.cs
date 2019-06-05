@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Web;
+using System.Web.Mvc;
 using Microsoft.AspNet.SignalR;
 using Web.ServiceReference1;
+using Newtonsoft.Json;
 
 namespace Web.Models
 {
@@ -18,9 +20,12 @@ namespace Web.Models
         public void Send(string name, string message)
         {}
  
-        public void Connect(int userId)
+        public string Connect()
         {
-            new CeadChatServiceClient(new InstanceContext(this)).Connect(Context.RequestCookies["SessionId"].Value, Context.ConnectionId);
+            var client = new CeadChatServiceClient(new InstanceContext(this));
+            var currentUser = client.Connect(Context.RequestCookies["SessionId"].Value, Context.ConnectionId);
+            var avatar = client.GetAvatarUsers(new[] {new UserWCF {Id = currentUser.Id}});
+            return JsonConvert.SerializeObject(new {Id = currentUser.Id, Email = currentUser.Email, Login = currentUser.Login, Avatar = ""});
         }
 
         public void CreateChatCallback(GroupWCF group, int creatorId, string connectionId)

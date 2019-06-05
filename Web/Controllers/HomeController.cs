@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using Web.Models;
 using Web.ServiceReference1;
@@ -13,12 +17,14 @@ namespace Web.Controllers
 {
     public partial class HomeController : Controller
     {
-        private string _defaultAvatar = "/Content/Images/Zireael_back.png";
-        private CeadChatServiceClient _client;
+        private string _defaultAvatar = "/Content/Images/Zireael_back_128px.png";
+        private readonly CeadChatServiceClient _client;
+        private readonly PrivateFontCollection _fonts = new PrivateFontCollection();
         public HomeController(CeadChatServiceClient client)
         {
             _client = client;
-
+            var file = HostingEnvironment.MapPath("~/Content/Fonts/RobotoMono-Regular.ttf");
+            _fonts.AddFontFile(file);
         }
         [HttpPost]
         public async Task<JsonResult> GetMessages(int? groupId)
@@ -68,6 +74,7 @@ namespace Web.Controllers
             }
             return Json(new NotifyError("Не удалось отправить сообщение"));
         }
+        [HttpPost]
         public async Task<JsonResult> Logout()
         {
             if (await _client.LogOutAsync())
@@ -76,14 +83,32 @@ namespace Web.Controllers
             }
             return Json(false);
         }
-
-        public ActionResult UserImage(int userId = 0, int id = 1)
+        [HttpGet]
+        public async Task<ActionResult> UserImage(int userId = 0, int id = 1)
         {
-            var avatar = _client.GetAvatarUsers(new[] { new UserBaseWCF { Id = userId } }).SingleOrDefault();
-            if (avatar is null) throw new HttpException(404, "Файл не найден");
+            var avatar = _client.GetAvatarUsers(new[] { new UserBaseWCF { Id = userId } })?.SingleOrDefault();
+            if (avatar is null)
+            {
+                //todo доделать
+                var username = await _client.GetNameAsync(userId);
+                if (username is null) return HttpNotFound();
+                avatar = new AvatarUserWCF();
+                using (var bitmap = Image.FromFile(HostingEnvironment.MapPath(_defaultAvatar)))
+                {
+                    using(var g = Graphics.FromImage(bitmap))
+                    {
+                        g.DrawString(username.Substring(0,1).ToUpper(), new Font(_fonts.Families[0], 100), Brushes.White, 0f, 0f);
+                    }
+                    using (var ms = new MemoryStream())
+                    {
+                        bitmap.Save(ms, ImageFormat.Png);
+                        avatar.BigData = ms.ToArray();
+                    }
+                }
+            }
             return File(avatar.BigData, "image/png");
         }
-
+        [HttpGet]
         public async Task<ActionResult> Index()
         {
             if (Request.Cookies["SessionId"] != null)
@@ -135,7 +160,7 @@ namespace Web.Controllers
 
             return View("Auth");
         }
-
+        [HttpPost]
         public async Task<JsonResult> GetAvatars(int[] ids)
         {
             // todo получение ссылок на аватары

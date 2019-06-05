@@ -22,7 +22,9 @@
     };
 
     $.connection.hub.start().done(function () {
-        chat.server.connect(1);
+        chat.server.connect().done((result) => {
+            _currentUser = JSON.parse(result);
+        });
     });
 });
 

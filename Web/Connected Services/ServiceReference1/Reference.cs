@@ -953,10 +953,10 @@ namespace Web.ServiceReference1 {
     public interface ICeadChatService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/Connect", ReplyAction="http://tempuri.org/ICeadChatService/ConnectResponse")]
-        bool Connect(string sessionId, string connectionId);
+        Web.ServiceReference1.UserWCF Connect(string sessionId, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/Connect", ReplyAction="http://tempuri.org/ICeadChatService/ConnectResponse")]
-        System.Threading.Tasks.Task<bool> ConnectAsync(string sessionId, string connectionId);
+        System.Threading.Tasks.Task<Web.ServiceReference1.UserWCF> ConnectAsync(string sessionId, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/CheckSession", ReplyAction="http://tempuri.org/ICeadChatService/CheckSessionResponse")]
         Web.ServiceReference1.UserWCF CheckSession(string session);
@@ -1203,6 +1203,12 @@ namespace Web.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCode", ReplyAction="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCodeResponse")]
         System.Threading.Tasks.Task<string> GetEmailByCookieAndCodeAsync(string cookie, string code);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetName", ReplyAction="http://tempuri.org/ICeadChatService/GetNameResponse")]
+        string GetName(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetName", ReplyAction="http://tempuri.org/ICeadChatService/GetNameResponse")]
+        System.Threading.Tasks.Task<string> GetNameAsync(int id);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1294,11 +1300,11 @@ namespace Web.ServiceReference1 {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public bool Connect(string sessionId, string connectionId) {
+        public Web.ServiceReference1.UserWCF Connect(string sessionId, string connectionId) {
             return base.Channel.Connect(sessionId, connectionId);
         }
         
-        public System.Threading.Tasks.Task<bool> ConnectAsync(string sessionId, string connectionId) {
+        public System.Threading.Tasks.Task<Web.ServiceReference1.UserWCF> ConnectAsync(string sessionId, string connectionId) {
             return base.Channel.ConnectAsync(sessionId, connectionId);
         }
         
@@ -1628,6 +1634,14 @@ namespace Web.ServiceReference1 {
         
         public System.Threading.Tasks.Task<string> GetEmailByCookieAndCodeAsync(string cookie, string code) {
             return base.Channel.GetEmailByCookieAndCodeAsync(cookie, code);
+        }
+        
+        public string GetName(int id) {
+            return base.Channel.GetName(id);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetNameAsync(int id) {
+            return base.Channel.GetNameAsync(id);
         }
     }
 }

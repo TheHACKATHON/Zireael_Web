@@ -122,7 +122,7 @@ namespace Wcf_CeadChat_ServiceLibrary
             return session;
         }
 
-        public bool Connect(string sessionId, string connectionId)
+        public UserWCF Connect(string sessionId, string connectionId)
         {
             var result = TryExecute(() =>
             {
@@ -130,13 +130,13 @@ namespace Wcf_CeadChat_ServiceLibrary
                 var session = context.Sessions.FirstOrDefault(s => s.SessionId.Equals(sessionId, StringComparison.OrdinalIgnoreCase));
                 session.ConnectionId = connectionId;
                 context.SaveChanges();
-                return true;
-            });
-            if (result is bool)
+                return new UserWCF(session.User);
+            }, true);
+            if (result is UserWCF userWcf)
             {
-                return (bool)result;
+                return userWcf;
             }
-            return false;
+            return null;
         }
         private string GeneratePasswordHash(string password)
         {
@@ -1810,6 +1810,8 @@ namespace Wcf_CeadChat_ServiceLibrary
             return false;
         }
 
+        public string GetName(int id) => new ChatContext().Users.SingleOrDefault(u => u.Id.Equals(id))?.DisplayName;
+
         public IEnumerable<AvatarUserWCF> GetAvatarUsers(IEnumerable<UserBaseWCF> users)
         {
             var result = TryExecute(() =>
@@ -1834,7 +1836,11 @@ namespace Wcf_CeadChat_ServiceLibrary
                     return null;
                 }
             });
-            return result as IEnumerable<AvatarUserWCF>;
+            if (result is IEnumerable<AvatarUserWCF> avatarlist)
+            {
+                return avatarlist;
+            }
+            return null;
         }//получить автарки пользователей
 
         public bool SetAvatarGroup(AvatarGroupWCF avatar)//установить аватарку группе

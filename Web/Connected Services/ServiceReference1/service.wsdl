@@ -289,6 +289,12 @@
   <wsdl:message name="ICeadChatService_GetEmailByCookieAndCode_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetEmailByCookieAndCodeResponse" />
   </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetName_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetName" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetName_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetNameResponse" />
+  </wsdl:message>
   <wsdl:message name="ICeadChatService_CreateChatCallback_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:CreateChatCallback" />
   </wsdl:message>
@@ -514,6 +520,10 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetEmailByCookieAndCode">
       <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCode" message="tns:ICeadChatService_GetEmailByCookieAndCode_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCodeResponse" message="tns:ICeadChatService_GetEmailByCookieAndCode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetName">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetName" message="tns:ICeadChatService_GetName_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetNameResponse" message="tns:ICeadChatService_GetName_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="CreateChatCallback">
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/CreateChatCallback" message="tns:ICeadChatService_CreateChatCallback_OutputCallbackMessage" />
@@ -947,6 +957,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetEmailByCookieAndCode">
       <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetName">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetName" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

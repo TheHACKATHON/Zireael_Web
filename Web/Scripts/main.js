@@ -1,4 +1,6 @@
-﻿document.addEventListener('click', function (e) {
+﻿var _currentUser = null;
+
+document.addEventListener('click', function (e) {
 
     let target = e.target;
 
@@ -18,7 +20,7 @@
         document.querySelector(".modal-backdrop").classList.remove("hide");
     }
     else if (target.closest(".menu-exit")) {
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open('POST', `/logout`);
         xhr.send();
     }
@@ -26,7 +28,7 @@
         let data = new FormData();
         data.append("groupId", target.closest(".group").getAttribute("data-id"));
 
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open('POST', `/getmessages`);
         xhr.send(data);
         xhr.onreadystatechange = function () {
@@ -96,17 +98,13 @@
         data.append("groupId", groupId);
         data.append("hash", hash);
         
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open('POST', `/sendmessage`);
         xhr.send(data);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 let data = JSON.parse(xhr.responseText);
-                if (data.Code === NotifyType.Success) {
-                    // присвоить id сообщению
-                    // data.messageId
-                }
-                else {
+                if (data.Code != NotifyType.Success) {
                     popup(data.Error, data.Code);
                 }
             }

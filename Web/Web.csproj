@@ -204,11 +204,13 @@
     <Content Include="Content\Images\1.png" />
     <Content Include="Content\Images\Icons.png" />
     <Content Include="Content\Images\Icons2.png" />
+    <Content Include="Content\Images\Icons3.png" />
     <Content Include="Content\Images\NonBack_Zireael_logo.128.png" />
     <Content Include="Content\Images\NonBack_Zireael_logo.256.png" />
     <Content Include="Content\Images\NonBack_Zireael_logo.32.png" />
     <Content Include="Content\Images\NonBack_Zireael_logo.64.png" />
     <Content Include="Content\Images\Zireael_back.png" />
+    <Content Include="Content\Images\Zireael_back_128px.png" />
     <Content Include="Content\Images\Zireael_logo.128.png" />
     <Content Include="Content\Images\Zireael_logo.256.png" />
     <Content Include="Content\Images\Zireael_logo.32.png" />
@@ -258,6 +260,16 @@
     <Content Include="Connected Services\ServiceReference1\Web.ServiceReference1.UserWCF.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Content\Fonts\RobotoMono-Bold.ttf" />
+    <Content Include="Content\Fonts\RobotoMono-BoldItalic.ttf" />
+    <Content Include="Content\Fonts\RobotoMono-Italic.ttf" />
+    <Content Include="Content\Fonts\RobotoMono-Light.ttf" />
+    <Content Include="Content\Fonts\RobotoMono-LightItalic.ttf" />
+    <Content Include="Content\Fonts\RobotoMono-Medium.ttf" />
+    <Content Include="Content\Fonts\RobotoMono-MediumItalic.ttf" />
+    <Content Include="Content\Fonts\RobotoMono-Regular.ttf" />
+    <Content Include="Content\Fonts\RobotoMono-Thin.ttf" />
+    <Content Include="Content\Fonts\RobotoMono-ThinItalic.ttf" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\auth.js" />
     <Content Include="Scripts\generator.js" />
