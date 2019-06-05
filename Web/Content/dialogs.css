@@ -76,6 +76,7 @@ p.time {
     font-size: 10px;
     line-height: 10px;
     padding-right:50px;
+    text-align:center;
 }
 
 p.last-message {
