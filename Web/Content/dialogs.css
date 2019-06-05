@@ -222,7 +222,7 @@ label[for=file] {
     width: 26px;
     height: 26px;
     display: block;
-    background: #000;
+    /*background: #000;*/
 }
 
 .checked-btn.not-read::before {
@@ -314,7 +314,7 @@ li.systemMsg {
     height: 17px;
     background-image: url(../Content/Images/Icons2.png);
     background-repeat: no-repeat;
-    background-position: -9px -672px;
+    background-position: -9px -100px;
     vertical-align: middle;
     opacity: 0.9;
 }
