@@ -222,8 +222,11 @@ label[for=file] {
     width: 26px;
     height: 26px;
     display: block;
-    /*background: #000;*/
 }
+    label[for=file]:hover {
+        background-color: rgba(236, 236, 236, 0.7);
+        border-radius: 25%;
+    }
 
 .checked-btn.not-read::before {
     content: "";
@@ -321,3 +324,4 @@ li.systemMsg {
 .append-file {
     padding-left: 18px;
 }
+
