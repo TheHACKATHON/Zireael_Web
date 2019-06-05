@@ -1,7 +1,6 @@
 ﻿var Generator = {
     DialogHTML: function(group, avatar, defaultAvatar, notReadMessageCount) {
-        let tickdate = group.LastMessage.DateTime.substring(6, message.DateTime.indexOf(")"));
-        let date = new Date(parseInt(tickdate));
+        let dateString = convertAjaxDate(group.LastMessage.DateTime);
         let usernameLetter = avatar.avatar == defaultAvatar ? group.Name.substring(0, 1) : "";
         let notReadMessageElem = "";
         if (parseInt(notReadMessageCount) > 0) {
@@ -22,7 +21,7 @@
         <div class="super">
             <div class="super-top">
                 <h3>${group.Name}</h3>
-                <p class="time">${date.toLocaleTimeString()}</p>
+                <p class="time">${dateString}</p>
             </div>
             <div class="super-bottom">
                 <p class="last-message">${group.LastMessage.Text}</p>
@@ -53,9 +52,7 @@
 
         let dateString = "";
         if (message.DateTime !=  null) {
-            let tickdate = message.DateTime.substring(6, message.DateTime.indexOf(")"));
-            let date = new Date(parseInt(tickdate));
-            dateString = `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`;
+            dateString = convertAjaxDate(message.DateTime);
         }
         else {
             dateString = "загрузка";
@@ -87,4 +84,13 @@
         ul.classList.add("message-list");
         return ul;
     },
+}
+
+function convertAjaxDate(ajaxDate) {
+    let tickdate = ajaxDate.substring(6, ajaxDate.indexOf(")"));
+    let date = new Date(parseInt(tickdate));
+    dateString = `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`;
+
+    // todo: в засивимости от дня редактировать строку
+    return dateString;
 }

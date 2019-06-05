@@ -1,6 +1,10 @@
 ﻿document.addEventListener('click', function (e) {
-    e.preventDefault();
+
     let target = e.target;
+
+    if (!target.matches('label[for="file"], input[type="file"]')) {
+        e.preventDefault();
+    }
 
     if (target.matches(".main-menu") || target.closest(".main-menu")) {
         $(".tg_head_logo_dropdown.dropdown").toggleClass("open");
@@ -55,10 +59,23 @@
         };
     }
     else if (target.matches("a.send")) {
+        //let avatarData = new FormData();
+        //avatarData.append("ids", []);
+        //var xhr = new XMLHttpRequest();
+        //xhr.open('POST', `/sendmessage`);
+        //xhr.send(data);
+        //xhr.onreadystatechange = function () {
+        //    if (xhr.readyState == 4 && xhr.status == 200) {
+        //        let data = JSON.parse(xhr.responseText);
+        //        if (data.Code != NotifyType.Success) {
+        //            popup(data.Error, data.Code);
+        //        }
+        //    }
+        //};
+
         let hash = new Date().getUTCMilliseconds();
         let text = document.querySelector(".panel-write textarea").value;
         let groupId = document.querySelector(".message-list-wrap ul[data-id]").getAttribute("data-id");
-
         let messagesContainer = document.querySelector(".message-list-wrap ul.activeUl");
 
         messagesContainer.appendChild(

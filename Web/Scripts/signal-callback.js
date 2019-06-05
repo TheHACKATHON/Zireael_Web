@@ -13,6 +13,12 @@
 
     chat.client.addMessage = function (message, hash) {
         //найти сообщение по id и если оно не отправлено (class=notSended) пометить отправленным
+        let messageElement = document.querySelector('.message-list-wrap li[data-hash="' + hash + '"]')
+        messageElement.removeAttribute("data-hash");
+        messageElement.setAttribute("data-id", message.Id);
+        let time = messageElement.querySelector("p.time");
+        time.textContent = new Date(message.DateTime).toTimeString();
+        //todo: добавить класс который означает что сообщение пришло
     };
 
     $.connection.hub.start().done(function () {
