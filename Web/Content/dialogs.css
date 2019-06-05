@@ -291,7 +291,7 @@ textarea[name=msg]:focus {
 a.send {
     width: 30px;
     height: 30px;
-    background: #000;
+    /*background: #000;*/
 }
 
 li.systemMsg {
@@ -318,6 +318,16 @@ li.systemMsg {
     background-image: url(../Content/Images/Icons2.png);
     background-repeat: no-repeat;
     background-position: -9px -100px;
+    vertical-align: middle;
+    opacity: 0.9;
+}
+.icon-send {
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    background-image: url(../Content/Images/Icons2.png);
+    background-repeat: no-repeat;
+    background-position: -9px -859px;
     vertical-align: middle;
     opacity: 0.9;
 }
