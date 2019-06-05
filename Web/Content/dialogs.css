@@ -54,6 +54,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 5px 0;
+    width: calc(100% - 58px);
 }
 
     .super > div {
@@ -79,6 +80,10 @@ p.time {
     text-align:center;
 }
 
+.super-top p.time {
+    padding-right: 0;
+}
+
 p.last-message {
     color: #00000059;
     font-size: 14px;
@@ -98,7 +103,7 @@ span.count-unred-messages {
 }
 
 .chats .active a {
-    background: #284665;
+    background: #4070a0;
     /* color: #fff; */
 }
 
@@ -114,7 +119,7 @@ span.count-unred-messages {
 }
 
 .chats li.active a:hover {
-    background: rgba(40, 70, 101, 1);
+    background: #4070a0;
 }
 
 .chats li a:hover {
@@ -259,7 +264,7 @@ ul.message-list {
     bottom: 0;
     width:100%;
 }
-ul.message-list.active {
+ul.message-list.activeUl {
     display:flex;
 }
 

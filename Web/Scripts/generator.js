@@ -35,9 +35,14 @@
     },
     MessageHTML: function (message, avatar, defaultAvatar) {
         let li = document.createElement("li");
-        li.setAttribute("data-id", message.Id);
+        if (message.Id == null) {
+            li.setAttribute("data-hash", message.Hash);
+        }
+        else {
+            li.setAttribute("data-id", message.Id);
+        }
 
-        if (message.Login === "system" && message.Sender.Id == 1) {
+        if (message.Sender.Login != null && message.Sender.Login === "system" && message.Sender.Id == 1) {
             li.classList.add("systemMsg");
             li.innerHTML =
 `
@@ -46,8 +51,17 @@
             return li;
         }
 
-        let tickdate = message.DateTime.substring(6, message.DateTime.indexOf(")"));
-        let date = new Date(parseInt(tickdate));
+        let dateString = "";
+        if (message.DateTime !=  null) {
+            let tickdate = message.DateTime.substring(6, message.DateTime.indexOf(")"));
+            let date = new Date(parseInt(tickdate));
+            dateString = `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`;
+        }
+        else {
+            dateString = "загрузка";
+            // todo: переделать на знак
+        }
+        
         let usernameLetter = avatar.avatar == defaultAvatar ? message.Sender.DisplayName.substring(0, 1) : "";
         li.innerHTML =
 `<div class="checked-btn">
@@ -62,7 +76,7 @@
    <p>${message.Text}</p>
 </div>
 <div class="mega-right">
-    <p class="time">${date.toLocaleTimeString()} ${date.toLocaleDateString()}</p >
+    <p class="time">${dateString}</p >
 </div>`;
 
         return li;

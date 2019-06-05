@@ -30,13 +30,14 @@
                 hideChats();
                 let data = JSON.parse(xhr.responseText);
                 if (data.Code === NotifyType.Success) {
-                    let messages = data.messages;
+                    changeActive(target.closest(".group").parentElement);
 
+                    let messages = data.messages;
                     let chatsContainer = document.querySelector(".message-list-wrap");
-                    let groupUl = document.querySelector('.message-list-wrap ul[data-id="'+data.groupId+'"]');
+                    let groupUl = document.querySelector('.message-list-wrap ul[data-id="' + data.groupId + '"]');
                     if (groupUl == null) {
                         groupUl = Generator.MessagesContainerHTML(data.groupId);
-                        groupUl.classList.add("active");
+                        groupUl.classList.add("activeUl");
 
                         data.messages.forEach((message) => {
                             groupUl.appendChild(Generator.MessageHTML(message, data.avatarsDictionary.find(a => a.userId == message.Sender.Id), data._defaultAvatar));
@@ -44,7 +45,7 @@
                         chatsContainer.appendChild(groupUl);
                     }
                     else {
-                        groupUl.classList.add("active");
+                        groupUl.classList.add("activeUl");
                     }
                 }
                 else {
@@ -52,6 +53,48 @@
                 }
             }
         };
+    }
+    else if (target.matches("a.send")) {
+        let hash = new Date().getUTCMilliseconds();
+        let text = document.querySelector(".panel-write textarea").value;
+        let groupId = document.querySelector(".message-list-wrap ul[data-id]").getAttribute("data-id");
+
+        let messagesContainer = document.querySelector(".message-list-wrap ul.activeUl");
+
+        messagesContainer.appendChild(
+            Generator.MessageHTML({
+                    Id: null,
+                    Hash: hash,
+                    Text: text,
+                    GroupId: groupId,
+                    DateTime: null,
+                    Sender: {
+                        Login: null,
+                        DisplayName: "Я",
+                    },
+            }, { avatar: "/Content/Images/Zireael_back.png" }, "/Content/Images/Zireael_back.png"))
+
+        let data = new FormData();
+        data.append("text", text);
+        data.append("groupId", groupId);
+        data.append("hash", hash);
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', `/sendmessage`);
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.Code === NotifyType.Success) {
+                    // присвоить id сообщению
+                    // data.messageId
+                }
+                else {
+                    popup(data.Error, data.Code);
+                }
+            }
+        };
+        
     }
     else {
         $(".tg_head_logo_dropdown.dropdown").
@@ -61,5 +104,14 @@
 });
 
 function hideChats() {
-    $(".message-list-wrap ul").removeClass("active");
+    $(".message-list-wrap ul").removeClass("activeUl");
+    $(".panel-write").addClass("hide");
+    $(".chats li.active").removeClass("active");
+}
+
+function changeActive(elem) {
+    $(".chats li.active").removeClass("active");
+    elem.classList.add("active");
+    $(".panel-write").removeClass("hide");
+
 }

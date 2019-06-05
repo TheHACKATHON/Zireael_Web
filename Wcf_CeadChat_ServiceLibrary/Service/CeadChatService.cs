@@ -332,7 +332,11 @@ namespace Wcf_CeadChat_ServiceLibrary
                             var s = OperationContext.Current.SessionId;
                             var sender = _onlineUsers.FirstOrDefault(o => o.Key == userChanged).Value;//получаем учетку по текущему подключению
                             sender = GetCurrentUser();
-                            group = Messenger.GetGroupById(message.GroupId, sender.Id);//получаем группу с контекста по id в сообщении
+                            group = Messenger.GetGroupById(message.GroupId, sender.Id);//получаем группу с контекста по id в сообщении\
+                            if(group is null)
+                            {
+                                return null;
+                            }
                             msg = Messenger.SendMessage(message, sender.Id);
                             if (msg != null)
                             {
@@ -523,6 +527,12 @@ namespace Wcf_CeadChat_ServiceLibrary
                     var messages = new List<MessageWCF>();
                     var sender = _onlineUsers.FirstOrDefault(u => u.Key == userChanged).Value;
                     sender = context.Users.FirstOrDefault(u => u.Id == sender.Id);
+
+                    if(!context.Groups.ToList().Any(g => g.Id == groupId && g.Users.Any(u => u.Id == sender.Id)))
+                    {
+                        return null;
+                    }
+
                     var selectedMessages = context.Messages.ToList().Where(m => m.Group.Id == groupId && m.Group.Users.Contains(sender) && m.IsVisible)
                                                            .Skip(startIdx)
                                                            .Take(count);

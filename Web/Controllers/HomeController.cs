@@ -21,35 +21,56 @@ namespace Web.Controllers
 
         }
         [HttpPost]
-        public async Task<JsonResult> GetMessages(int groupId)
+        public async Task<JsonResult> GetMessages(int? groupId)
         {
-            var messages = await _client.GetMessagesBetweenAsync(groupId, 0, 10);
-
-            if(messages != null)
+            if (groupId != null)
             {
-                var avatarsDictionary = new List<object>();
+                var messages = await _client.GetMessagesBetweenAsync((int)groupId, 0, 10);
 
-                var avatars = _client.GetAvatarUsers(messages.Select(m => m.Sender).Distinct(new UserComparer()).ToArray());
-                foreach (var user in messages.Select(m => m.Sender).Distinct(new UserComparer()))
+                if (messages != null)
                 {
-                    if (avatars.Any(a => a.User.Id.Equals(user.Id)))
+                    var avatarsDictionary = new List<object>();
+
+                    var avatars = _client.GetAvatarUsers(messages.Select(m => m.Sender).Distinct(new UserComparer()).ToArray());
+                    foreach (var user in messages.Select(m => m.Sender).Distinct(new UserComparer()))
                     {
-                        avatarsDictionary.Add(new { userId = user.Id, avatar = $"/user/{user.Id}" });
+                        if (avatars.Any(a => a.User.Id.Equals(user.Id)))
+                        {
+                            avatarsDictionary.Add(new { userId = user.Id, avatar = $"/user/{user.Id}" });
+                        }
+                        else
+                        {
+                            avatarsDictionary.Add(new { userId = user.Id, avatar = _defaultAvatar });
+                        }
                     }
-                    else
-                    {
-                        avatarsDictionary.Add(new { userId = user.Id, avatar = _defaultAvatar });
-                    }
+                    messages = messages.OrderBy(m => m.DateTime).ToArray();
+                    return Json(new { Code = NotifyType.Success, messages, groupId, avatarsDictionary, _defaultAvatar });
                 }
-                messages = messages.OrderBy(m => m.DateTime).ToArray();
-                return Json(new { Code = NotifyType.Success.ToString(), messages, groupId, avatarsDictionary, _defaultAvatar });
             }
-            return Json(new { Code = NotifyType.Error.ToString(), Error = "Чат не найден, обновите страницу или попробуйте позже" });
+            return Json(new NotifyError("Чат не найден, обновите страницу или попробуйте позже"));
+
         }
 
+        [HttpPost]
+        public async Task<JsonResult> SendMessage(string text, int groupId, int hash)
+        {
+            var msg = new MessageWCF
+            {
+                Text = text,
+                GroupId = groupId,
+                DateTime = DateTime.Now,
+            };
+
+            var messageId = await _client.SendMessageAsync(msg, hash);
+            if(messageId != -1)
+            {
+                return Json(new { Code = NotifyType.Success, messageId });
+            }
+            return Json(new NotifyError("Не удалось отправить сообщение"));
+        }
         public async Task<JsonResult> Logout()
         {
-            if(await _client.LogOutAsync())
+            if (await _client.LogOutAsync())
             {
                 return Json(true);
             }
@@ -88,7 +109,7 @@ namespace Web.Controllers
                         }
                         else
                         {
-                            avatar = _client.GetAvatarGroups(new[] { new GroupWCF{ Id = group.Id } }).SingleOrDefault();
+                            avatar = _client.GetAvatarGroups(new[] { new GroupWCF { Id = group.Id } }).SingleOrDefault();
                             userType = "group";
                             id = group.Id;
                         }
@@ -119,8 +140,27 @@ namespace Web.Controllers
         {
             // todo получение ссылок на аватары
             // формат: { Id, Path }
+            var users = new List<UserWCF>();
+            foreach (var id in ids)
+            {
+                users.Add(new UserWCF() { Id = id });
+            }
+            var avatars = await _client.GetAvatarUsersAsync(users.ToArray());
+            var result = new List<object>();
+            foreach (var userId in ids)
+            {
+                AvatarWCF avatar = null;
+                if((avatar = avatars.FirstOrDefault(a => a.User.Id.Equals(userId))) != null)
+                {
+                    result.Add(new { Id = userId, Path = $"/user/{userId}" });
+                }
+                else
+                {
+                    result.Add(new { Id = userId, Path = _defaultAvatar });
+                }
+            }
 
-            return Json(null);
+            return Json(result);
         }
 
         [HttpPost]
@@ -171,9 +211,9 @@ namespace Web.Controllers
                 Clients.Remove(_client);
                 Clients.Add(Response.Cookies["SessionId"].Value, _client);
             }
-            
-            if (user is null) return Json(new { code = NotifyType.Error.ToString(), error = "Неверный логин или пароль" });
-            return Json(new { code = NotifyType.Success.ToString() });
+
+            if (user is null) return Json(new NotifyError("Неверный логин или пароль"));
+            return Json(new { code = NotifyType.Success });
         }
     }
 }

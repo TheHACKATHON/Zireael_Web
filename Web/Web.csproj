@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Models\NotifyError.cs" />
     <Compile Include="Models\UserComparer.cs" />
     <Compile Include="Models\RazorViewToStringFormat.cs" />
     <Compile Include="Models\NotifyType.cs" />

@@ -12,11 +12,7 @@
     };
 
     chat.client.addMessage = function (message, hash) {
-        
-        // если чат уже открыт то добавить в него сообщения
-        //if () {
-
-        //}
+        //найти сообщение по id и если оно не отправлено (class=notSended) пометить отправленным
     };
 
     $.connection.hub.start().done(function () {
