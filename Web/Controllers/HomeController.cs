@@ -64,7 +64,7 @@ namespace Web.Controllers
             var messageId = await _client.SendMessageAsync(msg, hash);
             if(messageId != -1)
             {
-                return Json(new { Code = NotifyType.Success, messageId });
+                return Json(new { Code = NotifyType.Success });
             }
             return Json(new NotifyError("Не удалось отправить сообщение"));
         }
