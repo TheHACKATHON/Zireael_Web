@@ -75,6 +75,7 @@ p.time {
     color: #00000059;
     font-size: 10px;
     line-height: 10px;
+    padding-right:50px;
 }
 
 p.last-message {
@@ -255,6 +256,7 @@ ul.message-list {
     /* height: 100%; */
     position: absolute;
     bottom: 0;
+    width:100%;
 }
 
 .message-list-wrap {
@@ -279,3 +281,18 @@ a.send {
     background: #000;
 }
 
+li.systemMsg {
+    user-select: none;
+    background: #fff;
+    justify-content: center;
+}
+
+    li.systemMsg:hover {
+        background: #fff;
+    }
+
+.systemMsg span {
+    background: #f2f6fa;
+    padding: 5px 10px;
+    border-radius: 20px;
+}
