@@ -308,3 +308,16 @@ li.systemMsg {
     font-size: 14px;
     color: #284665;
 }
+.icon-file {
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    background-image: url(../Content/Images/Icons2.png);
+    background-repeat: no-repeat;
+    background-position: -9px -672px;
+    vertical-align: middle;
+    opacity: 0.9;
+}
+.append-file {
+    padding-left: 18px;
+}
