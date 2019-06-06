@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -12,21 +11,6 @@ using System.Timers;
 using System.Configuration;
 using Liphsoft.Crypto.Argon2;
 using System.Text.RegularExpressions;
-
-//                bool saveFailed;
-//                do
-//                {
-//                    saveFailed = false;
-//                    try
-//                    {
-//                        context.SaveChanges();
-//                    }
-//                    catch (DbUpdateException ex)
-//                    {
-//                        saveFailed = true;
-//                    }
-//                } while (saveFailed);
-
 
 namespace Wcf_CeadChat_ServiceLibrary
 {
@@ -43,8 +27,8 @@ namespace Wcf_CeadChat_ServiceLibrary
         private string _mailPassword = ConfigurationManager.AppSettings.Get("CorporateMailPass");
         private string _mailHost = ConfigurationManager.AppSettings.Get("CorporateMailHost");
         private string _salt = ConfigurationManager.AppSettings.Get("PasswordSalt");
-        private string _patternLogin = @"^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d]{5,24}$";
-        private string _patternPassword = @"^(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,32}$";
+        private string _patternLogin = ConfigurationManager.AppSettings.Get("PatternLogin");
+        private string _patternPassword = ConfigurationManager.AppSettings.Get("PatternPassword");
         private int _countHoursWorkingRecoveryCode;
         private int _portForEmail;
         private int _lenghtRecoveryCode;
@@ -68,6 +52,20 @@ namespace Wcf_CeadChat_ServiceLibrary
         }
 
         #region system
+        //                bool saveFailed;
+        //                do
+        //                {
+        //                    saveFailed = false;
+        //                    try
+        //                    {
+        //                        context.SaveChanges();
+        //                    }
+        //                    catch (DbUpdateException ex)
+        //                    {
+        //                        saveFailed = true;
+        //                    }
+        //                } while (saveFailed);
+
 
         ChatContext Context(IUserChanged userChanged)
         {
