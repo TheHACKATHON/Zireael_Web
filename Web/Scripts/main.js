@@ -1,12 +1,13 @@
 ﻿var _currentUser = null;
 var _defaultAvatar = "/Content/Images/Zireael_back.png"
-
+var y_chats = 0;
+var last_ypx_chats = -1;
 document.addEventListener('click', function (e) {
 
     let target = e.target;
 
     if (!target.matches('label[for="file"], input[type="file"]')) {
-        e.preventDefault();
+    //    e.preventDefault();
     }
 
     if (target.matches(".main-menu") || target.closest(".main-menu")) {
@@ -57,7 +58,10 @@ document.addEventListener('click', function (e) {
                     else {
                         groupUl.classList.add("activeUl");
                     }
-                    $('.scrollbar-rail-messages').scrollbar();
+                    $('.scrollbar-macosx-messages').scrollbar({ disableBodyScroll: true });
+                    $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
+                    $('.scrollbar-macosx-messages').scrollbar({ disableBodyScroll: true });
+
 
                 }
                 else {
@@ -139,5 +143,27 @@ function changeActive(elem) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    $('.scrollbar-rail-chats').scrollbar();
+    $('.scrollbar-macosx-chats').scrollbar({ disableBodyScroll: true});
+});
+
+$('.scrollbar-macosx-chats').mousewheel(function (event) {
+    //event.preventDefault();
+    //if (event.deltaY > 0) {
+    //    y_chats -= 30;
+    //    if (y_chats < 0) {
+    //        y_chats = 0;
+    //    }
+    //    $('.scrollbar-macosx-chats').scrollTop(y_chats);
+
+    //}
+    //else {
+    //    if (parseFloat($(".scrollbar-macosx > .scroll-element.scroll-y .scroll-bar").css("top")) != last_ypx_chats) {
+    //        y_chats += 30;
+    //        last_ypx_chats = parseFloat($(".scrollbar-macosx > .scroll-element.scroll-y .scroll-bar").css("top"));
+    //    }
+    //    $('.scrollbar-macosx-chats').scrollTop(y_chats );
+
+    //}
+   // console.log(event);
+   // console.log(parseFloat($(".scrollbar-macosx > .scroll-element.scroll-y .scroll-bar").css("top")), $('.scrollbar-macosx-messages').not('.scroll-content').height(),  y_chats)
 });

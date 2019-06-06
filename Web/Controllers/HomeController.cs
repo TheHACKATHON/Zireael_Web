@@ -38,22 +38,8 @@ namespace Web.Controllers
 
                 if (messages != null)
                 {
-                    var avatarsDictionary = new List<object>();
-
-                    var avatars = _client.GetAvatarUsers(messages.Select(m => m.Sender).Distinct(new UserComparer()).Select(u => u.Id).ToArray());
-                    foreach (var user in messages.Select(m => m.Sender).Distinct(new UserComparer()))
-                    {
-                        if (avatars.Any(a => a.User.Id.Equals(user.Id)))
-                        {
-                            avatarsDictionary.Add(new { userId = user.Id, avatar = $"/user/{user.Id}" });
-                        }
-                        else
-                        {
-                            avatarsDictionary.Add(new { userId = user.Id, avatar = _defaultAvatar });
-                        }
-                    }
                     messages = messages.OrderBy(m => m.DateTime).ToArray();
-                    return Json(new { Code = NotifyType.Success, messages, groupId, avatarsDictionary, _defaultAvatar });
+                    return Json(new { Code = NotifyType.Success, messages, groupId, _defaultAvatar });
                 }
             }
             return Json(new NotifyError("Чат не найден, обновите страницу или попробуйте позже"));
@@ -114,7 +100,7 @@ namespace Web.Controllers
             }
             if (avatar != null)
             {
-                //if(HashCode.GetMD5(avatar.User.DisplayName).Equals(hash, StringComparison.OrdinalIgnoreCase))
+                if(HashCode.GetMD5(avatar.User.DisplayName).Equals(hash, StringComparison.OrdinalIgnoreCase))
                 {
                     return File(avatar.BigData, "image/png");
                 }

@@ -80,7 +80,7 @@
 </style>
 
 <div class="wrap">
-    <div class="chats scrollbar-rail scrollbar-rail-chats">
+    <div class="chats scrollbar-macosx scrollbar-macosx-chats">
         <ul>
             @{
                 if (ViewBag.Groups != null)
@@ -133,7 +133,7 @@
    </div>
 
     <div class="messages">
-        <div class="message-list-wrap scrollbar-rail scrollbar-rail-messages">
+        <div class="message-list-wrap scrollbar-macosx scrollbar-macosx-messages">
         </div>
         <div class="panel-write hide">
             <div class="line-write">
@@ -170,6 +170,6 @@
 @Scripts.Render("~/Scripts/signal-callback.js")
 @Scripts.Render("~/Scripts/modal-dialogs.js")
 @Scripts.Render("~/Scripts/jquery.mousewheel.min.js")
-@Scripts.Render("~/Scripts/jquery.scrollbar.js")
-@Scripts.Render("~/Scripts/prettify.js")
+
+@*@Scripts.Render("~/Scripts/prettify.js")*@
 @Scripts.Render("~/Scripts/main.js")
