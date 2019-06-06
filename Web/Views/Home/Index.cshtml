@@ -5,6 +5,7 @@
 @Styles.Render("~/Content/modal-dialogs.css")
 @Styles.Render("~/Content/main_style.css")
 @Styles.Render("~/Content/dialogs.css")
+@Styles.Render("~/Content/jquery.scrollbar.css")
 <div class="my-head" my-head="">
     <div class="tg_page_head tg_head_wrap noselect clearfix">
         <div class="tg_head_split">
@@ -133,7 +134,7 @@
     </div>
 
     <div class="messages">
-        <div class="message-list-wrap">
+        <div class="message-list-wrap scrollbar-rail">
         </div>
         <div class="panel-write hide">
             <div class="line-write">
@@ -167,6 +168,8 @@
 @Scripts.Render("~/Scripts/2.5.3-crypto-md5.js")
 @Scripts.Render("~/Scripts/generator.js")
 
-@Scripts.Render("~/Scripts/main.js")
 @Scripts.Render("~/Scripts/signal-callback.js")
 @Scripts.Render("~/Scripts/modal-dialogs.js")
+@Scripts.Render("~/Scripts/jquery.mousewheel.min.js")
+@Scripts.Render("~/Scripts/jquery.scrollbar.min.js")
+@Scripts.Render("~/Scripts/main.js")
