@@ -111,7 +111,7 @@ namespace Web.Controllers
             }
             if (avatar != null)
             {
-                if(HashCode.GetMD5(avatar.User.DisplayName).Equals(hash, StringComparison.OrdinalIgnoreCase))
+                //if(HashCode.GetMD5(avatar.User.DisplayName).Equals(hash, StringComparison.OrdinalIgnoreCase))
                 {
                     return File(avatar.BigData, "image/png");
                 }
@@ -145,7 +145,7 @@ namespace Web.Controllers
             }
             if (avatar != null)
             {
-                if (HashCode.GetMD5(avatar.Group.Name).Equals(hash, StringComparison.OrdinalIgnoreCase))
+               // if (HashCode.GetMD5(avatar.Group.Name).Equals(hash, StringComparison.OrdinalIgnoreCase))
                 {
                     return File(avatar.BigData, "image/png");
                 }

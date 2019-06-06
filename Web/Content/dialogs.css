@@ -261,15 +261,16 @@ ul.message-list {
     /* height: calc(100% - 57px); */
     /* overflow: scroll; */
     display: none;
-    flex-direction: column;
-    justify-content: flex-end;
+    /*flex-direction: column;
+    justify-content: flex-end;*/
     /* height: 100%; */
-    position: absolute;
-    bottom: 0;
+    /*position: absolute;
+    bottom: 0;*/
     width:100%;
 }
 ul.message-list.activeUl {
-    display:flex;
+    /*display:flex;*/
+    display:block;
 }
 
     .message-list-wrap {

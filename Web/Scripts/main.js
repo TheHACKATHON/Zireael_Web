@@ -53,6 +53,8 @@ document.addEventListener('click', function (e) {
                     else {
                         groupUl.classList.add("activeUl");
                     }
+                    $('.scrollbar-rail').scrollbar();
+
                 }
                 else {
                     popup(data.Error, data.Code);

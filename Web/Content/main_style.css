@@ -474,7 +474,12 @@ a:active, a:hover {
     padding-bottom: 15px;
 }
 
-@media screen and (max-width:1010px){
+.scroll-bar {
+    background: #284665e3 !important;
+    left: 1.5px !important;
+}
+
+@media screen and (max-width:1010px) {
     .open > .dropdown-menu {
         display: block;
         width: 100vw;
