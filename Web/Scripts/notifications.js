@@ -8,9 +8,8 @@
             .attr('data-notification-status', status)
             .addClass(type + ' notify')
             .addClass('do-show');
-        setTimeout(() => { $('.notify').removeClass('do-show').text(""); }, 6000);
-
-        event.preventDefault();
+        setTimeout(() => { $('.notify').removeClass('do-show').text(""); }, 4500);
+        
     }
     else {
         setTimeout(() => { popup(string, status ) }, 1000);

@@ -537,9 +537,11 @@ namespace Wcf_CeadChat_ServiceLibrary
                         return null;
                     }
 
-                    var selectedMessages = context.Messages.ToList().Where(m => m.Group.Id == groupId && m.Group.Users.Contains(sender) && m.IsVisible)
-                                                           .Skip(startIdx)
-                                                           .Take(count);
+                    var selectedMessages = context.Messages.ToList()
+                        .OrderByDescending(m => m.DateTime)
+                        .Where(m => m.Group.Id == groupId && m.Group.Users.Contains(sender) && m.IsVisible)
+                        .Skip(startIdx)
+                        .Take(count);
                     foreach (var item in selectedMessages)
                     {
                         messages.Add(new MessageWCF(item));
@@ -1872,20 +1874,24 @@ namespace Wcf_CeadChat_ServiceLibrary
         }
 
         public string GetName(int id) => /* todo: добавить TryExecute */ new ChatContext().Users.SingleOrDefault(u => u.Id.Equals(id))?.DisplayName;
+
         public string GetGroupName(int id)
         {
             /* todo: добавить TryExecute */
             var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();
             var context = Context(userChanged);
-            var group = context.Groups.SingleOrDefault(g => g.Id.Equals(id));
-
-            if(group.Type.Equals(GroupType.SingleUser))
+            if (context != null)
             {
-                var sender = _onlineUsers[userChanged];
-                var userResipient = group.Users.SingleOrDefault(u => u.Id != sender.Id);
-                return userResipient.DisplayName;
+                var group = context.Groups.SingleOrDefault(g => g.Id.Equals(id));
+                if(group.Type.Equals(GroupType.SingleUser))
+                {
+                    var sender = _onlineUsers[userChanged];
+                    var userResipient = group.Users.SingleOrDefault(u => u.Id != sender.Id);
+                    return userResipient.DisplayName;
+                }
+                return group.Name;
             }
-            return group.Name;
+            return null;
         }
 
         public IEnumerable<AvatarUserWCF> GetAvatarUsers(IEnumerable<int> users)

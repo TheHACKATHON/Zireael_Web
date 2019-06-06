@@ -24,6 +24,7 @@
     $.connection.hub.start().done(function () {
         chat.server.connect().done((result) => {
             _currentUser = JSON.parse(result);
+            $("#loading").css("display", "none");
         });
     });
 });

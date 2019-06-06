@@ -39,16 +39,16 @@ namespace Web.Controllers
             {
                 if (await _client.RestorePasswordAsync(loginOrEmail, code, pass))
                 {
-                    return Json(new { message = "Пароль успешно изменен!", type = NotifyType.Error.ToString() });
+                    return Json(new { message = "Пароль успешно изменен!", type = NotifyType.Error });
                 }
                 else
                 {
-                    return Json(new { message = "Ошибка! Проверте правильность введенных данных.", type = NotifyType.Error.ToString() });
+                    return Json(new { message = "Ошибка! Проверте правильность введенных данных.", type = NotifyType.Error });
                 }
             }
             else
             {
-                return Json(new { message = "Пароли не совпадают!", type = NotifyType.Error.ToString() });
+                return Json(new { message = "Пароли не совпадают!", type = NotifyType.Error });
             }
         }
         public async Task<JsonResult> RegistrationSendCode(string email)
@@ -60,16 +60,16 @@ namespace Web.Controllers
                 if (code != "")
                 {
                     Response.Cookies.Add(new HttpCookie(_nameEmailTokenCookie, token));
-                    return Json(new { message = $"Код отправлен на {email.ToLower()}!", type = NotifyType.Success.ToString() });
+                    return Json(new { message = $"Код отправлен на {email.ToLower()}!", type = NotifyType.Success });
                 }
                 else
                 {
-                    return Json(new { message = $"Аккаунт с почтой {email.ToLower()} уже создан!", type = NotifyType.Warning.ToString() });
+                    return Json(new { message = $"Аккаунт с почтой {email.ToLower()} уже создан!", type = NotifyType.Warning });
                 }
             }
             else
             {
-                return Json(new { message = $"Ошибка! Код НЕ отправлен на {email.ToLower()}!", type = NotifyType.Error.ToString() });
+                return Json(new { message = $"Ошибка! Код НЕ отправлен на {email.ToLower()}!", type = NotifyType.Error });
             }
         }
         [HttpPost]
@@ -95,26 +95,26 @@ namespace Web.Controllers
                                         if (await _client.RegistrationAsync(new UserWCF() { Email = emailFromDB, Login = login, PasswordHash = password }))
                                         {
                                             var html = RazorViewToStringFormat.RenderRazorViewToString(this, "PartialLogin", null);
-                                            return Json(new { message = "Вы зарегистрированы УСПЕШНО", type = NotifyType.Success.ToString(), html });
+                                            return Json(new { message = "Вы зарегистрированы УСПЕШНО", type = NotifyType.Success, html });
                                         }
                                         else
                                         {
-                                            return Json(new { message = _fatalError, type = NotifyType.Error.ToString() });
+                                            return Json(new { message = _fatalError, type = NotifyType.Error });
                                         }
                                     }
                                     else
                                     {
-                                        return Json(new { message = "Не верный код с почты", type = NotifyType.Warning.ToString() });
+                                        return Json(new { message = "Не верный код с почты", type = NotifyType.Warning });
                                     }
                                 }
                                 else
                                 {
-                                    return Json(new { message = "Отправьте код на ВАШУ почту!", type = NotifyType.Warning.ToString() });
+                                    return Json(new { message = "Отправьте код на ВАШУ почту!", type = NotifyType.Warning });
                                 }
                             }
                             else
                             {
-                                return Json(new { message = "Пароли не совпадают!", type = NotifyType.Warning.ToString() });
+                                return Json(new { message = "Пароли не совпадают!", type = NotifyType.Warning });
                             }
                         }
                         else
@@ -126,18 +126,18 @@ namespace Web.Controllers
                                 "максимум 32 символа\n" +
                                 "буква в нижнем регистре\n" +
                                 "буква в верхнем регистре",
-                                type = NotifyType.Warning.ToString()
+                                type = NotifyType.Warning
                             });
                         }
                     }
                     else
                     {
-                        return Json(new { message = "Пользователь с таким email уже зарегистрирован!", type = NotifyType.Warning.ToString() });
+                        return Json(new { message = "Пользователь с таким email уже зарегистрирован!", type = NotifyType.Warning });
                     }
                 }
                 else
                 {
-                    return Json(new { message = "Логин занят", type = NotifyType.Warning.ToString() });
+                    return Json(new { message = "Логин занят", type = NotifyType.Warning });
                 }
             }
             else
@@ -148,7 +148,7 @@ namespace Web.Controllers
                     "может состоять только из латинских символов и цифр\n" +
                     "минимум 6 символов\n" +
                     "максимум 24 символа",
-                    type = NotifyType.Warning.ToString()
+                    type = NotifyType.Warning
                 });
             }
         }

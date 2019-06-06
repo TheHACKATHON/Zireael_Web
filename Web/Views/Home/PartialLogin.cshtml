@@ -27,15 +27,13 @@
 <script>
     function OnSuccess(data) {
         if (data) {
-            if (data.code === "Success") {
-                location.pathname = "/";
+            if (data.Code === NotifyType.Success) {
+                location.reload();
             }
-            else if (data.code === "Error") {
-                //console.log(data.error, true);
-                popup(data.error, 'error');
+            else if (data.Code === NotifyType.Error) {
+                popup(data.Error, 'error');
             }
             else {
-                //console.log("Мы потеряли связь с космосом, пытаемся восстановить квантовый соединитель. Попробуй позже", true);
                 popup("Мы потеряли связь с космосом, пытаемся восстановить квантовый соединитель. Попробуйте позже",
                     'error');
             }

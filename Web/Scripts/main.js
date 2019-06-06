@@ -7,7 +7,7 @@ document.addEventListener('click', function (e) {
     let target = e.target;
 
     if (!target.matches('label[for="file"], input[type="file"]')) {
-    //    e.preventDefault();
+        //e.preventDefault();
     }
 
     if (target.matches(".main-menu") || target.closest(".main-menu")) {
@@ -18,7 +18,13 @@ document.addEventListener('click', function (e) {
         $(".tg_head_logo_dropdown.dropdown").removeClass("open");
         $(".tg_head_peer_dropdown.tg_head_peer_media_dropdown.dropdown").toggleClass("open");
     }
-    else if (target.closest(".menu-settings")) {
+    else {
+        $(".tg_head_logo_dropdown.dropdown").
+            add(".tg_head_peer_dropdown.tg_head_peer_media_dropdown.dropdown").
+            removeClass("open");
+    }
+
+    if (target.closest(".menu-settings")) {
         document.querySelector(".modal-backdrop").classList.remove("hide");
     }
     else if (target.closest(".menu-exit")) {
@@ -63,9 +69,6 @@ document.addEventListener('click', function (e) {
                         $('.scrollbar-macosx-messages').scrollbar({ disableBodyScroll: true });
                     }
                     $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
-                   // $('.scrollbar-macosx-messages').scrollbar({ disableBodyScroll: true });
-
-
                 }
                 else {
                     popup(data.Error, data.Code);
@@ -74,39 +77,28 @@ document.addEventListener('click', function (e) {
         };
     }
     else if (target.matches("a.send")) {
-        //let avatarData = new FormData();
-        //avatarData.append("ids", []);
-        //var xhr = new XMLHttpRequest();
-        //xhr.open('POST', `/sendmessage`);
-        //xhr.send(data);
-        //xhr.onreadystatechange = function () {
-        //    if (xhr.readyState == 4 && xhr.status == 200) {
-        //        let data = JSON.parse(xhr.responseText);
-        //        if (data.Code != NotifyType.Success) {
-        //            popup(data.Error, data.Code);
-        //        }
-        //    }
-        //};
-
         let hash = new Date().getUTCMilliseconds();
-        let text = document.querySelector(".panel-write textarea").value;
+        let text = $('.panel-write textarea[name=msg]').val();
+        $('textarea[name=msg]').val("");
         if (text.length > 0) {
             let groupId = document.querySelector(".message-list-wrap ul[data-id]").getAttribute("data-id");
             let messagesContainer = document.querySelector(".message-list-wrap ul.activeUl");
 
             messagesContainer.appendChild(
                 Generator.MessageHTML({
-                    Id: null,
-                    Hash: hash,
-                    Text: text,
-                    GroupId: groupId,
-                    DateTime: null,
-                    Sender: {
-                        Login: null,
-                        DisplayName: _currentUser.DisplayName,
+                        Id: null,
+                        Hash: hash,
+                        Text: text,
+                        GroupId: groupId,
+                        DateTime: null,
+                        Sender: {
+                            Login: _currentUser.Login,
+                            DisplayName: _currentUser.DisplayName,
+                        },
                     },
-                }, _currentUser.Avatar))
-
+                    _currentUser.Avatar));
+            $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
+            
             let data = new FormData();
             data.append("text", text);
             data.append("groupId", groupId);
@@ -125,11 +117,7 @@ document.addEventListener('click', function (e) {
             };
         }
     }
-    else {
-        $(".tg_head_logo_dropdown.dropdown").
-            add(".tg_head_peer_dropdown.tg_head_peer_media_dropdown.dropdown").
-            removeClass("open");
-    }
+   
 });
 
 function hideChats() {
@@ -169,4 +157,14 @@ $('.scrollbar-macosx-chats').mousewheel(function (event) {
     //}
    // console.log(event);
    // console.log(parseFloat($(".scrollbar-macosx > .scroll-element.scroll-y .scroll-bar").css("top")), $('.scrollbar-macosx-messages').not('.scroll-content').height(),  y_chats)
+});
+
+$('textarea[name=msg]').on('keyup', (e) => {
+    e = e || window.event;
+    if (e.keyCode === 13) {
+        const input = document.querySelector("a.send");
+        if (input !== null && input !== undefined) {
+            input.click();
+        }
+    }
 });

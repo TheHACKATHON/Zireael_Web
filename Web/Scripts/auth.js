@@ -7,12 +7,12 @@ function ChangePasswordSuccess(data) {
     if (data) {
         if (data.type) {
             switch (data.type) {
-                case "ERROR": {
+                case NotifyType.Error: {
                     $("input:not([type='email'])").removeAttr("disabled");
                     console.log(data.message);
                     break;
                 }
-                case "OK": {
+                case NotifyType.Success: {
                     console.log(data.message);
                     break;
                 }
@@ -24,3 +24,17 @@ function ChangePasswordSuccess(data) {
 function OnBegin() {
     $("input").attr("disabled", "disabled");
 }
+
+document.onkeyup = function(e) {
+    e = e || window.event;
+    if (e.keyCode === 13) {
+        const input = document.querySelector("input[type=submit]");
+        if (input !== null && input !== undefined) {
+            input.click();
+        }
+    }
+};
+
+$(document).ready(() => {
+    $("#loading").css("display", "none");
+})

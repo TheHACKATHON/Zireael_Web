@@ -281,7 +281,7 @@ body {
 }
 
 .bottom-right.do-show {
-    animation: slide-in-right 1s ease-in-out forwards, slide-in-right 1s ease-in-out reverse forwards 5s;
+    animation: slide-in-right 1s ease-in-out forwards, slide-in-right 1s ease-in-out reverse forwards 3.5s;
 }
 
 .bottom-right[data-notification-status="notice"] {
