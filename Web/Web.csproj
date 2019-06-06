@@ -242,9 +242,6 @@
     <None Include="Connected Services\ServiceReference1\Wcf_CeadChat_ServiceLibrary.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Connected Services\ServiceReference1\Web.ServiceReference1.AvatarGroupWCF.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="Connected Services\ServiceReference1\Web.ServiceReference1.AvatarUserWCF.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -270,6 +267,9 @@
     <Content Include="Content\Fonts\RobotoMono-Regular.ttf" />
     <Content Include="Content\Fonts\RobotoMono-Thin.ttf" />
     <Content Include="Content\Fonts\RobotoMono-ThinItalic.ttf" />
+    <Content Include="Connected Services\ServiceReference1\Web.ServiceReference1.AvatarWCF.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\2.5.3-crypto-md5.js" />
     <Content Include="Scripts\auth.js" />

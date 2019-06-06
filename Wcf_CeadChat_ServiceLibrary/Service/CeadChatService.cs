@@ -113,7 +113,7 @@ namespace Wcf_CeadChat_ServiceLibrary
             var uc = _onlineUsers.FirstOrDefault(o => o.Key == userChanged);
             return uc.Value;//получаем учетку по текущему подключению
         }
-    
+
         private string GetConnectionId(IUserChanged user, string sessionId)
         {
             var context = new ChatContext();
@@ -272,7 +272,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                         {
                             action.Invoke(user.Key);
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             ChatContext context = new ChatContext();
                             context.Database.Log += WriteLog;
@@ -350,7 +350,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                                       if (!(message is MessageFileWCF))
                                       {
                                           user.CreateMessageCallback(new MessageWCF(msg), hash, GetConnectionId(user, _onlineUsers[user].SessionId));//передаем сообщение всем пользователям которые онлайн(в этой группе)
-                                      user.NewLastMessageCallback(new MessageWCF(msg), GetConnectionId(user, _onlineUsers[user].SessionId));
+                                          user.NewLastMessageCallback(new MessageWCF(msg), GetConnectionId(user, _onlineUsers[user].SessionId));
                                       }
                                   });
                                 }
@@ -531,7 +531,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     var sender = _onlineUsers.FirstOrDefault(u => u.Key == userChanged).Value;
                     sender = context.Users.FirstOrDefault(u => u.Id == sender.Id);
 
-                    if(!context.Groups.ToList().Any(g => g.Id == groupId && g.Users.Any(u => u.Id == sender.Id)))
+                    if (!context.Groups.ToList().Any(g => g.Id == groupId && g.Users.Any(u => u.Id == sender.Id)))
                     {
                         return null;
                     }
@@ -1268,14 +1268,14 @@ namespace Wcf_CeadChat_ServiceLibrary
                 var context = new ChatContext();
                 var user = context.Sessions.FirstOrDefault(s => s.SessionId.Equals(session)).User;
                 var userWc = new UserWCF(user, session);
-                if(userWc != null && !_onlineUsers.ContainsKey(OperationContext.Current.GetCallbackChannel<IUserChanged>()))
+                if (userWc != null && !_onlineUsers.ContainsKey(OperationContext.Current.GetCallbackChannel<IUserChanged>()))
                 {
                     user.SessionId = session;
                     _onlineUsers.Add(OperationContext.Current.GetCallbackChannel<IUserChanged>(), user);
                 }
                 return userWc;
             }, true);
-            if(result is UserWCF userWcf)
+            if (result is UserWCF userWcf)
             {
                 return userWcf;
             }
@@ -1315,7 +1315,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                  user.IsOnline = true;
                  user.Token = CreateToken(user);
                  context.SaveChanges();
-                 
+
                  var session = $"{user.Id}{CreateToken(user)}";
                  context.Sessions.Add(new Session(user, session));
                  context.SaveChanges();
@@ -1813,10 +1813,24 @@ namespace Wcf_CeadChat_ServiceLibrary
             return false;
         }
 
-        public string GetName(int id) => new ChatContext().Users.SingleOrDefault(u => u.Id.Equals(id))?.DisplayName;
-        public string GetGroupName(int id) => new ChatContext().Groups.SingleOrDefault(g => g.Id.Equals(id))?.Name;
+        public string GetName(int id) => /* todo: добавить TryExecute */ new ChatContext().Users.SingleOrDefault(u => u.Id.Equals(id))?.DisplayName;
+        public string GetGroupName(int id)
+        {
+            /* todo: добавить TryExecute */
+            var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();
+            var context = Context(userChanged);
+            var group = context.Groups.SingleOrDefault(g => g.Id.Equals(id));
 
-        public IEnumerable<AvatarUserWCF> GetAvatarUsers(IEnumerable<UserBaseWCF> users)
+            if(group.Type.Equals(GroupType.SingleUser))
+            {
+                var sender = _onlineUsers[userChanged];
+                var userResipient = group.Users.SingleOrDefault(u => u.Id != sender.Id);
+                return userResipient.DisplayName;
+            }
+            return group.Name;
+        }
+
+        public IEnumerable<AvatarUserWCF> GetAvatarUsers(IEnumerable<int> users)
         {
             var result = TryExecute(() =>
             {
@@ -1828,7 +1842,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     List<AvatarUserWCF> avatars = new List<AvatarUserWCF>();
                     foreach (var user in users)
                     {
-                        foreach (var item in context.AvatarUsers.ToList().Where(a => a.User.Id == user.Id))
+                        foreach (var item in context.AvatarUsers.ToList().Where(a => a.User.Id == user))
                         {
                             avatars.Add(new AvatarUserWCF(item));
                         }
@@ -1902,7 +1916,7 @@ namespace Wcf_CeadChat_ServiceLibrary
             return false;
         }
 
-        public IEnumerable<AvatarGroupWCF> GetAvatarGroups(IEnumerable<GroupWCF> groups)//получение аватаров всех групп
+        public IEnumerable<AvatarWCF> GetAvatarGroups(IEnumerable<int> groups)//получение аватаров всех групп
         {
             var result = TryExecute(() =>
             {
@@ -1910,12 +1924,25 @@ namespace Wcf_CeadChat_ServiceLibrary
                 ChatContext context = Context(userChanged);
                 if (context != null)
                 {
-                    List<AvatarGroupWCF> avatars = new List<AvatarGroupWCF>();
+                    List<AvatarWCF> avatars = new List<AvatarWCF>();
                     foreach (var group in groups)
                     {
-                        foreach (var item in context.AvatarGroups.Where(a => a.Group.Id == group.Id))
+                        var groupOriginal = context.Groups.ToList().SingleOrDefault(g => g.Id.Equals(group));
+                        if (groupOriginal.Type.Equals(GroupType.SingleUser))
                         {
-                            avatars.Add(new AvatarGroupWCF(item));
+                            var sender = _onlineUsers[userChanged];
+                            var avatarUserId = groupOriginal.Users.SingleOrDefault(u => u.Id != sender.Id).Id;
+                            foreach (var item in context.AvatarUsers.Where(a => a.User.Id == avatarUserId))
+                            {
+                                avatars.Add(new AvatarUserWCF(item));
+                            }
+                        }
+                        else
+                        {
+                            foreach (var item in context.AvatarGroups.Where(a => a.Group.Id == group))
+                            {
+                                avatars.Add(new AvatarGroupWCF(item));
+                            }
                         }
                     }
                     return avatars;

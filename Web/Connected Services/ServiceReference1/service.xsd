@@ -306,7 +306,7 @@
   <xs:element name="GetAvatarUsers">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="users" nillable="true" type="q21:ArrayOfUserBaseWCF" />
+        <xs:element xmlns:q21="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="users" nillable="true" type="q21:ArrayOfint" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -374,14 +374,14 @@
   <xs:element name="GetAvatarGroups">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="groups" nillable="true" type="q26:ArrayOfGroupWCF" />
+        <xs:element xmlns:q26="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="groups" nillable="true" type="q26:ArrayOfint" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetAvatarGroupsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="GetAvatarGroupsResult" nillable="true" type="q27:ArrayOfAvatarGroupWCF" />
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="GetAvatarGroupsResult" nillable="true" type="q27:ArrayOfAvatarWCF" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

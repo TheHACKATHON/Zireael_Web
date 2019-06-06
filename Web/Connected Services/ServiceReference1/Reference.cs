@@ -1079,10 +1079,10 @@ namespace Web.ServiceReference1 {
         System.Threading.Tasks.Task<bool> SetAvatarUserAsync(Web.ServiceReference1.AvatarUserWCF avatar);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetAvatarUsers", ReplyAction="http://tempuri.org/ICeadChatService/GetAvatarUsersResponse")]
-        Web.ServiceReference1.AvatarUserWCF[] GetAvatarUsers(Web.ServiceReference1.UserBaseWCF[] users);
+        Web.ServiceReference1.AvatarUserWCF[] GetAvatarUsers(int[] users);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetAvatarUsers", ReplyAction="http://tempuri.org/ICeadChatService/GetAvatarUsersResponse")]
-        System.Threading.Tasks.Task<Web.ServiceReference1.AvatarUserWCF[]> GetAvatarUsersAsync(Web.ServiceReference1.UserBaseWCF[] users);
+        System.Threading.Tasks.Task<Web.ServiceReference1.AvatarUserWCF[]> GetAvatarUsersAsync(int[] users);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetDontReadMessagesFromGroups", ReplyAction="http://tempuri.org/ICeadChatService/GetDontReadMessagesFromGroupsResponse")]
         System.Collections.Generic.Dictionary<int, int> GetDontReadMessagesFromGroups(int[] groupsId);
@@ -1109,10 +1109,10 @@ namespace Web.ServiceReference1 {
         System.Threading.Tasks.Task<bool> SetAvatarGroupAsync(Web.ServiceReference1.AvatarGroupWCF avatar);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetAvatarGroups", ReplyAction="http://tempuri.org/ICeadChatService/GetAvatarGroupsResponse")]
-        Web.ServiceReference1.AvatarGroupWCF[] GetAvatarGroups(Web.ServiceReference1.GroupWCF[] groups);
+        Web.ServiceReference1.AvatarWCF[] GetAvatarGroups(int[] groups);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetAvatarGroups", ReplyAction="http://tempuri.org/ICeadChatService/GetAvatarGroupsResponse")]
-        System.Threading.Tasks.Task<Web.ServiceReference1.AvatarGroupWCF[]> GetAvatarGroupsAsync(Web.ServiceReference1.GroupWCF[] groups);
+        System.Threading.Tasks.Task<Web.ServiceReference1.AvatarWCF[]> GetAvatarGroupsAsync(int[] groups);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/ChangeProfileInfo", ReplyAction="http://tempuri.org/ICeadChatService/ChangeProfileInfoResponse")]
         bool ChangeProfileInfo(string displayName, string login);
@@ -1474,11 +1474,11 @@ namespace Web.ServiceReference1 {
             return base.Channel.SetAvatarUserAsync(avatar);
         }
         
-        public Web.ServiceReference1.AvatarUserWCF[] GetAvatarUsers(Web.ServiceReference1.UserBaseWCF[] users) {
+        public Web.ServiceReference1.AvatarUserWCF[] GetAvatarUsers(int[] users) {
             return base.Channel.GetAvatarUsers(users);
         }
         
-        public System.Threading.Tasks.Task<Web.ServiceReference1.AvatarUserWCF[]> GetAvatarUsersAsync(Web.ServiceReference1.UserBaseWCF[] users) {
+        public System.Threading.Tasks.Task<Web.ServiceReference1.AvatarUserWCF[]> GetAvatarUsersAsync(int[] users) {
             return base.Channel.GetAvatarUsersAsync(users);
         }
         
@@ -1514,11 +1514,11 @@ namespace Web.ServiceReference1 {
             return base.Channel.SetAvatarGroupAsync(avatar);
         }
         
-        public Web.ServiceReference1.AvatarGroupWCF[] GetAvatarGroups(Web.ServiceReference1.GroupWCF[] groups) {
+        public Web.ServiceReference1.AvatarWCF[] GetAvatarGroups(int[] groups) {
             return base.Channel.GetAvatarGroups(groups);
         }
         
-        public System.Threading.Tasks.Task<Web.ServiceReference1.AvatarGroupWCF[]> GetAvatarGroupsAsync(Web.ServiceReference1.GroupWCF[] groups) {
+        public System.Threading.Tasks.Task<Web.ServiceReference1.AvatarWCF[]> GetAvatarGroupsAsync(int[] groups) {
             return base.Channel.GetAvatarGroupsAsync(groups);
         }
         

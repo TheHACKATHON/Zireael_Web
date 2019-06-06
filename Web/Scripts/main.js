@@ -1,4 +1,5 @@
 ﻿var _currentUser = null;
+var _defaultAvatar = "/Content/Images/Zireael_back.png"
 
 document.addEventListener('click', function (e) {
 
@@ -46,7 +47,7 @@ document.addEventListener('click', function (e) {
                         groupUl.classList.add("activeUl");
 
                         data.messages.forEach((message) => {
-                            groupUl.appendChild(Generator.MessageHTML(message, data.avatarsDictionary.find(a => a.userId == message.Sender.Id), data._defaultAvatar));
+                            groupUl.appendChild(Generator.MessageHTML(message, `/user/${_currentUser.Id}/${Crypto.MD5(_currentUser.DisplayName)}`));
                         });
                         chatsContainer.appendChild(groupUl);
                     }
@@ -90,9 +91,9 @@ document.addEventListener('click', function (e) {
                     DateTime: null,
                     Sender: {
                         Login: null,
-                        DisplayName: "Я",
+                        DisplayName: _currentUser.DisplayName,
                     },
-                }, { avatar: "/Content/Images/Zireael_back.png" }, "/Content/Images/Zireael_back.png"))
+                }, _currentUser.Avatar))
 
             let data = new FormData();
             data.append("text", text);

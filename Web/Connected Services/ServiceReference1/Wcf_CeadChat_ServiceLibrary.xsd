@@ -149,10 +149,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfAvatarUserWCF" nillable="true" type="tns:ArrayOfAvatarUserWCF" />
-  <xs:complexType name="ArrayOfAvatarGroupWCF">
+  <xs:complexType name="ArrayOfAvatarWCF">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="AvatarGroupWCF" nillable="true" type="tns:AvatarGroupWCF" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AvatarWCF" nillable="true" type="tns:AvatarWCF" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfAvatarGroupWCF" nillable="true" type="tns:ArrayOfAvatarGroupWCF" />
+  <xs:element name="ArrayOfAvatarWCF" nillable="true" type="tns:ArrayOfAvatarWCF" />
 </xs:schema>

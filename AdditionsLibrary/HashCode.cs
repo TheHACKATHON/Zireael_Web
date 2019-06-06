@@ -9,10 +9,18 @@ namespace AdditionsLibrary
     {
         public static string GetMD5(string data)
         {
-            var md5 = MD5.Create();
-            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(data));
-
-            return Convert.ToBase64String(hash);
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] inputBytes = Encoding.ASCII.GetBytes(data);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+                
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("X2"));
+                }
+                return sb.ToString();
+            }
         }
         public static string ComputeFromBytes(params byte[] data)
         {

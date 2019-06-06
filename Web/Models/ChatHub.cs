@@ -24,8 +24,7 @@ namespace Web.Models
         {
             var client = new CeadChatServiceClient(new InstanceContext(this));
             var currentUser = client.Connect(Context.RequestCookies["SessionId"].Value, Context.ConnectionId);
-            var avatar = client.GetAvatarUsers(new[] {new UserWCF {Id = currentUser.Id}});
-            return JsonConvert.SerializeObject(new {Id = currentUser.Id, Email = currentUser.Email, Login = currentUser.Login, Avatar = ""});
+            return JsonConvert.SerializeObject(new { Id = currentUser.Id, Email = currentUser.Email, DisplayName = currentUser.DisplayName, Login = currentUser.Login, Avatar = $"user/{currentUser.Id}/{AdditionsLibrary.HashCode.GetMD5(currentUser.DisplayName)}" });
         }
 
         public void CreateChatCallback(GroupWCF group, int creatorId, string connectionId)

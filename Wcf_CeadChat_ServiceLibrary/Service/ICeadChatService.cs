@@ -75,7 +75,7 @@ namespace Wcf_CeadChat_ServiceLibrary
         bool SetAvatarUser(AvatarUserWCF avatar);//установка аватара
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        IEnumerable<AvatarUserWCF> GetAvatarUsers(IEnumerable<UserBaseWCF> users);//получение аватара пользователей
+        IEnumerable<AvatarUserWCF> GetAvatarUsers(IEnumerable<int> users);//получение аватара пользователей
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         Dictionary<int, int> GetDontReadMessagesFromGroups(IEnumerable<int> groupsId);//получение количество не прочитаных сообщений для отправляющего запрос
@@ -90,7 +90,7 @@ namespace Wcf_CeadChat_ServiceLibrary
         bool SetAvatarGroup(AvatarGroupWCF avatar);//установить аватарку группе
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        IEnumerable<AvatarGroupWCF> GetAvatarGroups(IEnumerable<GroupWCF> groups);//получить аватарки групп
+        IEnumerable<AvatarWCF> GetAvatarGroups(IEnumerable<int> groups);//получить аватарки групп
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         bool ChangeProfileInfo(string displayName, string login);//изменить параметры профиля(в не нужные параметры передавать null)

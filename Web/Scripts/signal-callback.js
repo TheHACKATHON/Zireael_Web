@@ -17,7 +17,7 @@
         messageElement.removeAttribute("data-hash");
         messageElement.setAttribute("data-id", message.Id);
         let time = messageElement.querySelector("p.time");
-        time.textContent = new Date(message.DateTime).toTimeString();
+        time.textContent = new Date(message.DateTime).toLocaleTimeString();
         //todo: добавить класс который означает что сообщение пришло
     };
 

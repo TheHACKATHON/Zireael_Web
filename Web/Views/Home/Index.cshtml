@@ -87,6 +87,7 @@
                     foreach (var group in ViewBag.Groups)
                     {
                         var md5 = AdditionsLibrary.HashCode.GetMD5(group.Name);
+                        
                         //var letter = string.Empty;
                         //var classletter = string.Empty;
                         //if (ViewBag.Avatars[group.Id] == ViewBag.DefaultAvatar)
@@ -97,19 +98,12 @@
                         //        classletter = "letter";
                         //    }
                         //}
-                        if(group.Type == 0)
-                        {
-                            // single
-                        }
-                        else if (group.Type == 1)
-                        {
-
-                        }
+                        
                         var time = group.LastMessage?.DateTime?.ToShortTimeString();
                         <li>
                             <a data-id="@group.Id" class="group">
                                 <div class="wrap-img">
-                                    <img src="/group/@group.Id/@md5" alt="logo">
+                                    <img src="/group/@group.Id/@(md5)" alt="logo">
                                 </div>
                                 <div class="super">
                                     <div class="super-top">
@@ -153,6 +147,8 @@
         </div>
     </div>
 </div>
+
+<div class="back"></div>
 
 <div class="modal-backdrop hide">
     <div class="modal-backdrop-dialog">

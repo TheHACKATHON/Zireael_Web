@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
+using System.Web.UI;
 using Web.Models;
 using Web.ServiceReference1;
 
@@ -24,7 +26,7 @@ namespace Web.Controllers
         public HomeController(CeadChatServiceClient client)
         {
             _client = client;
-            var file = HostingEnvironment.MapPath("~/Content/Fonts/RobotoMono-Regular.ttf");
+            var file = HostingEnvironment.MapPath("~/Content/Fonts/RobotoMono-Bold.ttf");
             _fonts.AddFontFile(file);
         }
         [HttpPost]
@@ -38,7 +40,7 @@ namespace Web.Controllers
                 {
                     var avatarsDictionary = new List<object>();
 
-                    var avatars = _client.GetAvatarUsers(messages.Select(m => m.Sender).Distinct(new UserComparer()).ToArray());
+                    var avatars = _client.GetAvatarUsers(messages.Select(m => m.Sender).Distinct(new UserComparer()).Select(u => u.Id).ToArray());
                     foreach (var user in messages.Select(m => m.Sender).Distinct(new UserComparer()))
                     {
                         if (avatars.Any(a => a.User.Id.Equals(user.Id)))
@@ -85,9 +87,10 @@ namespace Web.Controllers
             return Json(false);
         }
         [HttpGet]
-        public async Task<ActionResult> UserImage(int userId = 0, string hash = "", int id = 1)
+        [OutputCache(Duration = 1800, Location = OutputCacheLocation.Downstream)]
+        public async Task<ActionResult> UserImage(int userId = 0, string hash = "")
         {
-            var avatar = (await _client.GetAvatarUsersAsync(new[] { new UserBaseWCF { Id = userId } }))?.SingleOrDefault();
+            var avatar = (await _client.GetAvatarUsersAsync(new[] { userId }))?.SingleOrDefault();
             if (avatar is null)
             {
                 var username = await _client.GetNameAsync(userId);
@@ -119,9 +122,10 @@ namespace Web.Controllers
             return HttpNotFound();
         }
         [HttpGet]
-        public async Task<ActionResult> GroupImage(int groupId = 0, string hash = "", int id = 1)
+        [OutputCache(Duration = 1800, Location = OutputCacheLocation.Downstream)]
+        public async Task<ActionResult> GroupImage(int groupId = 0, string hash = "")
         {
-            var avatar = (await _client.GetAvatarGroupsAsync(new[] { new GroupWCF { Id = groupId } }))?.SingleOrDefault();
+            var avatar = (await _client.GetAvatarGroupsAsync(new[] { groupId } ))?.SingleOrDefault();
             if (avatar is null)
             {
                 var username = await _client.GetGroupNameAsync(groupId);
@@ -134,7 +138,9 @@ namespace Web.Controllers
                 {
                     using (var g = Graphics.FromImage(bitmap))
                     {
-                        g.DrawString(username.Substring(0, 1).ToUpper(), new Font(_fonts.Families[0], 90), Brushes.White, new RectangleF(7, -20, 128, 128), new StringFormat(StringFormatFlags.NoClip));
+                        g.SmoothingMode = SmoothingMode.HighQuality;
+                        
+                        g.DrawString(username.Substring(0, 1).ToUpper(), new Font(_fonts.Families[0], 84), Brushes.White, new RectangleF(12, -13, 128, 128), new StringFormat(StringFormatFlags.NoClip));
                     }
                     using (var ms = new MemoryStream())
                     {
@@ -145,10 +151,21 @@ namespace Web.Controllers
             }
             if (avatar != null)
             {
-                if (HashCode.GetMD5(avatar.Group.Name).Equals(hash, StringComparison.OrdinalIgnoreCase))
+                if(avatar is AvatarGroupWCF groupAvatar)
                 {
-                    return File(avatar.BigData, "image/png");
+                    if (HashCode.GetMD5(groupAvatar.Group.Name).Equals(hash, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return File(avatar.BigData, "image/png");
+                    }
                 }
+                else if(avatar is AvatarUserWCF userAvatar)
+                {
+                    if (HashCode.GetMD5(userAvatar.User.DisplayName).Equals(hash, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return File(avatar.BigData, "image/png");
+                    }
+                } 
+                
             }
             return HttpNotFound();
         }
@@ -197,7 +214,13 @@ namespace Web.Controllers
                     //ViewBag.DefaultAvatar = _defaultAvatar;
                     //ViewBag.Avatars = avatars;
                     ViewBag.DontReaded = _client.GetDontReadMessagesFromGroups(user.Groups.Select(g => g.Id).ToArray());
+                    user.Groups.ToList().ForEach(g => 
+                        g.Name = g.Type.Equals(GroupType.SingleUser) 
+                        ? g.Users.SingleOrDefault(u => u.Id != user.Id).DisplayName
+                        : g.Name);
+
                     ViewBag.Groups = user.Groups.OrderByDescending(g => g.LastMessage.DateTime);
+
                     return View("Index");
                 }
             }
@@ -207,14 +230,11 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<JsonResult> GetAvatars(int[] ids)
         {
+            // todo: проверить используется ли этот метод
             // todo получение ссылок на аватары
             // формат: { Id, Path }
-            var users = new List<UserWCF>();
-            foreach (var id in ids)
-            {
-                users.Add(new UserWCF() { Id = id });
-            }
-            var avatars = await _client.GetAvatarUsersAsync(users.ToArray());
+
+            var avatars = await _client.GetAvatarUsersAsync(ids);
             var result = new List<object>();
             foreach (var userId in ids)
             {
