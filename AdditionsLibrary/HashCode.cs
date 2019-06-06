@@ -1,11 +1,19 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace AdditionsLibrary
 {
     public static class HashCode
     {
+        public static string GetMD5(string data)
+        {
+            var md5 = MD5.Create();
+            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(data));
+
+            return Convert.ToBase64String(hash);
+        }
         public static string ComputeFromBytes(params byte[] data)
         {
             using (SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider())

@@ -1811,6 +1811,7 @@ namespace Wcf_CeadChat_ServiceLibrary
         }
 
         public string GetName(int id) => new ChatContext().Users.SingleOrDefault(u => u.Id.Equals(id))?.DisplayName;
+        public string GetGroupName(int id) => new ChatContext().Groups.SingleOrDefault(g => g.Id.Equals(id))?.Name;
 
         public IEnumerable<AvatarUserWCF> GetAvatarUsers(IEnumerable<UserBaseWCF> users)
         {

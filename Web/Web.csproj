@@ -271,6 +271,7 @@
     <Content Include="Content\Fonts\RobotoMono-Thin.ttf" />
     <Content Include="Content\Fonts\RobotoMono-ThinItalic.ttf" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\2.5.3-crypto-md5.js" />
     <Content Include="Scripts\auth.js" />
     <Content Include="Scripts\generator.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -324,6 +325,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\ServiceReference1\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdditionsLibrary\AdditionsLibrary.csproj">
+      <Project>{ea84eba0-4e17-4c67-8224-48392e6374b1}</Project>
+      <Name>AdditionsLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

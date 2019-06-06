@@ -86,22 +86,30 @@
                 {
                     foreach (var group in ViewBag.Groups)
                     {
-                        var letter = string.Empty;
-                        var classletter = string.Empty;
-                        if (ViewBag.Avatars[group.Id] == ViewBag.DefaultAvatar)
+                        var md5 = AdditionsLibrary.HashCode.GetMD5(group.Name);
+                        //var letter = string.Empty;
+                        //var classletter = string.Empty;
+                        //if (ViewBag.Avatars[group.Id] == ViewBag.DefaultAvatar)
+                        //{
+                        //    if (group?.Name?.Length > 0)
+                        //    {
+                        //        letter = group.Name.Substring(0, 1);
+                        //        classletter = "letter";
+                        //    }
+                        //}
+                        if(group.Type == 0)
                         {
-                            if (group?.Name?.Length > 0)
-                            {
-                                letter = group.Name.Substring(0, 1);
-                                classletter = "letter";
-                            }
+                            // single
+                        }
+                        else if (group.Type == 1)
+                        {
+
                         }
                         var time = group.LastMessage?.DateTime?.ToShortTimeString();
                         <li>
                             <a data-id="@group.Id" class="group">
-                                <div class="wrap-img @classletter">
-                                    <h2>@letter</h2>
-                                    <img src="@ViewBag.Avatars[group.Id]" alt="logo">
+                                <div class="wrap-img">
+                                    <img src="/group/@group.Id/@md5" alt="logo">
                                 </div>
                                 <div class="super">
                                     <div class="super-top">
@@ -160,6 +168,7 @@
 @Scripts.Render("~/Scripts/jquery.signalR-2.4.1.min.js")
 @Scripts.Render("~/signalr/hubs")
 
+@Scripts.Render("~/Scripts/2.5.3-crypto-md5.js")
 @Scripts.Render("~/Scripts/generator.js")
 
 @Scripts.Render("~/Scripts/main.js")

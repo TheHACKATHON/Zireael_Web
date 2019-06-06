@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdditionsLibrary;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -84,20 +85,22 @@ namespace Web.Controllers
             return Json(false);
         }
         [HttpGet]
-        public async Task<ActionResult> UserImage(int userId = 0, int id = 1)
+        public async Task<ActionResult> UserImage(int userId = 0, string hash = "", int id = 1)
         {
-            var avatar = _client.GetAvatarUsers(new[] { new UserBaseWCF { Id = userId } })?.SingleOrDefault();
+            var avatar = (await _client.GetAvatarUsersAsync(new[] { new UserBaseWCF { Id = userId } }))?.SingleOrDefault();
             if (avatar is null)
             {
-                //todo доделать
                 var username = await _client.GetNameAsync(userId);
                 if (username is null) return HttpNotFound();
-                avatar = new AvatarUserWCF();
+                avatar = new AvatarUserWCF
+                {
+                    User = new UserBaseWCF { Id = userId, DisplayName = username }
+                };
                 using (var bitmap = Image.FromFile(HostingEnvironment.MapPath(_defaultAvatar)))
                 {
                     using(var g = Graphics.FromImage(bitmap))
                     {
-                        g.DrawString(username.Substring(0,1).ToUpper(), new Font(_fonts.Families[0], 100), Brushes.White, 0f, 0f);
+                        g.DrawString(username.Substring(0,1).ToUpper(), new Font(_fonts.Families[0], 90), Brushes.White, new RectangleF(7,-20,128,128), new StringFormat(StringFormatFlags.NoClip));
                     }
                     using (var ms = new MemoryStream())
                     {
@@ -106,7 +109,48 @@ namespace Web.Controllers
                     }
                 }
             }
-            return File(avatar.BigData, "image/png");
+            if (avatar != null)
+            {
+                if(HashCode.GetMD5(avatar.User.DisplayName).Equals(hash, StringComparison.OrdinalIgnoreCase))
+                {
+                    return File(avatar.BigData, "image/png");
+                }
+            }
+            return HttpNotFound();
+        }
+        [HttpGet]
+        public async Task<ActionResult> GroupImage(int groupId = 0, string hash = "", int id = 1)
+        {
+            var avatar = (await _client.GetAvatarGroupsAsync(new[] { new GroupWCF { Id = groupId } }))?.SingleOrDefault();
+            if (avatar is null)
+            {
+                var username = await _client.GetGroupNameAsync(groupId);
+                if (username is null) return HttpNotFound();
+                avatar = new AvatarGroupWCF
+                {
+                    Group = new GroupWCF{ Id = groupId, Name = username }
+                };
+                using (var bitmap = Image.FromFile(HostingEnvironment.MapPath(_defaultAvatar)))
+                {
+                    using (var g = Graphics.FromImage(bitmap))
+                    {
+                        g.DrawString(username.Substring(0, 1).ToUpper(), new Font(_fonts.Families[0], 90), Brushes.White, new RectangleF(7, -20, 128, 128), new StringFormat(StringFormatFlags.NoClip));
+                    }
+                    using (var ms = new MemoryStream())
+                    {
+                        bitmap.Save(ms, ImageFormat.Png);
+                        avatar.BigData = ms.ToArray();
+                    }
+                }
+            }
+            if (avatar != null)
+            {
+                if (HashCode.GetMD5(avatar.Group.Name).Equals(hash, StringComparison.OrdinalIgnoreCase))
+                {
+                    return File(avatar.BigData, "image/png");
+                }
+            }
+            return HttpNotFound();
         }
         [HttpGet]
         public async Task<ActionResult> Index()
@@ -116,42 +160,42 @@ namespace Web.Controllers
                 var user = await _client.CheckSessionAsync($"{Request.Cookies["SessionId"].Value}");
                 if (user != null)
                 {
-                    var avatars = new Dictionary<int, string>();
-                    foreach (var group in user.Groups)
-                    {
-                        var stringAvatar = string.Empty;
-                        var userType = string.Empty;
-                        var id = -1;
-                        AvatarWCF avatar = null;
-                        if (group.Type.Equals(GroupType.SingleUser))
-                        {
-                            var userNoNeEtot = group.Users.SingleOrDefault(u => u.Id != user.Id);
-                            group.Name = userNoNeEtot.DisplayName;
-                            avatar = _client.GetAvatarUsers(new[] { new UserBaseWCF { Id = userNoNeEtot.Id } }).SingleOrDefault();
-                            userType = "user";
-                            id = userNoNeEtot.Id;
+                    //var avatars = new Dictionary<int, string>();
+                    //foreach (var group in user.Groups)
+                    //{
+                    //    var stringAvatar = string.Empty;
+                    //    var userType = string.Empty;
+                    //    var id = -1;
+                    //    AvatarWCF avatar = null;
+                    //    if (group.Type.Equals(GroupType.SingleUser))
+                    //    {
+                    //        var userNoNeEtot = group.Users.SingleOrDefault(u => u.Id != user.Id);
+                    //        group.Name = userNoNeEtot.DisplayName;
+                    //        avatar = _client.GetAvatarUsers(new[] { new UserBaseWCF { Id = userNoNeEtot.Id } }).SingleOrDefault();
+                    //        userType = "user";
+                    //        id = userNoNeEtot.Id;
 
-                        }
-                        else
-                        {
-                            avatar = _client.GetAvatarGroups(new[] { new GroupWCF { Id = group.Id } }).SingleOrDefault();
-                            userType = "group";
-                            id = group.Id;
-                        }
+                    //    }
+                    //    else
+                    //    {
+                    //        avatar = _client.GetAvatarGroups(new[] { new GroupWCF { Id = group.Id } }).SingleOrDefault();
+                    //        userType = "group";
+                    //        id = group.Id;
+                    //    }
 
-                        if (avatar is null)
-                        {
-                            stringAvatar = _defaultAvatar;
-                        }
-                        else
-                        {
-                            stringAvatar = $"/{userType}/{id}";
-                        }
-                        avatars.Add(group.Id, stringAvatar);
-                    }
+                    //    if (avatar is null)
+                    //    {
+                    //        stringAvatar = _defaultAvatar;
+                    //    }
+                    //    else
+                    //    {
+                    //        stringAvatar = $"/{userType}/{id}";
+                    //    }
+                    //    avatars.Add(group.Id, stringAvatar);
+                    //}
 
-                    ViewBag.DefaultAvatar = _defaultAvatar;
-                    ViewBag.Avatars = avatars;
+                    //ViewBag.DefaultAvatar = _defaultAvatar;
+                    //ViewBag.Avatars = avatars;
                     ViewBag.DontReaded = _client.GetDontReadMessagesFromGroups(user.Groups.Select(g => g.Id).ToArray());
                     ViewBag.Groups = user.Groups.OrderByDescending(g => g.LastMessage.DateTime);
                     return View("Index");

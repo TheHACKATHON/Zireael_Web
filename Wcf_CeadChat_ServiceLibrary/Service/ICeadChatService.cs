@@ -139,6 +139,8 @@ namespace Wcf_CeadChat_ServiceLibrary
         string GetEmailByCookieAndCode(string cookie, string code);//пролучить почту, если кук и кода совпадают. Иначе возвращает null
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         string GetName(int id);
+        [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
+        string GetGroupName(int id);
 
         #endregion
     }

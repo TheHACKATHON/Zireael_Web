@@ -1209,6 +1209,12 @@ namespace Web.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetName", ReplyAction="http://tempuri.org/ICeadChatService/GetNameResponse")]
         System.Threading.Tasks.Task<string> GetNameAsync(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetGroupName", ReplyAction="http://tempuri.org/ICeadChatService/GetGroupNameResponse")]
+        string GetGroupName(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetGroupName", ReplyAction="http://tempuri.org/ICeadChatService/GetGroupNameResponse")]
+        System.Threading.Tasks.Task<string> GetGroupNameAsync(int id);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1642,6 +1648,14 @@ namespace Web.ServiceReference1 {
         
         public System.Threading.Tasks.Task<string> GetNameAsync(int id) {
             return base.Channel.GetNameAsync(id);
+        }
+        
+        public string GetGroupName(int id) {
+            return base.Channel.GetGroupName(id);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetGroupNameAsync(int id) {
+            return base.Channel.GetGroupNameAsync(id);
         }
     }
 }
