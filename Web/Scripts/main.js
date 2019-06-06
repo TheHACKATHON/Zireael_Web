@@ -77,11 +77,12 @@ document.addEventListener('click', function (e) {
 
         let hash = new Date().getUTCMilliseconds();
         let text = document.querySelector(".panel-write textarea").value;
-        let groupId = document.querySelector(".message-list-wrap ul[data-id]").getAttribute("data-id");
-        let messagesContainer = document.querySelector(".message-list-wrap ul.activeUl");
+        if (text.length > 0) {
+            let groupId = document.querySelector(".message-list-wrap ul[data-id]").getAttribute("data-id");
+            let messagesContainer = document.querySelector(".message-list-wrap ul.activeUl");
 
-        messagesContainer.appendChild(
-            Generator.MessageHTML({
+            messagesContainer.appendChild(
+                Generator.MessageHTML({
                     Id: null,
                     Hash: hash,
                     Text: text,
@@ -91,25 +92,25 @@ document.addEventListener('click', function (e) {
                         Login: null,
                         DisplayName: "Я",
                     },
-            }, { avatar: "/Content/Images/Zireael_back.png" }, "/Content/Images/Zireael_back.png"))
+                }, { avatar: "/Content/Images/Zireael_back.png" }, "/Content/Images/Zireael_back.png"))
 
-        let data = new FormData();
-        data.append("text", text);
-        data.append("groupId", groupId);
-        data.append("hash", hash);
-        
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', `/sendmessage`);
-        xhr.send(data);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                let data = JSON.parse(xhr.responseText);
-                if (data.Code != NotifyType.Success) {
-                    popup(data.Error, data.Code);
+            let data = new FormData();
+            data.append("text", text);
+            data.append("groupId", groupId);
+            data.append("hash", hash);
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', `/sendmessage`);
+            xhr.send(data);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if (data.Code != NotifyType.Success) {
+                        popup(data.Error, data.Code);
+                    }
                 }
-            }
-        };
-        
+            };
+        }
     }
     else {
         $(".tg_head_logo_dropdown.dropdown").
