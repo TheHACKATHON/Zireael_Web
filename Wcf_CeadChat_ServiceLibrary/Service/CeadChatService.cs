@@ -326,34 +326,37 @@ namespace Wcf_CeadChat_ServiceLibrary
                             Group group = new Group();
                             Message msg = null;
                             bool isSend = false;
-
-                            message.DateTime = DateTime.Now;
-                            var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();//получаем текущее подключение клиента
-                            var s = OperationContext.Current.SessionId;
-                            var sender = _onlineUsers.FirstOrDefault(o => o.Key == userChanged).Value;//получаем учетку по текущему подключению
-                            sender = GetCurrentUser();
-                            group = Messenger.GetGroupById(message.GroupId, sender.Id);//получаем группу с контекста по id в сообщении\
-                            if(group is null)
+                            if (!string.IsNullOrWhiteSpace(message.Text))
                             {
-                                return null;
-                            }
-                            msg = Messenger.SendMessage(message, sender.Id);
-                            if (msg != null)
-                            {
-                                isSend = true;
-                            }
-                            if (isSend)
-                            {
-                                CallUsersInGroup(group.Users, (user) =>
-                              {
-                                  if (!(message is MessageFileWCF))
+                                message.DateTime = DateTime.Now;
+                                var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();//получаем текущее подключение клиента
+                                var s = OperationContext.Current.SessionId;
+                                var sender = _onlineUsers.FirstOrDefault(o => o.Key == userChanged).Value;//получаем учетку по текущему подключению
+                                sender = GetCurrentUser();
+                                group = Messenger.GetGroupById(message.GroupId, sender.Id);//получаем группу с контекста по id в сообщении\
+                                if (group is null)
+                                {
+                                    return null;
+                                }
+                                msg = Messenger.SendMessage(message, sender.Id);
+                                if (msg != null)
+                                {
+                                    isSend = true;
+                                }
+                                if (isSend)
+                                {
+                                    CallUsersInGroup(group.Users, (user) =>
                                   {
-                                      user.CreateMessageCallback(new MessageWCF(msg), hash, GetConnectionId(user, _onlineUsers[user].SessionId));//передаем сообщение всем пользователям которые онлайн(в этой группе)
+                                      if (!(message is MessageFileWCF))
+                                      {
+                                          user.CreateMessageCallback(new MessageWCF(msg), hash, GetConnectionId(user, _onlineUsers[user].SessionId));//передаем сообщение всем пользователям которые онлайн(в этой группе)
                                       user.NewLastMessageCallback(new MessageWCF(msg), GetConnectionId(user, _onlineUsers[user].SessionId));
-                                  }
-                              });
+                                      }
+                                  });
+                                }
+                                return msg.Id;
                             }
-                            return msg.Id;
+                            return -1;
                         });
             if (result is int)
             {
