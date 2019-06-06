@@ -386,7 +386,7 @@ namespace Client
                 else
                 {
                     AvatarUserWCF[] avatars = null;
-                    if (!await CheckConnection(async () => avatars = await _client.GetAvatarUsersAsync(new[] {user})))
+                    if (!await CheckConnection(async () => avatars = await _client.GetAvatarUsersAsync(new[] {user.Id})))
                     {
                         return;
                     }
@@ -440,7 +440,7 @@ namespace Client
                 else
                 {
                     AvatarUserWCF[] avatars = null;
-                    if (!await CheckConnection(async () => avatars = await _client.GetAvatarUsersAsync(new[] {user})))
+                    if (!await CheckConnection(async () => avatars = await _client.GetAvatarUsersAsync(new[] {user.Id})))
                     {
                         return;
                     }

@@ -166,10 +166,10 @@
     <None Include="Connected Services\ServiceReference\Arrays.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\ServiceReference\Client.ServiceReference.AvatarGroupWCF.datasource">
+    <None Include="Connected Services\ServiceReference\Client.ServiceReference.AvatarUserWCF.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\ServiceReference\Client.ServiceReference.AvatarUserWCF.datasource">
+    <None Include="Connected Services\ServiceReference\Client.ServiceReference.AvatarWCF.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\ServiceReference\Client.ServiceReference.MessageWCF.datasource">

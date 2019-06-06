@@ -953,10 +953,10 @@ namespace Client.ServiceReference {
     public interface ICeadChatService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/Connect", ReplyAction="http://tempuri.org/ICeadChatService/ConnectResponse")]
-        bool Connect(string sessionId, string connectionId);
+        Client.ServiceReference.UserWCF Connect(string sessionId, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/Connect", ReplyAction="http://tempuri.org/ICeadChatService/ConnectResponse")]
-        System.Threading.Tasks.Task<bool> ConnectAsync(string sessionId, string connectionId);
+        System.Threading.Tasks.Task<Client.ServiceReference.UserWCF> ConnectAsync(string sessionId, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/CheckSession", ReplyAction="http://tempuri.org/ICeadChatService/CheckSessionResponse")]
         Client.ServiceReference.UserWCF CheckSession(string session);
@@ -1079,10 +1079,10 @@ namespace Client.ServiceReference {
         System.Threading.Tasks.Task<bool> SetAvatarUserAsync(Client.ServiceReference.AvatarUserWCF avatar);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetAvatarUsers", ReplyAction="http://tempuri.org/ICeadChatService/GetAvatarUsersResponse")]
-        Client.ServiceReference.AvatarUserWCF[] GetAvatarUsers(Client.ServiceReference.UserBaseWCF[] users);
+        Client.ServiceReference.AvatarUserWCF[] GetAvatarUsers(int[] users);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetAvatarUsers", ReplyAction="http://tempuri.org/ICeadChatService/GetAvatarUsersResponse")]
-        System.Threading.Tasks.Task<Client.ServiceReference.AvatarUserWCF[]> GetAvatarUsersAsync(Client.ServiceReference.UserBaseWCF[] users);
+        System.Threading.Tasks.Task<Client.ServiceReference.AvatarUserWCF[]> GetAvatarUsersAsync(int[] users);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetDontReadMessagesFromGroups", ReplyAction="http://tempuri.org/ICeadChatService/GetDontReadMessagesFromGroupsResponse")]
         System.Collections.Generic.Dictionary<int, int> GetDontReadMessagesFromGroups(int[] groupsId);
@@ -1109,10 +1109,10 @@ namespace Client.ServiceReference {
         System.Threading.Tasks.Task<bool> SetAvatarGroupAsync(Client.ServiceReference.AvatarGroupWCF avatar);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetAvatarGroups", ReplyAction="http://tempuri.org/ICeadChatService/GetAvatarGroupsResponse")]
-        Client.ServiceReference.AvatarGroupWCF[] GetAvatarGroups(Client.ServiceReference.GroupWCF[] groups);
+        Client.ServiceReference.AvatarWCF[] GetAvatarGroups(int[] groups);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetAvatarGroups", ReplyAction="http://tempuri.org/ICeadChatService/GetAvatarGroupsResponse")]
-        System.Threading.Tasks.Task<Client.ServiceReference.AvatarGroupWCF[]> GetAvatarGroupsAsync(Client.ServiceReference.GroupWCF[] groups);
+        System.Threading.Tasks.Task<Client.ServiceReference.AvatarWCF[]> GetAvatarGroupsAsync(int[] groups);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/ChangeProfileInfo", ReplyAction="http://tempuri.org/ICeadChatService/ChangeProfileInfoResponse")]
         bool ChangeProfileInfo(string displayName, string login);
@@ -1203,6 +1203,18 @@ namespace Client.ServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCode", ReplyAction="http://tempuri.org/ICeadChatService/GetEmailByCookieAndCodeResponse")]
         System.Threading.Tasks.Task<string> GetEmailByCookieAndCodeAsync(string cookie, string code);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetName", ReplyAction="http://tempuri.org/ICeadChatService/GetNameResponse")]
+        string GetName(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetName", ReplyAction="http://tempuri.org/ICeadChatService/GetNameResponse")]
+        System.Threading.Tasks.Task<string> GetNameAsync(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetGroupName", ReplyAction="http://tempuri.org/ICeadChatService/GetGroupNameResponse")]
+        string GetGroupName(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetGroupName", ReplyAction="http://tempuri.org/ICeadChatService/GetGroupNameResponse")]
+        System.Threading.Tasks.Task<string> GetGroupNameAsync(int id);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1294,11 +1306,11 @@ namespace Client.ServiceReference {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public bool Connect(string sessionId, string connectionId) {
+        public Client.ServiceReference.UserWCF Connect(string sessionId, string connectionId) {
             return base.Channel.Connect(sessionId, connectionId);
         }
         
-        public System.Threading.Tasks.Task<bool> ConnectAsync(string sessionId, string connectionId) {
+        public System.Threading.Tasks.Task<Client.ServiceReference.UserWCF> ConnectAsync(string sessionId, string connectionId) {
             return base.Channel.ConnectAsync(sessionId, connectionId);
         }
         
@@ -1462,11 +1474,11 @@ namespace Client.ServiceReference {
             return base.Channel.SetAvatarUserAsync(avatar);
         }
         
-        public Client.ServiceReference.AvatarUserWCF[] GetAvatarUsers(Client.ServiceReference.UserBaseWCF[] users) {
+        public Client.ServiceReference.AvatarUserWCF[] GetAvatarUsers(int[] users) {
             return base.Channel.GetAvatarUsers(users);
         }
         
-        public System.Threading.Tasks.Task<Client.ServiceReference.AvatarUserWCF[]> GetAvatarUsersAsync(Client.ServiceReference.UserBaseWCF[] users) {
+        public System.Threading.Tasks.Task<Client.ServiceReference.AvatarUserWCF[]> GetAvatarUsersAsync(int[] users) {
             return base.Channel.GetAvatarUsersAsync(users);
         }
         
@@ -1502,11 +1514,11 @@ namespace Client.ServiceReference {
             return base.Channel.SetAvatarGroupAsync(avatar);
         }
         
-        public Client.ServiceReference.AvatarGroupWCF[] GetAvatarGroups(Client.ServiceReference.GroupWCF[] groups) {
+        public Client.ServiceReference.AvatarWCF[] GetAvatarGroups(int[] groups) {
             return base.Channel.GetAvatarGroups(groups);
         }
         
-        public System.Threading.Tasks.Task<Client.ServiceReference.AvatarGroupWCF[]> GetAvatarGroupsAsync(Client.ServiceReference.GroupWCF[] groups) {
+        public System.Threading.Tasks.Task<Client.ServiceReference.AvatarWCF[]> GetAvatarGroupsAsync(int[] groups) {
             return base.Channel.GetAvatarGroupsAsync(groups);
         }
         
@@ -1628,6 +1640,22 @@ namespace Client.ServiceReference {
         
         public System.Threading.Tasks.Task<string> GetEmailByCookieAndCodeAsync(string cookie, string code) {
             return base.Channel.GetEmailByCookieAndCodeAsync(cookie, code);
+        }
+        
+        public string GetName(int id) {
+            return base.Channel.GetName(id);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetNameAsync(int id) {
+            return base.Channel.GetNameAsync(id);
+        }
+        
+        public string GetGroupName(int id) {
+            return base.Channel.GetGroupName(id);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetGroupNameAsync(int id) {
+            return base.Channel.GetGroupNameAsync(id);
         }
     }
 }

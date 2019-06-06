@@ -160,7 +160,7 @@ namespace Client
                 _searchItems.Clear();
                 // todo: CheckConnection
                 var collection = await _client.FindAllAsync(textBox.Text, 5);
-                var avatars = await _client.GetAvatarUsersAsync(collection);
+                var avatars = await _client.GetAvatarUsersAsync(collection.Select(c => c.Id).ToArray());
 
                 foreach (var user in collection)
                 {

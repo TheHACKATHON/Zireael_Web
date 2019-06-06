@@ -2010,7 +2010,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     return null;
                 }
             });
-            return result as IEnumerable<AvatarGroupWCF>;
+            return result as IEnumerable<AvatarWCF>;
         }
 
         #endregion

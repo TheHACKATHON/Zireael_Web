@@ -553,16 +553,16 @@ namespace Client
                 }
             }
 
-            AvatarGroupWCF[] avatarsGroup = null;
+            AvatarWCF[] avatarsGroup = null;
             if (!await CheckConnection(async () =>
                 avatarsGroup =
-                    await _client.GetAvatarGroupsAsync(_groupItems.Select(grItem => grItem.Group).ToArray())))
+                    await _client.GetAvatarGroupsAsync(_groupItems.Select(grItem => grItem.Group.Id).ToArray())))
             {
                 return;
             }
 
             AvatarUserWCF[] avatars = null;
-            if (!await CheckConnection(async () => avatars = await _client.GetAvatarUsersAsync(users.ToArray())))
+            if (!await CheckConnection(async () => avatars = await _client.GetAvatarUsersAsync(users.Select(u => u.Id).ToArray())))
             {
                 return;
             }
@@ -593,14 +593,18 @@ namespace Client
 
             foreach (var ava in avatarsGroup)
             {
-                var newFilePath = new FileInfo($"{Properties.Resources.GroupImagePath}\\{ava.Group.Id}{ava.Format}")
-                    .FullName;
-                using (var stream = File.OpenWrite(newFilePath))
+                if(ava is AvatarGroupWCF groupAvatar)
                 {
-                    stream.Write(ava.SmallData, 0, ava.SmallData.Length);
-                }
+                    var newFilePath = new FileInfo($"{Properties.Resources.GroupImagePath}\\{groupAvatar.Group.Id}{ava.Format}")
+                   .FullName;
+                    using (var stream = File.OpenWrite(newFilePath))
+                    {
+                        stream.Write(ava.SmallData, 0, ava.SmallData.Length);
+                    }
 
-                _avatars.Add(new UserImageItem {AvatarWCF = ava, BitmapSource = GetBitmapFromFile(newFilePath)});
+                    _avatars.Add(new UserImageItem { AvatarWCF = ava, BitmapSource = GetBitmapFromFile(newFilePath) });
+                }
+               
             }
         }
 

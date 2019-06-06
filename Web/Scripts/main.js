@@ -40,7 +40,10 @@ document.addEventListener('click', function (e) {
                     changeActive(target.closest(".group").parentElement);
 
                     let messages = data.messages;
-                    let chatsContainer = document.querySelector(".message-list-wrap");
+                    let chatsContainer = document.querySelector(".message-list-wrap.scroll-content");
+                    if (chatsContainer == null) {
+                        chatsContainer = document.querySelector(".message-list-wrap");
+                    }
                     let groupUl = document.querySelector('.message-list-wrap ul[data-id="' + data.groupId + '"]');
                     if (groupUl == null) {
                         groupUl = Generator.MessagesContainerHTML(data.groupId);

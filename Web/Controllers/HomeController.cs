@@ -34,7 +34,7 @@ namespace Web.Controllers
         {
             if (groupId != null)
             {
-                var messages = await _client.GetMessagesBetweenAsync((int)groupId, 0, 10);
+                var messages = await _client.GetMessagesBetweenAsync((int)groupId, 0, 100);
 
                 if (messages != null)
                 {
