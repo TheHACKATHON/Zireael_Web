@@ -80,7 +80,7 @@ document.addEventListener('click', function (e) {
         let hash = new Date().getUTCMilliseconds();
         let text = $('.panel-write textarea[name=msg]').val();
         $('textarea[name=msg]').val("");
-        if (text.length > 0) {
+        if (text.trim().length > 0) {
             let groupId = document.querySelector(".message-list-wrap ul[data-id]").getAttribute("data-id");
             let messagesContainer = document.querySelector(".message-list-wrap ul.activeUl");
 
@@ -157,6 +157,13 @@ $('.scrollbar-macosx-chats').mousewheel(function (event) {
     //}
    // console.log(event);
    // console.log(parseFloat($(".scrollbar-macosx > .scroll-element.scroll-y .scroll-bar").css("top")), $('.scrollbar-macosx-messages').not('.scroll-content').height(),  y_chats)
+});
+
+$('textarea[name=msg]').on('keydown', (e) => {
+    e = e || window.event;
+    if (e.keyCode === 13) {
+        e.preventDefault();
+    }
 });
 
 $('textarea[name=msg]').on('keyup', (e) => {

@@ -34,11 +34,14 @@ namespace Wcf_CeadChat_ServiceLibrary
                 return null;
             }
         }//получить сообщения из группы
-        internal static Message SendMessage(MessageWCF message, int senderId)
+        internal static Message SendMessage(MessageWCF message, int senderId, ChatContext context = null)
         {
             try
             {
-                ChatContext context = new ChatContext();
+                if (context is null)
+                {
+                    context = new ChatContext();
+                }
                 Group group = new Group();
                 Message msg = null;
                 bool saveFailed;
@@ -159,12 +162,15 @@ namespace Wcf_CeadChat_ServiceLibrary
             } while (saveFailed);
             return lastMessage;
         }//получить последнее сообщение в группе
-        internal static Group GetGroupById(int groupId, int senderId)
+        internal static Group GetGroupById(int groupId, int senderId, ChatContext context = null)
         {
-            var context = new ChatContext();
+            if (context is null)
+            {
+                context = new ChatContext();
+            }
             var group = context.Groups.FirstOrDefault(g => g.Id == groupId);//получаем группу с контекста по id   
             var sender = context.Users.FirstOrDefault(u => u.Id == senderId);
-            if (group.Users.Contains(sender))
+            if (group != null && sender != null && group.Users.Any(u => u.Id.Equals(sender.Id)))
             {
                 return group;
             }

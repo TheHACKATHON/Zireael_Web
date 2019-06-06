@@ -56,7 +56,7 @@ namespace Web.Controllers
                 DateTime = DateTime.Now,
             };
 
-            var messageId = await _client.SendMessageAsync(msg, hash);
+            var messageId = await _client.SendMessageTransactionAsync(msg, hash);
             if (messageId != -1)
             {
                 return Json(new { Code = NotifyType.Success });

@@ -19,9 +19,7 @@ namespace Wcf_CeadChat_ServiceLibrary
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         UserWCF CheckSession(string session);
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        //[WebGet(UriTemplate = "/get-books", ResponseFormat = WebMessageFormat.Json)]
         bool Registration(UserWCF newUser);//получаем нового юзера для регистрации, возвращает true, если успешно
-
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         bool LoginExist(string login);//проверка, есть ли пользователь с таким логином
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
@@ -43,6 +41,9 @@ namespace Wcf_CeadChat_ServiceLibrary
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         int SendMessage(MessageWCF message, long hash);//отправка сообщения
+
+        [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
+        int SendMessageTransaction(MessageWCF message, long hash);
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         bool DeleteMessage(MessageWCF message);//удаление сообщения

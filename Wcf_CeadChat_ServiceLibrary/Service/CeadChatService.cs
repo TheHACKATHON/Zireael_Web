@@ -9,6 +9,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Timers;
 using System.Configuration;
+using System.Data;
 using Liphsoft.Crypto.Argon2;
 using System.Text.RegularExpressions;
 
@@ -111,8 +112,7 @@ namespace Wcf_CeadChat_ServiceLibrary
         User GetCurrentUser()
         {
             var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();//получаем текущее подключение клиента
-            var uc = _onlineUsers.FirstOrDefault(o => o.Key == userChanged);
-            return uc.Value;//получаем учетку по текущему подключению
+            return _onlineUsers[userChanged];//получаем учетку по текущему подключению
         }
 
         private string GetConnectionId(IUserChanged user, string sessionId)
@@ -331,7 +331,6 @@ namespace Wcf_CeadChat_ServiceLibrary
                             {
                                 message.DateTime = DateTime.Now;
                                 var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();//получаем текущее подключение клиента
-                                var s = OperationContext.Current.SessionId;
                                 var sender = _onlineUsers.FirstOrDefault(o => o.Key == userChanged).Value;//получаем учетку по текущему подключению
                                 sender = GetCurrentUser();
                                 group = Messenger.GetGroupById(message.GroupId, sender.Id);//получаем группу с контекста по id в сообщении\
@@ -356,6 +355,58 @@ namespace Wcf_CeadChat_ServiceLibrary
                                   });
                                 }
                                 return msg.Id;
+                            }
+                            return -1;
+                        });
+            if (result is int)
+            {
+                return (int)result;
+            }
+            return -1;
+        }
+
+        public int SendMessageTransaction(MessageWCF message, long hash)
+        {
+            if (string.IsNullOrWhiteSpace(message.Text)) return -1;
+
+            var result = TryExecute(() =>
+                        {
+                            var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();
+                            var context = Context(userChanged);
+                            if (context != null)
+                            {
+                                message.DateTime = DateTime.Now;
+                                using (var transaction = context.Database.BeginTransaction(IsolationLevel.ReadCommitted))
+                                {
+                                    try
+                                    {
+                                        var isSend = false;
+                                        var sender = _onlineUsers[userChanged];
+                                        var group = Messenger.GetGroupById(message.GroupId, sender.Id, context);
+                                        if (group is null) return null; //группы не существует или человек в ней не состоит
+                                        var msg = Messenger.SendMessage(message, sender.Id, context);
+                                        if (msg != null) isSend = true;
+                                        if (isSend)
+                                        {
+                                            CallUsersInGroup(group.Users, (user) =>
+                                            {
+                                                if (!(message is MessageFileWCF))
+                                                {
+                                                    user.CreateMessageCallback(new MessageWCF(msg), hash, GetConnectionId(user, _onlineUsers[user].SessionId));
+                                                    user.NewLastMessageCallback(new MessageWCF(msg), GetConnectionId(user, _onlineUsers[user].SessionId));
+                                                }
+                                            });
+                                            transaction.Commit();
+                                            return msg.Id;
+                                        }
+
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        transaction.Rollback();
+                                        return -1;
+                                    }
+                                }
                             }
                             return -1;
                         });

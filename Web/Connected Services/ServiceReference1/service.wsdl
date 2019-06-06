@@ -103,6 +103,12 @@
   <wsdl:message name="ICeadChatService_SendMessage_OutputMessage">
     <wsdl:part name="parameters" element="tns:SendMessageResponse" />
   </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendMessageTransaction_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendMessageTransaction" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_SendMessageTransaction_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendMessageTransactionResponse" />
+  </wsdl:message>
   <wsdl:message name="ICeadChatService_DeleteMessage_InputMessage">
     <wsdl:part name="parameters" element="tns:DeleteMessage" />
   </wsdl:message>
@@ -403,6 +409,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/SendMessage" message="tns:ICeadChatService_SendMessage_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SendMessageResponse" message="tns:ICeadChatService_SendMessage_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendMessageTransaction">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/SendMessageTransaction" message="tns:ICeadChatService_SendMessageTransaction_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/SendMessageTransactionResponse" message="tns:ICeadChatService_SendMessageTransaction_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="DeleteMessage">
       <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/DeleteMessage" message="tns:ICeadChatService_DeleteMessage_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/DeleteMessageResponse" message="tns:ICeadChatService_DeleteMessage_OutputMessage" />
@@ -688,6 +698,15 @@
     </wsdl:operation>
     <wsdl:operation name="SendMessage">
       <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SendMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendMessageTransaction">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/SendMessageTransaction" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

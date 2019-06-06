@@ -1018,6 +1018,12 @@ namespace Web.ServiceReference1 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/SendMessage", ReplyAction="http://tempuri.org/ICeadChatService/SendMessageResponse")]
         System.Threading.Tasks.Task<int> SendMessageAsync(Web.ServiceReference1.MessageWCF message, long hash);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/SendMessageTransaction", ReplyAction="http://tempuri.org/ICeadChatService/SendMessageTransactionResponse")]
+        int SendMessageTransaction(Web.ServiceReference1.MessageWCF message, long hash);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/SendMessageTransaction", ReplyAction="http://tempuri.org/ICeadChatService/SendMessageTransactionResponse")]
+        System.Threading.Tasks.Task<int> SendMessageTransactionAsync(Web.ServiceReference1.MessageWCF message, long hash);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/DeleteMessage", ReplyAction="http://tempuri.org/ICeadChatService/DeleteMessageResponse")]
         bool DeleteMessage(Web.ServiceReference1.MessageWCF message);
         
@@ -1392,6 +1398,14 @@ namespace Web.ServiceReference1 {
         
         public System.Threading.Tasks.Task<int> SendMessageAsync(Web.ServiceReference1.MessageWCF message, long hash) {
             return base.Channel.SendMessageAsync(message, hash);
+        }
+        
+        public int SendMessageTransaction(Web.ServiceReference1.MessageWCF message, long hash) {
+            return base.Channel.SendMessageTransaction(message, hash);
+        }
+        
+        public System.Threading.Tasks.Task<int> SendMessageTransactionAsync(Web.ServiceReference1.MessageWCF message, long hash) {
+            return base.Channel.SendMessageTransactionAsync(message, hash);
         }
         
         public bool DeleteMessage(Web.ServiceReference1.MessageWCF message) {
