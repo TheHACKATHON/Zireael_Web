@@ -376,15 +376,15 @@ namespace Wcf_CeadChat_ServiceLibrary
                             if (context != null)
                             {
                                 message.DateTime = DateTime.Now;
-                                using (var transaction = context.Database.BeginTransaction(IsolationLevel.ReadCommitted))
+                                using (var transaction = context.Database.BeginTransaction())
                                 {
                                     try
                                     {
                                         var isSend = false;
                                         var sender = _onlineUsers[userChanged];
-                                        var group = Messenger.GetGroupById(message.GroupId, sender.Id, context);
+                                        var group = Messenger.GetGroupById(message.GroupId, sender.Id);
                                         if (group is null) return null; //группы не существует или человек в ней не состоит
-                                        var msg = Messenger.SendMessage(message, sender.Id, context);
+                                        var msg = Messenger.SendMessage(message, sender.Id);
                                         if (msg != null) isSend = true;
                                         if (isSend)
                                         {

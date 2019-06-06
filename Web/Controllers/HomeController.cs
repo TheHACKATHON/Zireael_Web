@@ -47,7 +47,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> SendMessage(string text, int groupId, int hash)
+        public async Task<JsonResult> SendMessage(string text, int groupId, long hash)
         {
             var msg = new MessageWCF
             {

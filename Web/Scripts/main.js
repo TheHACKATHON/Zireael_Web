@@ -77,7 +77,7 @@ document.addEventListener('click', function (e) {
         };
     }
     else if (target.matches("a.send")) {
-        let hash = new Date().getUTCMilliseconds();
+        let hash = new Date().getTime();
         let text = $('.panel-write textarea[name=msg]').val();
         $('textarea[name=msg]').val("");
         if (text.trim().length > 0) {

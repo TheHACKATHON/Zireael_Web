@@ -1,16 +1,70 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Wcf_CeadChat_ServiceLibrary
 {
     internal static class Messenger
     {
+        private static readonly ConcurrentBag<Message> UncommitedMessages;
+        private const int ThreadTimeout = 5000;
+
+        static Messenger()
+        {
+            UncommitedMessages = new ConcurrentBag<Message>();
+            Task.Factory.StartNew(async () =>
+            {
+                var stopwatch = new Stopwatch();
+                while (true)
+                {
+                    stopwatch.Restart();
+                    var context = new ChatContext();
+                    var i = 0;
+                    Message message = null;
+                    do
+                    {
+                        UncommitedMessages.TryTake(out message);
+                        if (message != null)
+                        {
+                            try
+                            {
+                                message.Group = context.Groups.Single(g => g.Id.Equals(message.Group.Id));
+                                message.Sender = context.Users.Single(u => u.Id.Equals(message.Sender.Id));
+                                context.Messages.Add(message);
+                                if (message.Group.LastMessage.DateTime < message.DateTime)
+                                {
+                                    message.Group.LastMessage = message;
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.WriteLine(e);
+                            }
+                            i++;
+                        }
+                    } while (message != null);
+
+                    if (i > 0)
+                    {
+                        await context.SaveChangesAsync();
+                    }
+                    stopwatch.Stop();
+                    if (stopwatch.ElapsedMilliseconds < ThreadTimeout)
+                    {
+                        Thread.Sleep(ThreadTimeout - (int)stopwatch.ElapsedMilliseconds );
+                    }
+                }
+            });
+        }
+
         #region messeges
         internal static IEnumerable<Message> GetMessagesFromGroup(int groupId, int senderId)
         {
@@ -34,14 +88,10 @@ namespace Wcf_CeadChat_ServiceLibrary
                 return null;
             }
         }//получить сообщения из группы
-        internal static Message SendMessage(MessageWCF message, int senderId, ChatContext context = null)
+        internal static Message SendMessage(MessageWCF message, int senderId)
         {
             try
             {
-                if (context is null)
-                {
-                    context = new ChatContext();
-                }
                 Group group = new Group();
                 Message msg = null;
                 bool saveFailed;
@@ -52,7 +102,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     saveFailed = false;
                     try
                     {
-                        context = new ChatContext();
+                        var context = new ChatContext();
                         group = context.Groups.FirstOrDefault(g => g.Id == message.GroupId);//получаем группу с контекста по id в сообщении
                         var sender = context.Users.FirstOrDefault(u => u.Id == senderId);
                         var blockUserId = group.Users.ToList().FirstOrDefault(u => u.Id != sender.Id).Id;
@@ -60,7 +110,6 @@ namespace Wcf_CeadChat_ServiceLibrary
                            (group.Type == GroupType.SingleUser
                             && !context.BlackList.Any(bl => bl.Blocked.Id == sender.Id && bl.Sender.Id == blockUserId)))
                         {
-                            var gr = context.Groups.ToList();
                             if (message is MessageFileWCF)
                             {
                                 msg = new MessageFile((MessageFileWCF)message, group, context.Users.Single(u => u.Id == sender.Id));
@@ -75,8 +124,9 @@ namespace Wcf_CeadChat_ServiceLibrary
                             msg.IsRead = false;
                             sender.LastTimeOnline = DateTime.Now;
                             sender.IsOnline = true;
-                            context.Messages.Add(msg);
-                            context.SaveChanges();
+                            UncommitedMessages.Add(msg);
+                             //context.Messages.Add(msg);
+                             //context.SaveChanges();
                         }
                         //else
                         //{
@@ -162,12 +212,9 @@ namespace Wcf_CeadChat_ServiceLibrary
             } while (saveFailed);
             return lastMessage;
         }//получить последнее сообщение в группе
-        internal static Group GetGroupById(int groupId, int senderId, ChatContext context = null)
+        internal static Group GetGroupById(int groupId, int senderId)
         {
-            if (context is null)
-            {
-                context = new ChatContext();
-            }
+            var context = new ChatContext();
             var group = context.Groups.FirstOrDefault(g => g.Id == groupId);//получаем группу с контекста по id   
             var sender = context.Users.FirstOrDefault(u => u.Id == senderId);
             if (group != null && sender != null && group.Users.Any(u => u.Id.Equals(sender.Id)))
