@@ -80,7 +80,7 @@
 </style>
 
 <div class="wrap">
-    <div class="chats">
+    <div class="chats scrollbar-rail scrollbar-rail-chats">
         <ul>
             @{
                 if (ViewBag.Groups != null)
@@ -130,11 +130,10 @@
                 }
             }
         </ul>
-        <div class="nano-pane" style="display: block;"><div class="nano-slider" style="height: 69px; transform: translate(0px, 0px);"></div></div>
-    </div>
+   </div>
 
     <div class="messages">
-        <div class="message-list-wrap scrollbar-rail">
+        <div class="message-list-wrap scrollbar-rail scrollbar-rail-messages">
         </div>
         <div class="panel-write hide">
             <div class="line-write">

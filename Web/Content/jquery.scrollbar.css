@@ -1,7 +1,7 @@
 /*************** SCROLLBAR BASE CSS ***************/
 
 .scroll-wrapper {
-  overflow: hidden !important;
+  /*overflow: hidden !important;*/
   padding: 0 !important;
   position: relative;
 }
@@ -515,7 +515,7 @@
 .scrollbar-rail > .scroll-element div {
   display: block;
   height: 100%;
-  left: 0;
+  left: 5px;
   top: 0;
   width: 100%;
 }
@@ -545,7 +545,7 @@
   padding: 0 2px 0 3px;
   right: 0;
   top: 0;
-  width: 12px;
+  width: 14px;
 }
 
     .scrollbar-rail > .scroll-element .scroll-bar {
