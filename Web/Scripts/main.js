@@ -39,11 +39,11 @@ document.addEventListener('click', function (e) {
                 let data = JSON.parse(xhr.responseText);
                 if (data.Code === NotifyType.Success) {
                     changeActive(target.closest(".group").parentElement);
-
-                    let messages = data.messages;
                     let chatsContainer = document.querySelector(".message-list-wrap.scroll-content");
+                    let firstBoot = false;
                     if (chatsContainer == null) {
                         chatsContainer = document.querySelector(".message-list-wrap");
+                        firstBoot = true;
                     }
                     let groupUl = document.querySelector('.message-list-wrap ul[data-id="' + data.groupId + '"]');
                     if (groupUl == null) {
@@ -58,9 +58,12 @@ document.addEventListener('click', function (e) {
                     else {
                         groupUl.classList.add("activeUl");
                     }
-                    $('.scrollbar-macosx-messages').scrollbar({ disableBodyScroll: true });
+
+                    if (firstBoot) {
+                        $('.scrollbar-macosx-messages').scrollbar({ disableBodyScroll: true });
+                    }
                     $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
-                    $('.scrollbar-macosx-messages').scrollbar({ disableBodyScroll: true });
+                   // $('.scrollbar-macosx-messages').scrollbar({ disableBodyScroll: true });
 
 
                 }
