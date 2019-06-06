@@ -11,6 +11,7 @@ using System.Text;
 using System.Timers;
 using System.Configuration;
 using Liphsoft.Crypto.Argon2;
+using System.Text.RegularExpressions;
 
 //                bool saveFailed;
 //                do
@@ -42,6 +43,8 @@ namespace Wcf_CeadChat_ServiceLibrary
         private string _mailPassword = ConfigurationManager.AppSettings.Get("CorporateMailPass");
         private string _mailHost = ConfigurationManager.AppSettings.Get("CorporateMailHost");
         private string _salt = ConfigurationManager.AppSettings.Get("PasswordSalt");
+        private string _patternLogin = @"^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d]{5,24}$";
+        private string _patternPassword = @"^(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,32}$";
         private int _countHoursWorkingRecoveryCode;
         private int _portForEmail;
         private int _lenghtRecoveryCode;
@@ -1444,7 +1447,10 @@ namespace Wcf_CeadChat_ServiceLibrary
                 newUser.LastTimeOnline = DateTime.Now;
                 newUser.IsOnline = true;
                 newUser.PasswordHash = GeneratePasswordHash(newUser.PasswordHash);
-                if (!LoginExist(newUser.Login) && !EmailExist(newUser.Email))
+                if (!LoginExist(newUser.Login) 
+                    && !EmailExist(newUser.Email)
+                    && Regex.IsMatch(newUser.Login, _patternLogin)
+                    && Regex.IsMatch(newUser.PasswordHash, _patternPassword))
                 {
                     context.Users.Add(new User(newUser));//добавляем в контекст
                     WriteLog($"Добавлен пользователь: {newUser.Login}");
@@ -1746,6 +1752,60 @@ namespace Wcf_CeadChat_ServiceLibrary
             }
             return false;
         }
+        public string SendCodeOnEmail(string email, string cookie)
+        {
+            var result = TryExecute(() =>
+            {
+                if (!EmailExist(email))
+                {
+                    var newRestoreCode = RandomString(_lenghtRecoveryCode);
+                    SendMessageToMail(email,
+                        $"Код подверждения для регистрации",
+                        $"Код подтверждения: {newRestoreCode}");
+                    var context = new ChatContext();
+
+                    var emailCode = new EmailCode()
+                    {
+                        ConfirmationCode = newRestoreCode,
+                        Cookie = cookie,
+                        RequestTime = DateTime.Now,
+                        Email = email
+                    };
+                    context.EmailCodes.Add(emailCode);
+                    context.SaveChanges();
+                    return newRestoreCode;
+                }
+                else
+                {
+                    //SendMessageToMail(email,
+                    //        $"Код подверждения для регистрации",
+                    //        $"Вы уже и так зарегистрированы!");
+                    return "";
+                }
+            });
+            if (result is string str)
+            {
+                return str;
+            }
+            return null;
+        }
+
+        public string GetEmailByCookieAndCode(string cookie, string code)
+        {
+            var result = TryExecute(() =>
+            {
+                var context = new ChatContext();
+                var codes = context.EmailCodes.ToList();
+                var email = codes.FirstOrDefault(e => e.Cookie.Equals(cookie, StringComparison.OrdinalIgnoreCase)
+                    && e.ConfirmationCode == code.ToUpper());
+                return email.Email;
+            });
+            if (result is string str)
+            {
+                return str;
+            }
+            return null;
+        }
         #endregion
 
         #region avatar
@@ -2034,59 +2094,5 @@ namespace Wcf_CeadChat_ServiceLibrary
 
         #endregion
 
-        public string SendCodeOnEmail(string email, string cookie)
-        {
-            var result = TryExecute(() =>
-            {
-                if (!EmailExist(email))
-                {
-                    var newRestoreCode = RandomString(_lenghtRecoveryCode);
-                    SendMessageToMail(email,
-                        $"Код подверждения для регистрации",
-                        $"Код подтверждения: {newRestoreCode}");
-                    var context = new ChatContext();
-
-                    var emailCode = new EmailCode()
-                    {
-                        ConfirmationCode = newRestoreCode,
-                        Cookie = cookie,
-                        RequestTime = DateTime.Now,
-                        Email = email
-                    };
-                    context.EmailCodes.Add(emailCode);
-                    context.SaveChanges();
-                    return newRestoreCode;
-                }
-                else
-                {
-                    //SendMessageToMail(email,
-                    //        $"Код подверждения для регистрации",
-                    //        $"Вы уже и так зарегистрированы!");
-                    return "";
-                }
-            });
-            if (result is string str)
-            {
-                return str;
-            }
-            return null;
-        }
-
-        public string GetEmailByCookieAndCode(string cookie, string code)
-        {
-            var result = TryExecute(() =>
-            {
-                var context = new ChatContext();
-                var codes = context.EmailCodes.ToList();
-                var email = codes.FirstOrDefault(e => e.Cookie.Equals(cookie, StringComparison.OrdinalIgnoreCase)
-                    && e.ConfirmationCode == code.ToUpper());
-                return email.Email;
-            });
-            if (result is string str)
-            {
-                return str;
-            }
-            return null;
-        }
     }
 }

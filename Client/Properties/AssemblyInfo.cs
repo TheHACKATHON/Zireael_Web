@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Zireael")]
 [assembly: AssemblyProduct("Zireael Messanger")]
-[assembly: AssemblyCopyright("Copyright ZIREAEL©  2018")]
+[assembly: AssemblyCopyright("Copyright ZIREAEL©  2019")]
 [assembly: AssemblyTrademark("ZIREAEL")]
 [assembly: AssemblyCulture("")]
 
