@@ -57,7 +57,7 @@ document.addEventListener('click', function (e) {
                     else {
                         groupUl.classList.add("activeUl");
                     }
-                    $('.scrollbar-macosx').scrollbar({ disableBodyScroll: true });
+                    $('.scrollbar-rail-messages').scrollbar();
 
                 }
                 else {
@@ -137,3 +137,7 @@ function changeActive(elem) {
     $(".panel-write").removeClass("hide");
 
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    $('.scrollbar-rail-chats').scrollbar();
+});

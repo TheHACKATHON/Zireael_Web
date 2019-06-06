@@ -19,7 +19,7 @@
 }
 
     .chats ul {
-        overflow-y: auto;
+        /*overflow-y: auto;*/
         height: 100%;
     }
 
@@ -160,7 +160,7 @@ span.count-unred-messages {
 }
 
 .panel-write {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .checked-btn {
@@ -279,7 +279,7 @@ ul.message-list.activeUl {
 }
 
     .message-list-wrap {
-    height: calc(100% - 81px);
+    height: calc(100% - 70px);
     /* overflow-y: scroll; */
     position: relative;
 }
