@@ -80,6 +80,8 @@
         let ul = document.createElement("ul");
         ul.setAttribute("data-id", groupId);
         ul.classList.add("message-list");
+        ul.classList.add("permanent");
+        
         return ul;
     },
 }

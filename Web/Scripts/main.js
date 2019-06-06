@@ -57,7 +57,7 @@ document.addEventListener('click', function (e) {
                     else {
                         groupUl.classList.add("activeUl");
                     }
-                    $('.scrollbar-rail').scrollbar();
+                    $('.scrollbar-macosx').scrollbar({ disableBodyScroll: true });
 
                 }
                 else {

@@ -88,7 +88,7 @@
                     foreach (var group in ViewBag.Groups)
                     {
                         var md5 = AdditionsLibrary.HashCode.GetMD5(group.Name);
-                        
+
                         //var letter = string.Empty;
                         //var classletter = string.Empty;
                         //if (ViewBag.Avatars[group.Id] == ViewBag.DefaultAvatar)
@@ -99,7 +99,7 @@
                         //        classletter = "letter";
                         //    }
                         //}
-                        
+
                         var time = group.LastMessage?.DateTime?.ToShortTimeString();
                         <li>
                             <a data-id="@group.Id" class="group">
@@ -134,7 +134,7 @@
     </div>
 
     <div class="messages">
-        <div class="message-list-wrap scrollbar-rail">
+        <div class="message-list-wrap scrollbar-macosx">
         </div>
         <div class="panel-write hide">
             <div class="line-write">
@@ -171,5 +171,6 @@
 @Scripts.Render("~/Scripts/signal-callback.js")
 @Scripts.Render("~/Scripts/modal-dialogs.js")
 @Scripts.Render("~/Scripts/jquery.mousewheel.min.js")
-@Scripts.Render("~/Scripts/jquery.scrollbar.min.js")
+@Scripts.Render("~/Scripts/jquery.scrollbar.js")
+@Scripts.Render("~/Scripts/prettify.js")
 @Scripts.Render("~/Scripts/main.js")
