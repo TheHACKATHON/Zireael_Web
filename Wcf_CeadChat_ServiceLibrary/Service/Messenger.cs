@@ -26,7 +26,7 @@ namespace Wcf_CeadChat_ServiceLibrary
             }
         }
 
-        public static event Action<Dictionary<long, int>> MessagesReachedDB; 
+        public static event Action<Dictionary<long, int>> MessagesReachedDB;
         private static readonly ConcurrentBag<MessageHash> UncommitedMessages;
         private const int ThreadTimeout = 5000;
 
@@ -49,7 +49,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                         {
                             try
                             {
-                                var message = messageHash.Message;                                
+                                var message = messageHash.Message;
                                 message.Group = context.Groups.Single(g => g.Id.Equals(message.Group.Id));
                                 message.Sender = context.Users.Single(u => u.Id.Equals(message.Sender.Id));
                                 context.Messages.Add(message);
@@ -74,12 +74,12 @@ namespace Wcf_CeadChat_ServiceLibrary
                     if (messagesId.Count > 0)
                     {
                         await context.SaveChangesAsync();
-                        MessagesReachedDB?.Invoke(messagesId.ToDictionary(k => k.Hash, v=> v.Message.Id));
+                        MessagesReachedDB?.Invoke(messagesId.ToDictionary(k => k.Hash, v => v.Message.Id));
                     }
                     stopwatch.Stop();
                     if (stopwatch.ElapsedMilliseconds < ThreadTimeout)
                     {
-                        Thread.Sleep(ThreadTimeout - (int)stopwatch.ElapsedMilliseconds );
+                        Thread.Sleep(ThreadTimeout - (int)stopwatch.ElapsedMilliseconds);
                     }
                 }
             });
@@ -125,29 +125,38 @@ namespace Wcf_CeadChat_ServiceLibrary
                         var context = new ChatContext();
                         group = context.Groups.FirstOrDefault(g => g.Id == message.GroupId);//получаем группу с контекста по id в сообщении
                         var sender = context.Users.FirstOrDefault(u => u.Id == senderId);
-                        var blockUserId = group.Users.ToList().FirstOrDefault(u => u.Id != sender.Id).Id;
-                        if (group.Type == GroupType.MultyUser ||
-                           (group.Type == GroupType.SingleUser
-                            && !context.BlackList.Any(bl => bl.Blocked.Id == sender.Id && bl.Sender.Id == blockUserId)))
+                        
+                        if (group.Type == GroupType.SingleUser)
                         {
-                            if (message is MessageFileWCF)
+                            var blockUserId = group.Users.FirstOrDefault(u => u.Id != sender.Id).Id;
+                            if (context.BlackList.Any(bl => bl.Blocked.Id == sender.Id && bl.Sender.Id == blockUserId))
                             {
-                                msg = new MessageFile((MessageFileWCF)message, group, context.Users.Single(u => u.Id == sender.Id));
-                                msg.IsVisible = false;
+                                return null;
                             }
-                            else
-                            {
-                                msg = new Message(message, group, context.Users.Single(u => u.Id == sender.Id));
-                                msg.IsVisible = true;
-                                group.LastMessage = msg;
-                            }
-                            msg.IsRead = false;
-                            sender.LastTimeOnline = DateTime.Now;
-                            sender.IsOnline = true;
-                            UncommitedMessages.Add(new MessageHash(msg, hash));
-                             //context.Messages.Add(msg);
-                             //context.SaveChanges();
                         }
+
+                        if (message is MessageFileWCF messageFileWcf)
+                        {
+                            msg = new MessageFile(messageFileWcf, group, context.Users.Single(u => u.Id == sender.Id))
+                            {
+                                IsVisible = false
+                            };
+                        }
+                        else
+                        {
+                            msg = new Message(message, group, context.Users.Single(u => u.Id == sender.Id))
+                            {
+                                IsVisible = true
+                            };
+                            group.LastMessage = msg;
+                        }
+                        msg.IsRead = false;
+                        sender.LastTimeOnline = DateTime.Now;
+                        sender.IsOnline = true;
+                        UncommitedMessages.Add(new MessageHash(msg, hash));
+                        //context.Messages.Add(msg);
+                        //context.SaveChanges();
+
                         //else
                         //{
                         //    return false;
