@@ -31,6 +31,13 @@
             li = li.parentElement;
             li.querySelector(".last-message").textContent = message.Text;
             li.querySelector("p.time").textContent = `${date.getHours()}:${date.getMinutes()}`;
+            let unreadElement = li.querySelector("span.count-unred-messages");
+            if (unreadElement != null) {
+                let unreadCount = parseInt(unreadElement.textContent);
+                unreadElement.textContent = unreadCount + 1;
+            } else {
+                if (!li.classList.contains("active")) li.querySelector(".super-bottom").appendChild(Generator.UnreadMessages());
+            }
             li.remove();
 
             let chats = document.querySelector(".chats ul");

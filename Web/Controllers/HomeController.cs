@@ -47,6 +47,15 @@ namespace Web.Controllers
         }
 
         [HttpPost]
+        public async Task ReadMessages(int? groupId)
+        {
+            if (groupId != null)
+            {
+                await _client.ReadAllMessagesInGroupAsync((int)groupId);
+            }
+        }
+
+        [HttpPost]
         public async Task<JsonResult> SendMessage(string text, int groupId, long hash)
         {
             var msg = new MessageWCF
