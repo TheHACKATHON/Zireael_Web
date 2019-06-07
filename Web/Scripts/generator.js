@@ -93,6 +93,12 @@
         
         return ul;
     },
+    UnreadMessages: function () {
+        let span = document.createElement("span");
+        span.classList.add("count-unred-messages");
+        span.textContent = 1;
+        return span;
+    },
 }
 
 function convertAjaxDate(ajaxDate) {

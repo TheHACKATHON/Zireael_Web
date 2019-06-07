@@ -60,7 +60,11 @@ namespace Web.Models
 
         public void NewLastMessageCallback(MessageWCF message, string connectionId)
         {
-            //throw new NotImplementedException();
+            if (!string.IsNullOrWhiteSpace(connectionId))
+            {
+                var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                context.Clients.Client(connectionId).newLastMessage(message);
+            }
         }
 
         public void AddFriendToGroupCallback(UserBaseWCF user, GroupWCF group, string connectionId)

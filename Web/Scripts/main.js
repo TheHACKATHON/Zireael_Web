@@ -62,9 +62,17 @@ document.addEventListener('click', function (e) {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', `/getmessages`);
         xhr.send(data);
+        
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 hideChats();
+
+                let data2 = new FormData();
+                data2.append("groupId", target.closest(".group").getAttribute("data-id"));
+                let xhr2 = new XMLHttpRequest();
+                xhr2.open('POST', `/readmessages`);
+                xhr2.send(data2);
+                
                 let data = JSON.parse(xhr.responseText);
                 if (data.Code === NotifyType.Success) {
 
@@ -106,7 +114,7 @@ document.addEventListener('click', function (e) {
         let text = $('.panel-write textarea[name=msg]').val();
         $('textarea[name=msg]').val("");
         if (text.trim().length > 0) {
-            let groupId = document.querySelector(".message-list-wrap ul[data-id]").getAttribute("data-id");
+            let groupId = document.querySelector(".message-list-wrap ul[data-id].activeUl").getAttribute("data-id");
             let messagesContainer = document.querySelector(".message-list-wrap ul.activeUl");
 
             messagesContainer.appendChild(
@@ -160,6 +168,8 @@ function hideChats() {
 function changeActive(elem) {
     $(".chats li.active").removeClass("active");
     elem.classList.add("active");
+    var unreadMessages = elem.querySelector(".count-unred-messages");
+    if (unreadMessages != null) unreadMessages.remove();
     $(".panel-write").removeClass("hide");
 
 }
