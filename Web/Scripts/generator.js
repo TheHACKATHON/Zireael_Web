@@ -33,8 +33,17 @@
         return li;
     },
     MessageHTML: function (message, avatar) {
+        if (avatar == null) {
+            if (message.Sender.Id == _currentUser.Id) {
+                avatar = _currentUser.Avatar;
+            } else {
+                avatar = `/user/${message.Sender.Id}/${Crypto.MD5(message.Sender.DisplayName)}`;
+            }
+            
+        }
+
         let li = document.createElement("li");
-        if (message.Id == null) {
+        if (message.Id == null || message.Id == 0) {
             li.setAttribute("data-hash", message.Hash);
         }
         else {
@@ -87,8 +96,13 @@
 }
 
 function convertAjaxDate(ajaxDate) {
-    let tickdate = ajaxDate.substring(6, ajaxDate.indexOf(")"));
-    let date = new Date(parseInt(tickdate));
+    let date = null;
+    if (ajaxDate.startsWith("/Date")) {
+        let tickdate = ajaxDate.substring(6, ajaxDate.indexOf(")"));
+        date = new Date(parseInt(tickdate));
+    } else {
+        date = new Date(ajaxDate);
+    }
     dateString = `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`;
 
     // todo: в засивимости от дня редактировать строку

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using System.ServiceModel;
 using System.Transactions;
 
@@ -55,14 +56,14 @@ namespace Wcf_CeadChat_ServiceLibrary
            
             base.Seed(context);
 
-            context.Users.Add(new User
+            var user = new User
             {
-                Id = 0,
                 Login = $"system",
                 PasswordHash = "system"
-            });
+            };
+            context.Users.Add(user);
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 25; i++)
             {
                 context.Users.Add(new User
                 {
@@ -70,7 +71,17 @@ namespace Wcf_CeadChat_ServiceLibrary
                     PasswordHash = "$argon2i$v=19$m=8192,t=3,p=1$OXhielVwUDJDNmZQWnQ2SEE5TWVuR0ZhUFI3WGNKU3lyNkVQeGh6ZU41cTdWaGVSVnNWQXRUYThhU1l3eWczVUp4$P9g/X76odAV67q3GLgb3wSHymjnV+fpMC+8wFQ0yuJc"
                 });
             }
+            
+
             context.SaveChanges();
+
+            context.Groups.ToList().Add(new Group()
+            {
+                Creator = user, IsVisible = true, Name = "test", Type = GroupType.MultyUser,
+                Users = context.Users.Where(u => u.Login != "system").ToList()
+            });
+            context.SaveChanges();
+
         }
     }
 }

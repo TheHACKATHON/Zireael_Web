@@ -16,19 +16,29 @@
             data = JSON.parse(data);
             data.forEach((item) => {
                 let messageElement = document.querySelector('.message-list-wrap li[data-hash="' + item.Key + '"]');
-                messageElement.removeAttribute("data-hash");
-                messageElement.setAttribute("data-id", item.Value);
+                if (messageElement != null) {
+                    messageElement.removeAttribute("data-hash");
+                    messageElement.setAttribute("data-id", item.Value);
+                }
             });
         }
     };
 
     chat.client.addMessage = function (message, hash) {
-        //найти сообщение по id и если оно не отправлено (class=notSended) пометить отправленным
         let messageElement = document.querySelector('.message-list-wrap li[data-hash="' + hash + '"]');
-
-        let time = messageElement.querySelector("p.time");
-        time.textContent = new Date(message.DateTime).toLocaleTimeString();
-        //todo: добавить класс который означает что сообщение пришло
+        if (messageElement != null) {
+            let time = messageElement.querySelector("p.time");
+            let date = new Date(message.DateTime);
+            time.textContent = `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`;
+        } else {
+            console.log(message);
+            let ul = document.querySelector('.message-list-wrap ul[data-id="' + message.GroupId + '"]');
+            if (ul != null) {
+                message.Hash = hash;
+                ul.appendChild(Generator.MessageHTML(message, null));
+                $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
+            }
+        }
     };
 
     $.connection.hub.start().done(function () {

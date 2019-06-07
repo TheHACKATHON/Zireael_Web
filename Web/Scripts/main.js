@@ -44,7 +44,7 @@ document.addEventListener('click', function (e) {
                 hideChats();
                 let data = JSON.parse(xhr.responseText);
                 if (data.Code === NotifyType.Success) {
-                    
+
                     let chatsContainer = document.querySelector(".message-list-wrap.scroll-content");
                     let firstBoot = false;
                     if (chatsContainer == null) {
@@ -57,7 +57,7 @@ document.addEventListener('click', function (e) {
                         groupUl.classList.add("activeUl");
 
                         data.messages.forEach((message) => {
-                            groupUl.appendChild(Generator.MessageHTML(message, `/user/${_currentUser.Id}/${Crypto.MD5(_currentUser.DisplayName)}`));
+                            groupUl.appendChild(Generator.MessageHTML(message, null));
                         });
                         chatsContainer.appendChild(groupUl);
                     }
@@ -73,6 +73,8 @@ document.addEventListener('click', function (e) {
                 else {
                     popup(data.Error, data.Code);
                 }
+            } else if (xhr.readyState == 4 && xhr.status == 0) {
+                popup(null, NotifyType.Error);
             }
         };
     }
@@ -113,6 +115,9 @@ document.addEventListener('click', function (e) {
                     if (data.Code != NotifyType.Success) {
                         popup(data.Error, data.Code);
                     }
+                }
+                else if (xhr.readyState == 4 && xhr.status == 0) {
+                    popup(null, NotifyType.Error);
                 }
             };
         }

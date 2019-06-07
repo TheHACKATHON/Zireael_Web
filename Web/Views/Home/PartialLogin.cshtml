@@ -31,11 +31,11 @@
                 location.reload();
             }
             else if (data.Code === NotifyType.Error) {
-                popup(data.Error, 'error');
+                popup(data.Error, NotifyType.Error);
             }
             else {
                 popup("Мы потеряли связь с космосом, пытаемся восстановить квантовый соединитель. Попробуйте позже",
-                    'error');
+                    NotifyType.Error);
             }
         }
     }

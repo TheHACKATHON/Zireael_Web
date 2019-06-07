@@ -1,4 +1,7 @@
 ﻿function popup(string, status) {// success, notice, warning, error
+    if (string == null) {
+        string = "Мы потеряли связь с космосом, пытаемся восстановить квантовый соединитель. Попробуйте позже";
+    }
     var type = "bottom-right";
     status = status.toLowerCase();
     if (!$('.notify').hasClass('do-show')) {
