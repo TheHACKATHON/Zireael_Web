@@ -1226,6 +1226,9 @@ namespace Web.ServiceReference1 {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface ICeadChatServiceCallback {
         
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/GiveIdToMessageCallback")]
+        void GiveIdToMessageCallback(System.Collections.Generic.KeyValuePair<long, int>[] messageHashId, string sessionId);
+        
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/CreateChatCallback")]
         void CreateChatCallback(Web.ServiceReference1.GroupWCF group, int creatorId, string sessionId);
         

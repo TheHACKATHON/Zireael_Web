@@ -1,7 +1,7 @@
 ﻿var _currentUser = null;
-var _defaultAvatar = "/Content/Images/Zireael_back.png"
-var y_chats = 0;
-var last_ypx_chats = -1;
+var _defaultAvatar = "/Content/Images/Zireael_back.png";
+
+
 document.addEventListener('click', function (e) {
 
     let target = e.target;
@@ -44,7 +44,7 @@ document.addEventListener('click', function (e) {
                 hideChats();
                 let data = JSON.parse(xhr.responseText);
                 if (data.Code === NotifyType.Success) {
-                    changeActive(target.closest(".group").parentElement);
+                    
                     let chatsContainer = document.querySelector(".message-list-wrap.scroll-content");
                     let firstBoot = false;
                     if (chatsContainer == null) {
@@ -64,7 +64,7 @@ document.addEventListener('click', function (e) {
                     else {
                         groupUl.classList.add("activeUl");
                     }
-
+                    changeActive(target.closest(".group").parentElement);
                     if (firstBoot) {
                         $('.scrollbar-macosx-messages').scrollbar({ disableBodyScroll: true });
                     }
@@ -86,19 +86,19 @@ document.addEventListener('click', function (e) {
 
             messagesContainer.appendChild(
                 Generator.MessageHTML({
-                        Id: null,
-                        Hash: hash,
-                        Text: text,
-                        GroupId: groupId,
-                        DateTime: null,
-                        Sender: {
-                            Login: _currentUser.Login,
-                            DisplayName: _currentUser.DisplayName,
-                        },
+                    Id: null,
+                    Hash: hash,
+                    Text: text,
+                    GroupId: groupId,
+                    DateTime: null,
+                    Sender: {
+                        Login: _currentUser.Login,
+                        DisplayName: _currentUser.DisplayName,
                     },
+                },
                     _currentUser.Avatar));
             $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
-            
+
             let data = new FormData();
             data.append("text", text);
             data.append("groupId", groupId);
@@ -116,6 +116,9 @@ document.addEventListener('click', function (e) {
                 }
             };
         }
+    } else if (target.closest(".message-list li")) {
+        let li = target.closest(".message-list li");
+        li.classList.toggle("active");
     }
    
 });
@@ -137,7 +140,10 @@ document.addEventListener("DOMContentLoaded", function () {
     $('.scrollbar-macosx-chats').scrollbar({ disableBodyScroll: true});
 });
 
-$('.scrollbar-macosx-chats').mousewheel(function (event) {
+$('.scrollbar-macosx-messages').mousewheel(function (event) {
+    if (parseFloat($(".scrollbar-macosx-messages .scroll-element.scroll-y .scroll-bar").css("top")) < 36) {
+        console.log("loading");
+    }
     //event.preventDefault();
     //if (event.deltaY > 0) {
     //    y_chats -= 30;

@@ -119,7 +119,7 @@ span.count-unred-messages {
 .active p.last-message {
 }
 
-.active .super-top h3, .active .time, .active p.last-message {
+.active .super-top h3, .active .super-top .time, .active p.last-message {
     color: #fff;
 }
 
@@ -197,6 +197,10 @@ a.checked-btn-on {
 
 .message-list li:hover {
     background: #f2f6fa;
+}
+
+.message-list li.active {
+    background: #e3eef9;
 }
 
 .mega-right {

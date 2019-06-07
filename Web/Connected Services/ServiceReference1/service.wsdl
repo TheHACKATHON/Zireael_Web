@@ -35,6 +35,7 @@
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" />
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="ICeadChatService_Connect_InputMessage">
@@ -307,6 +308,9 @@
   <wsdl:message name="ICeadChatService_GetGroupName_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetGroupNameResponse" />
   </wsdl:message>
+  <wsdl:message name="ICeadChatService_GiveIdToMessageCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:GiveIdToMessageCallback" />
+  </wsdl:message>
   <wsdl:message name="ICeadChatService_CreateChatCallback_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:CreateChatCallback" />
   </wsdl:message>
@@ -544,6 +548,9 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetGroupName">
       <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetGroupName" message="tns:ICeadChatService_GetGroupName_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetGroupNameResponse" message="tns:ICeadChatService_GetGroupName_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GiveIdToMessageCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GiveIdToMessageCallback" message="tns:ICeadChatService_GiveIdToMessageCallback_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="CreateChatCallback">
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/CreateChatCallback" message="tns:ICeadChatService_CreateChatCallback_OutputCallbackMessage" />
@@ -1007,6 +1014,12 @@
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GiveIdToMessageCallback">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GiveIdToMessageCallback" style="document" />
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

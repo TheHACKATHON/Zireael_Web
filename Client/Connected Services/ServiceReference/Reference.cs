@@ -1018,6 +1018,12 @@ namespace Client.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/SendMessage", ReplyAction="http://tempuri.org/ICeadChatService/SendMessageResponse")]
         System.Threading.Tasks.Task<int> SendMessageAsync(Client.ServiceReference.MessageWCF message, long hash);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/SendMessageTransaction", ReplyAction="http://tempuri.org/ICeadChatService/SendMessageTransactionResponse")]
+        int SendMessageTransaction(Client.ServiceReference.MessageWCF message, long hash);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/SendMessageTransaction", ReplyAction="http://tempuri.org/ICeadChatService/SendMessageTransactionResponse")]
+        System.Threading.Tasks.Task<int> SendMessageTransactionAsync(Client.ServiceReference.MessageWCF message, long hash);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/DeleteMessage", ReplyAction="http://tempuri.org/ICeadChatService/DeleteMessageResponse")]
         bool DeleteMessage(Client.ServiceReference.MessageWCF message);
         
@@ -1220,6 +1226,9 @@ namespace Client.ServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface ICeadChatServiceCallback {
         
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/GiveIdToMessageCallback")]
+        void GiveIdToMessageCallback(System.Collections.Generic.KeyValuePair<long, int>[] messageHashId, string sessionId);
+        
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/CreateChatCallback")]
         void CreateChatCallback(Client.ServiceReference.GroupWCF group, int creatorId, string sessionId);
         
@@ -1392,6 +1401,14 @@ namespace Client.ServiceReference {
         
         public System.Threading.Tasks.Task<int> SendMessageAsync(Client.ServiceReference.MessageWCF message, long hash) {
             return base.Channel.SendMessageAsync(message, hash);
+        }
+        
+        public int SendMessageTransaction(Client.ServiceReference.MessageWCF message, long hash) {
+            return base.Channel.SendMessageTransaction(message, hash);
+        }
+        
+        public System.Threading.Tasks.Task<int> SendMessageTransactionAsync(Client.ServiceReference.MessageWCF message, long hash) {
+            return base.Channel.SendMessageTransactionAsync(message, hash);
         }
         
         public bool DeleteMessage(Client.ServiceReference.MessageWCF message) {

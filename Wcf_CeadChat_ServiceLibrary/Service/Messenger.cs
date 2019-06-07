@@ -14,12 +14,25 @@ namespace Wcf_CeadChat_ServiceLibrary
 {
     internal static class Messenger
     {
-        private static readonly ConcurrentBag<Message> UncommitedMessages;
+        public class MessageHash
+        {
+            public Message Message { get; set; }
+            public long Hash { get; set; }
+
+            public MessageHash(Message message, long hash)
+            {
+                Message = message;
+                Hash = hash;
+            }
+        }
+
+        public static event Action<Dictionary<long, int>> MessagesReachedDB; 
+        private static readonly ConcurrentBag<MessageHash> UncommitedMessages;
         private const int ThreadTimeout = 5000;
 
         static Messenger()
         {
-            UncommitedMessages = new ConcurrentBag<Message>();
+            UncommitedMessages = new ConcurrentBag<MessageHash>();
             Task.Factory.StartNew(async () =>
             {
                 var stopwatch = new Stopwatch();
@@ -27,34 +40,41 @@ namespace Wcf_CeadChat_ServiceLibrary
                 {
                     stopwatch.Restart();
                     var context = new ChatContext();
-                    var i = 0;
-                    Message message = null;
+                    var messagesId = new Stack<MessageHash>();
+                    MessageHash messageHash = null;
                     do
                     {
-                        UncommitedMessages.TryTake(out message);
-                        if (message != null)
+                        UncommitedMessages.TryTake(out messageHash);
+                        if (messageHash != null)
                         {
                             try
                             {
+                                var message = messageHash.Message;                                
                                 message.Group = context.Groups.Single(g => g.Id.Equals(message.Group.Id));
                                 message.Sender = context.Users.Single(u => u.Id.Equals(message.Sender.Id));
                                 context.Messages.Add(message);
+                                messagesId.Push(messageHash);
                                 if (message.Group.LastMessage.DateTime < message.DateTime)
                                 {
                                     message.Group.LastMessage = message;
+                                }
+
+                                if (messagesId.Count > 100)
+                                {
+                                    break;
                                 }
                             }
                             catch (Exception e)
                             {
                                 Debug.WriteLine(e);
                             }
-                            i++;
                         }
-                    } while (message != null);
+                    } while (messageHash != null);
 
-                    if (i > 0)
+                    if (messagesId.Count > 0)
                     {
                         await context.SaveChangesAsync();
+                        MessagesReachedDB?.Invoke(messagesId.ToDictionary(k => k.Hash, v=> v.Message.Id));
                     }
                     stopwatch.Stop();
                     if (stopwatch.ElapsedMilliseconds < ThreadTimeout)
@@ -88,7 +108,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                 return null;
             }
         }//получить сообщения из группы
-        internal static Message SendMessage(MessageWCF message, int senderId)
+        internal static Message SendMessage(MessageWCF message, int senderId, long hash)
         {
             try
             {
@@ -124,7 +144,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                             msg.IsRead = false;
                             sender.LastTimeOnline = DateTime.Now;
                             sender.IsOnline = true;
-                            UncommitedMessages.Add(msg);
+                            UncommitedMessages.Add(new MessageHash(msg, hash));
                              //context.Messages.Add(msg);
                              //context.SaveChanges();
                         }

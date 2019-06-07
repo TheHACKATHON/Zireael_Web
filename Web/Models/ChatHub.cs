@@ -27,6 +27,15 @@ namespace Web.Models
             return JsonConvert.SerializeObject(new { Id = currentUser.Id, Email = currentUser.Email, DisplayName = currentUser.DisplayName, Login = currentUser.Login, Avatar = $"user/{currentUser.Id}/{AdditionsLibrary.HashCode.GetMD5(currentUser.DisplayName)}" });
         }
 
+        public void GiveIdToMessageCallback(KeyValuePair<long, int>[] messageHashId, string connectionId)
+        {
+            if (!string.IsNullOrWhiteSpace(connectionId))
+            {
+                var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                context.Clients.Client(connectionId).giveMessageId(JsonConvert.SerializeObject(messageHashId));
+            }
+        }
+
         public void CreateChatCallback(GroupWCF group, int creatorId, string connectionId)
         {
             if (!string.IsNullOrWhiteSpace(connectionId))

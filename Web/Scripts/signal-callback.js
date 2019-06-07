@@ -1,5 +1,5 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
-    var chat = $.connection.chatHub; 
+    var chat = $.connection.chatHub;
     chat.client.addChat = function (group, creatorId) {
         let chats = document.querySelector(".chats ul");
         chats.insertBefore(Generator.DialogHTML(group), chats.firstChild);
@@ -11,11 +11,21 @@
         location.reload();
     };
 
+    chat.client.giveMessageId = function (data) {
+        if (data) {
+            data = JSON.parse(data);
+            data.forEach((item) => {
+                let messageElement = document.querySelector('.message-list-wrap li[data-hash="' + item.Key + '"]');
+                messageElement.removeAttribute("data-hash");
+                messageElement.setAttribute("data-id", item.Value);
+            });
+        }
+    };
+
     chat.client.addMessage = function (message, hash) {
         //найти сообщение по id и если оно не отправлено (class=notSended) пометить отправленным
-        let messageElement = document.querySelector('.message-list-wrap li[data-hash="' + hash + '"]')
-        //messageElement.removeAttribute("data-hash");
-        //messageElement.setAttribute("data-id", message.Id);
+        let messageElement = document.querySelector('.message-list-wrap li[data-hash="' + hash + '"]');
+
         let time = messageElement.querySelector("p.time");
         time.textContent = new Date(message.DateTime).toLocaleTimeString();
         //todo: добавить класс который означает что сообщение пришло
@@ -65,4 +75,12 @@ function setCookie(name, value, options) {
     document.cookie = updatedCookie;
 }
 
+function propName(prop, value) {
+    for (var i in prop) {
+        if (prop[i] == value) {
+            return i;
+        }
+    }
+    return false;
+}
 //#endregion

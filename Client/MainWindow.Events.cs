@@ -421,7 +421,7 @@ namespace Client
 
         private async void MessagesDelete_Button_Click(object sender, RoutedEventArgs e)
         {
-            var messagesToDelete = _messageItems.Where(mItem => mItem.IsSelectedMessage).ToList();
+            var messagesToDelete = _messageItems.Where(mItem => mItem.IsSelectedMessage && mItem.Message.Id != 0).ToList();
             for (var i = messagesToDelete.Count - 1; i >= 0; i--)
             {
                 if (!await CheckConnection(async () => await _client.DeleteMessageAsync(messagesToDelete[i].Message)))

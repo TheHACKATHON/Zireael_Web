@@ -191,6 +191,9 @@
     <None Include="Connected Services\ServiceReference\service1.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\ServiceReference\System.Collections.Generic.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\ServiceReference\Wcf_CeadChat_ServiceLibrary.xsd">
       <SubType>Designer</SubType>
     </None>

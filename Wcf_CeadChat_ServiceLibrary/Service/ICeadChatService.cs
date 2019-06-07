@@ -149,6 +149,9 @@ namespace Wcf_CeadChat_ServiceLibrary
     public interface IUserChanged
     {
         #region WPF Client callbacks
+        
+        [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
+        void GiveIdToMessageCallback(IEnumerable<KeyValuePair<long, int>> messageHashId, string sessionId);
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         void CreateChatCallback(GroupWCF group, int creatorId, string sessionId);//оповещение о добавлении пользователя в чат
         [OperationContract(IsOneWay = true, ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]

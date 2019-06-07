@@ -50,7 +50,27 @@ namespace Wcf_CeadChat_ServiceLibrary
             _timer.Elapsed += Timer_Elapsed;
             _timer.Enabled = true;
             _timer.Start();
+            Messenger.MessagesReachedDB += Messenger_MessagesReachedDB;
         }
+
+        private void Messenger_MessagesReachedDB(Dictionary<long, int> messages)
+        {
+            var context = new ChatContext();
+            var contextMessages = context.Messages.ToList();
+            var groups = contextMessages.Where(m => messages.Any(mId => mId.Value == m.Id)).Select(m => m.Group).Distinct();
+
+            foreach (var group in groups)
+            {
+                var groupMessages = contextMessages.Where(m =>
+                    messages.Any(mId => mId.Value == m.Id) && m.Group.Id.Equals(group.Id));
+
+                CallUsersInGroup(group.Users, (user) =>
+                {
+                    user.GiveIdToMessageCallback(messages.Where(m =>groupMessages.Any(gM => gM.Id.Equals(m.Value))), GetConnectionId(user, _onlineUsers[user].SessionId));
+                });
+            }
+        }
+
 
         #region system
         //                bool saveFailed;
@@ -338,7 +358,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                                 {
                                     return null;
                                 }
-                                msg = Messenger.SendMessage(message, sender.Id);
+                                msg = Messenger.SendMessage(message, sender.Id, hash);
                                 if (msg != null)
                                 {
                                     isSend = true;
@@ -376,7 +396,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                             if (context != null)
                             {
                                 message.DateTime = DateTime.Now;
-                                using (var transaction = context.Database.BeginTransaction())
+                                //using (var transaction = context.Database.BeginTransaction())
                                 {
                                     try
                                     {
@@ -384,7 +404,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                                         var sender = _onlineUsers[userChanged];
                                         var group = Messenger.GetGroupById(message.GroupId, sender.Id);
                                         if (group is null) return null; //группы не существует или человек в ней не состоит
-                                        var msg = Messenger.SendMessage(message, sender.Id);
+                                        var msg = Messenger.SendMessage(message, sender.Id, hash);
                                         if (msg != null) isSend = true;
                                         if (isSend)
                                         {
@@ -396,14 +416,14 @@ namespace Wcf_CeadChat_ServiceLibrary
                                                     user.NewLastMessageCallback(new MessageWCF(msg), GetConnectionId(user, _onlineUsers[user].SessionId));
                                                 }
                                             });
-                                            transaction.Commit();
+                                            //transaction.Commit();
                                             return msg.Id;
                                         }
 
                                     }
                                     catch (Exception ex)
                                     {
-                                        transaction.Rollback();
+                                        //transaction.Rollback();
                                         return -1;
                                     }
                                 }
@@ -1498,7 +1518,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                 newUser.LastTimeOnline = DateTime.Now;
                 newUser.IsOnline = true;
                 newUser.PasswordHash = GeneratePasswordHash(newUser.PasswordHash);
-                if (!LoginExist(newUser.Login) 
+                if (!LoginExist(newUser.Login)
                     && !EmailExist(newUser.Email)
                     && Regex.IsMatch(newUser.Login, _patternLogin)
                     && Regex.IsMatch(newUser.PasswordHash, _patternPassword))
@@ -1934,7 +1954,7 @@ namespace Wcf_CeadChat_ServiceLibrary
             if (context != null)
             {
                 var group = context.Groups.SingleOrDefault(g => g.Id.Equals(id));
-                if(group.Type.Equals(GroupType.SingleUser))
+                if (group.Type.Equals(GroupType.SingleUser))
                 {
                     var sender = _onlineUsers[userChanged];
                     var userResipient = group.Users.SingleOrDefault(u => u.Id != sender.Id);
