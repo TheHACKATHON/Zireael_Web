@@ -32,6 +32,29 @@ document.addEventListener('click', function (e) {
         xhr.open('POST', `/logout`);
         xhr.send();
     }
+    else if (target.closest(".menu-contacts")) {
+        let data = new FormData();
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', `/menucontacts`);
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.Code === NotifyType.Success) {
+                    $(".dialog-container").html("");
+                    $(".dialog-container").html(data.view);
+                    console.log(data);
+                    document.querySelector(".modal-backdrop").classList.remove("hide");
+                }
+                else {
+                    popup(data.Error, data.Code);
+                }
+            } else if (xhr.readyState == 4 && xhr.status == 0) {
+                popup(null, NotifyType.Error);
+            }
+        };
+    }
     else if (target.closest(".group")) {
         let data = new FormData();
         data.append("groupId", target.closest(".group").getAttribute("data-id"));

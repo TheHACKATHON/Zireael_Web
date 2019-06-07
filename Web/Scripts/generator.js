@@ -14,7 +14,7 @@
         let li = document.createElement("li");
         li.innerHTML =
 `<a data-id="${group.Id}" class="group">
-        <div} class="wrap-img letter">
+        <div class="wrap-img letter">
             <h2>${usernameLetter}</h2>
             <img src="avatar" alt="logo">
         </div>

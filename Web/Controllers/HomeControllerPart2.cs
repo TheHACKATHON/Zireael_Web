@@ -18,6 +18,7 @@ namespace Web.Controllers
         private string _patternPassword = @"^(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,32}$";
         private string _fatalError = "Мы потеряли связь с космосом, пытаемся восстановить квантовый соединитель. Попробуйте позже";
 
+        #region Registration
         [HttpPost]
         public async Task<ActionResult> SendCodeForChangePassword(string loginOrEmail)
         {
@@ -152,5 +153,19 @@ namespace Web.Controllers
                 });
             }
         }
+        #endregion
+        [HttpPost]
+        public async Task<JsonResult> MenuContacts()
+        {
+            var friends = await _client.GetFriendsAsync();
+            if(friends!=null)
+            {
+                var view = RazorViewToStringFormat.RenderRazorViewToString(this, "PartialMenuContacts", friends);
+                return Json(new { Code = NotifyType.Success, view});
+            }
+            return Json(new NotifyError(_fatalError));
+        }
     }
+
+
 }

@@ -1,0 +1,19 @@
+﻿@using Web.ServiceReference1;
+@*//@model UserWCF[]*@
+<div class="search-container">
+    <i class="icon icon-search"></i>
+    <input autocomplete="login" class="md-input search" name="login" type="text">
+</div>
+<div class="contacts-container">
+    @{ 
+        foreach(var user in ViewData.Model)
+        {
+            <div class="contact">
+            
+            </div>
+        }
+    }
+</div>
+<div class="md-input-group login_phone_num_input_group md-input-animated md-input-has-value non_border">
+    <input type="submit" value="Новый контакт">
+</div>
