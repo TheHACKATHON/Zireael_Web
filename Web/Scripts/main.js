@@ -83,7 +83,7 @@ document.addEventListener('click', function (e) {
         let text = $('.panel-write textarea[name=msg]').val();
         $('textarea[name=msg]').val("");
         if (text.trim().length > 0) {
-            let groupId = document.querySelector(".message-list-wrap ul[data-id]").getAttribute("data-id");
+            let groupId = document.querySelector(".message-list-wrap ul[data-id].activeUl").getAttribute("data-id");
             let messagesContainer = document.querySelector(".message-list-wrap ul.activeUl");
 
             messagesContainer.appendChild(

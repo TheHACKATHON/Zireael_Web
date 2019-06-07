@@ -24,6 +24,20 @@
         }
     };
 
+    chat.client.newLastMessage = function(message) {
+        if (message) {
+            var date = new Date(message.DateTime);
+            let li = document.querySelector('.chats li a[data-id="' + message.GroupId + '"]');
+            li = li.parentElement;
+            li.querySelector(".last-message").textContent = message.Text;
+            li.querySelector("p.time").textContent = `${date.getHours()}:${date.getMinutes()}`;
+            li.remove();
+
+            let chats = document.querySelector(".chats ul");
+            chats.insertBefore(li, chats.firstChild);
+        }
+    };
+
     chat.client.addMessage = function (message, hash) {
         let messageElement = document.querySelector('.message-list-wrap li[data-hash="' + hash + '"]');
         if (messageElement != null) {
