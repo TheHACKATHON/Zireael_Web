@@ -161,7 +161,7 @@ namespace Web.Controllers
             if(friends!=null)
             {
                 var view = RazorViewToStringFormat.RenderRazorViewToString(this, "PartialMenuContacts", friends);
-                return Json(new { Code = NotifyType.Success, view});
+                return Json(new { Code = NotifyType.Success, view, title = "Контакты"});
             }
             return Json(new NotifyError(_fatalError));
         }

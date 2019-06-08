@@ -44,7 +44,10 @@ document.addEventListener('click', function (e) {
                 if (data.Code === NotifyType.Success) {
                     $(".dialog-container").html("");
                     $(".dialog-container").html(data.view);
+                    $(".dialog-title > h2").text(data.title);
+
                     console.log(data);
+                    $('.scrollbar-macosx-contacts').scrollbar({ disableBodyScroll: true });
                     document.querySelector(".modal-backdrop").classList.remove("hide");
                 }
                 else {

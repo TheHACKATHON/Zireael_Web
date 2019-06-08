@@ -473,6 +473,16 @@ a:active, a:hover {
     vertical-align: middle;
     opacity: 0.9;
 }
+.icon-search-contact {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-image: url(../Content/Images/Icons2.png);
+    background-repeat: no-repeat;
+    background-position: -12px -214px;
+    vertical-align: middle;
+    opacity: 0.9;
+}
 .tg_head_peer_search_btn {
     float: right;
     padding-top: 15px;
