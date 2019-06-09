@@ -10,7 +10,7 @@
     .search-container .search {
         width: 100%;
         padding: 0px 10px 5px 10px;
-        height: 30px;
+        height: 25px;
         outline:none;
         border: none;
     }
@@ -19,6 +19,7 @@
     display: flex;
     flex-direction: column;
     padding: 5px 10px;
+    height:100%;
 }
     .contacts-container a:hover{
         text-decoration:none;
@@ -32,6 +33,9 @@
     flex-direction: row;
     margin-bottom: 5px;
 }
+    .contact:hover {
+        background: #d3d3d373;
+    }
 
 
 a.md_modal_action.md_modal_action_close:hover {
@@ -39,4 +43,29 @@ a.md_modal_action.md_modal_action_close:hover {
     text-decoration: none;
     font-size: 13px;
     margin-top: 1px;
+}
+
+.scrollbar-macosx-contacts {
+    height: calc(100vh - 165px);
+}
+
+.new-contact {
+    display: flex;
+    width: 100%;
+    margin: auto;
+    justify-content: center;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #2f6ea5;
+    font-weight: bold;
+    height: 30px;
+    align-items: center;
+    margin-top: 5px;
+}
+a.new-contact:hover {
+    text-decoration: none;
+    background: #d3d3d373;
+}
+.contact p.time{
+    padding-right:0px;
 }

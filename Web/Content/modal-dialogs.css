@@ -13,8 +13,9 @@
 }
 
 .modal-backdrop-dialog {
-    padding:0px;
-    background:#Fff;
+    padding: 0px;
+    background: #Fff;
+    height: calc(100vh - 30px);
 }
 
 .dialog{
