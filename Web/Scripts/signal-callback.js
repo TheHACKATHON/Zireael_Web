@@ -52,7 +52,6 @@
             let date = new Date(message.DateTime);
             time.textContent = `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`;
         } else {
-            console.log(message);
             let ul = document.querySelector('.message-list-wrap ul[data-id="' + message.GroupId + '"]');
             if (ul != null) {
                 message.Hash = hash;
