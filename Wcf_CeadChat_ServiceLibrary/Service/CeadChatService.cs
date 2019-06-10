@@ -1088,31 +1088,35 @@ namespace Wcf_CeadChat_ServiceLibrary
                     sender.LastTimeOnline = DateTime.Now;
                     sender.IsOnline = true;
                     var friend = context.Users.FirstOrDefault(u => u.Login.Equals(friendLogin, StringComparison.OrdinalIgnoreCase));
-                    if (friend != null)
+                    if (friend != null && !sender.Login.Equals(friendLogin, StringComparison.OrdinalIgnoreCase))
                     {
                         var senderContext = context.Users.FirstOrDefault(u => u.Id == sender.Id);
                         //senderContext.Friends.Add(friend);//добавляем друга
-                        context.Friends.Add(new Friends { Sender = senderContext, User2 = friend });
-                        context.SaveChanges();// сохраняем изменения
-
-                        var users = _onlineUsers.Where(o => o.Value.Id == sender.Id);
-                        foreach (var user in users)
+                        if (!context.Friends.Any(f => f.Sender.Id == senderContext.Id && f.User2.Id == friend.Id))
                         {
-                            if (user.Key != null && user.Value != null)
+                            context.Friends.Add(new Friends { Sender = senderContext, User2 = friend });
+                            context.SaveChanges();// сохраняем изменения
+
+                            var users = _onlineUsers.Where(o => o.Value.Id == sender.Id);
+                            foreach (var user in users)
                             {
-                                try
+                                if (user.Key != null && user.Value != null)
                                 {
-                                    user.Key.AddContactCallback(new UserBaseWCF(friend), GetConnectionId(user.Key, user.Value.SessionId));
-                                }
-                                catch
-                                {
-                                    _onlineUsers.Remove(user.Key);
-                                    NotificationAboutChangeOnlineStatus(user.Value);
+                                    try
+                                    {
+                                        user.Key.AddContactCallback(new UserBaseWCF(friend), GetConnectionId(user.Key, user.Value.SessionId));
+                                    }
+                                    catch
+                                    {
+                                        _onlineUsers.Remove(user.Key);
+                                        NotificationAboutChangeOnlineStatus(user.Value);
+                                    }
                                 }
                             }
-                        }
 
-                        return new UserBaseWCF(friend);
+                            return new UserBaseWCF(friend);
+                        }
+                        return null;
                     }
                     else
                     {

@@ -33,11 +33,9 @@ document.addEventListener('click', function (e) {
         xhr.send();
     }
     else if (target.closest(".menu-contacts")) {
-        let data = new FormData();
-
         let xhr = new XMLHttpRequest();
         xhr.open('POST', `/menucontacts`);
-        xhr.send(data);
+        xhr.send();
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 let data = JSON.parse(xhr.responseText);
@@ -45,8 +43,7 @@ document.addEventListener('click', function (e) {
                     $(".dialog-container").html("");
                     $(".dialog-container").html(data.view);
                     $(".dialog-title > h2").text(data.title);
-
-                    console.log(data);
+                    //console.log(data);
                     $('.scrollbar-macosx-contacts').scrollbar({ disableBodyScroll: true });
                     document.querySelector(".modal-backdrop").classList.remove("hide");
                 }
@@ -58,6 +55,98 @@ document.addEventListener('click', function (e) {
             }
         };
     }
+    else if (target.closest(".contact")) {
+        target.closest(".contact").classList.toggle("select");
+        if ($("a.contact.select").length > 0) {
+            $("a.button.delete-contact").removeClass("hide");
+            $("a.button.new-contact").addClass("hide");
+        }
+        else {
+            $("a.button.delete-contact").addClass("hide");
+            $("a.button.new-contact").removeClass("hide");
+        }
+    }
+    else if (target.closest(".new-contact")) {
+        $(".sub-modal-dialog").removeClass("hide");
+        $(".sub-modal-dialog").html("");
+        $(".sub-modal-dialog").html(`
+            <div class="sub-dialog-container">
+                <h3>Добавление контакта</h3>
+                <input required="" autocomplete="login" class="login" type="text" placeholder="Логин пользователя"/>
+                <div class="new-contact-btn-container">
+                    <a class="button btn-cancel">отмена</a>
+                    <a class="button btn-add-contact">добавить</a>
+                </div>
+            </div>
+        `);
+    }
+    else if (target.closest(".delete-contact")) {
+        $(".sub-modal-dialog").removeClass("hide");
+        $(".sub-modal-dialog").html("");
+        $(".sub-modal-dialog").html(`
+            <div class="sub-dialog-container">
+                <h3>Вы уверены?</h3>
+                <div class="new-contact-btn-container">
+                    <a class="button btn-cancel">отмена</a>
+                    <a class="button btn-delete-contact">удалить (${$("a.contact.select").length})</a>
+                </div>
+            </div>
+        `);
+    }
+    else if (target.closest(".btn-delete-contact")) {//////////////
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', `/deletecontacts`);
+        let data = new FormData();
+        let arr = new Array();
+        $("a.contact.select").each(function (index) {
+            arr.push($(this).data("id"));
+        });
+        data.append("idArr", JSON.stringify(arr));
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.Code === NotifyType.Success) {
+                    $(".sub-dialog-container .login").val("");
+                    $(".sub-modal-dialog").addClass("hide");
+                    $("a.button.delete-contact").addClass("hide");
+                    $("a.button.new-contact").removeClass("hide");
+                }
+                else {
+                    popup(data.Message, data.Code);
+                }
+            }
+            else if (xhr.readyState == 4 && xhr.status == 0) {
+                popup(null, NotifyType.Error);
+            }
+        };
+    }
+    else if (target.closest(".btn-cancel")) {
+        $(".sub-modal-dialog").addClass("hide");
+    }
+    else if (target.closest(".btn-add-contact")) {
+        let login = $(".sub-dialog-container .login").val();
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', `/addcontact`);
+        let data = new FormData();
+        data.append("login", login);
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.Code === NotifyType.Success) {
+                    $(".sub-dialog-container .login").val("");
+                    $(".sub-modal-dialog").addClass("hide");
+                }
+                else {
+                    popup(data.Message, data.Code);
+                }
+            }
+            else if (xhr.readyState == 4 && xhr.status == 0) {
+                popup(null, NotifyType.Error);
+            }
+        };
+    }
     else if (target.closest(".group")) {
         let data = new FormData();
         data.append("groupId", target.closest(".group").getAttribute("data-id"));
@@ -65,7 +154,7 @@ document.addEventListener('click', function (e) {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', `/getmessages`);
         xhr.send(data);
-        
+
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 hideChats();
@@ -75,7 +164,7 @@ document.addEventListener('click', function (e) {
                 let xhr2 = new XMLHttpRequest();
                 xhr2.open('POST', `/readmessages`);
                 xhr2.send(data2);
-                
+
                 let data = JSON.parse(xhr.responseText);
                 if (data.Code === NotifyType.Success) {
 
@@ -159,7 +248,7 @@ document.addEventListener('click', function (e) {
         let li = target.closest(".message-list li");
         li.classList.toggle("active");
     }
-   
+
 });
 
 function hideChats() {
@@ -178,7 +267,7 @@ function changeActive(elem) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    $('.scrollbar-macosx-chats').scrollbar({ disableBodyScroll: true});
+    $('.scrollbar-macosx-chats').scrollbar({ disableBodyScroll: true });
 });
 
 $('.scrollbar-macosx-messages').mousewheel(function (event) {
@@ -202,8 +291,8 @@ $('.scrollbar-macosx-messages').mousewheel(function (event) {
     //    $('.scrollbar-macosx-chats').scrollTop(y_chats );
 
     //}
-   // console.log(event);
-   // console.log(parseFloat($(".scrollbar-macosx > .scroll-element.scroll-y .scroll-bar").css("top")), $('.scrollbar-macosx-messages').not('.scroll-content').height(),  y_chats)
+    // console.log(event);
+    // console.log(parseFloat($(".scrollbar-macosx > .scroll-element.scroll-y .scroll-bar").css("top")), $('.scrollbar-macosx-messages').not('.scroll-content').height(),  y_chats)
 });
 
 $('textarea[name=msg]').on('keydown', (e) => {
@@ -222,3 +311,24 @@ $('textarea[name=msg]').on('keyup', (e) => {
         }
     }
 });
+
+document.addEventListener('input', function (e) {
+    let target = e.target;
+    if (target.matches(".search")) {
+        let filter = $(".search").val().toLowerCase();
+        $(".contact").removeClass("hide");
+        $(".contact h3").each(function (i, elem) {
+            let login = $(elem).text().toLowerCase();
+            if (login.indexOf(filter) == -1) {
+                $(elem).parent().parent().parent().addClass('hide');
+            }
+            else {
+                $(elem).parent().parent().parent().removeClass('hide');
+            }
+        });
+
+    }
+});
+//$('input[type=text].search').change(function (e) {
+//    console.log(e);
+//});

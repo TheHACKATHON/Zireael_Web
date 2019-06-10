@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -164,6 +165,27 @@ namespace Web.Controllers
                 return Json(new { Code = NotifyType.Success, view, title = "Контакты"});
             }
             return Json(new NotifyError(_fatalError));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddContact(string login)
+        {
+            var friend = await _client.AddFriendAsync(login);
+            if (friend)
+            {
+                return Json(new { Code = NotifyType.Success, Message = $"{login} успешно добавлен!"});
+            }
+            return Json(new { Code = NotifyType.Warning, Message = $"Пользователь \"{login}\" НЕ добавлен..." });
+        }
+        [HttpPost]
+        public async Task<JsonResult> DeleteContacts(string idArr)
+        {
+            var id = JsonConvert.DeserializeObject<int[]>(idArr);
+            foreach (var item in id)
+            {
+                await _client.RemoveFriendAsync(new UserBaseWCF { Id = item });
+            }
+            return Json(new { Code = NotifyType.Success});
         }
     }
 

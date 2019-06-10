@@ -140,12 +140,21 @@ namespace Web.Models
 
         public void AddContactCallback(UserBaseWCF user, string connectionId)
         {
-            //throw new NotImplementedException();
+            if (user != null)
+            {
+                var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                var md5 = AdditionsLibrary.HashCode.GetMD5(user.DisplayName);
+                context.Clients.Client(connectionId).addContact(user, md5);
+            }
         }
 
         public void RemoveContactCallback(UserBaseWCF user, string connectionId)
         {
-            //throw new NotImplementedException();
+            if (user != null)
+            {
+                var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                context.Clients.Client(connectionId).removeContact(user.Id);
+            }
         }
     }
 }

@@ -59,7 +59,34 @@
                 $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
             }
         }
-    };
+    }; 
+    chat.client.removeContact = function (id) {
+        $(".contacts-container .contact[data-id=" + id + "]").parent().remove();
+    }
+    chat.client.addContact = function (user, hash) {
+        let date = new Date(user.LastTimeOnline);
+        let contactHtml =
+            `
+                <li>
+                    <a data-id="${user.Id}" class="contact">
+                        <div class="wrap-img">
+                            <img src="/user/${user.Id}/${hash}" alt="logo">
+                        </div>
+                        <div class="super">
+                            <div class="super-top">
+                                <h3>${user.DisplayName}</h3>
+                            </div>
+                            <div class="super-bottom">
+                                <p class="time">последний онлайн ${date.toLocaleDateString()} ${date.toLocaleTimeString()}</p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            `;
+        //console.log(contactHtml);
+        //console.log($(".contacts-container:last-child"));
+        $(".contacts-container li").last().after(contactHtml);
+    }
 
     $.connection.hub.start().done(function () {
         chat.server.connect().done((result) => {

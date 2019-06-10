@@ -33,11 +33,15 @@
     flex-direction: row;
     padding: 5px 15px;
 }
+    .contact.select h3 {
+        color: white;
+    }
+    .contact.select p.time {
+        color: white;
+    }
     .contact:hover {
         background: #d3d3d373;
     }
-
-
 a.md_modal_action.md_modal_action_close:hover {
     color: #c1e2ff;
     text-decoration: none;
@@ -48,22 +52,83 @@ a.md_modal_action.md_modal_action_close:hover {
 }
 
 .new-contact {
-    display: flex;
     width: 100%;
     margin: auto;
-    justify-content: center;
-    font-size: 14px;
-    text-transform: uppercase;
-    color: #2f6ea5;
     font-weight: bold;
-    height: 30px;
-    align-items: center;
-    margin-top: 5px;
 }
-a.new-contact:hover {
-    text-decoration: none;
-    background: #d3d3d373;
-}
+
 .contact p.time{
     padding-right:0px;
+}
+
+.sub-modal-dialog {
+    display: flex;
+    background: rgba(26,26,26,.7);
+    position: absolute;
+    z-index: 1601;
+    width: 480px;
+    height: calc(100vh - 31px);
+    justify-content: center;
+    align-items: center;
+}
+.sub-dialog-container {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+    .sub-dialog-container h3{
+        margin:10px;
+    }
+    .sub-dialog-container .login {
+        height: 25px;
+        outline: none;
+        border: none;
+        width: 250px;
+        margin: 10px;
+        border-bottom: 2px solid #0000004f;
+    }
+.new-contact-btn-container {
+    display: flex;
+    justify-content: flex-end;
+}
+a.btn-cancel {
+    margin: 5px 0px 5px 10px;
+}
+a.btn-add-contact {
+    font-weight: bold;
+    margin: 5px 0px 5px 10px;
+}
+a.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #2f6ea5;
+    font-size: 14px;
+    margin-top: 5px;
+    text-transform: uppercase;
+    height: 30px;
+    padding: 10px;
+}
+    a.button:hover {
+        text-decoration: none;
+        background: #d3d3d373;
+    }
+
+a.contact.select {
+    background: #2f6da5;
+}
+a.button.delete-contact {
+    color: red;
+    font-weight: bold;
+}
+a.button.delete-contact.hide{
+    display:none;
+}
+a.button.new-contact.hide{
+    display:none;
+}
+a.button.btn-delete-contact {
+    color: red;
+    font-weight: bold;
 }
