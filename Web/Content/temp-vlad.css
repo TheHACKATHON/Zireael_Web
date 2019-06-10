@@ -14,7 +14,20 @@
         outline:none;
         border: none;
     }
-
+    .search-container .group-name {
+        width: 100%;
+        padding: 0px 10px 5px 10px;
+        height: 25px;
+        outline: none;
+        border: none;
+    }
+    .search-container .group-description {
+        width: 100%;
+        padding: 0px 10px 5px 10px;
+        height: 25px;
+        outline: none;
+        border: none;
+    }
 .contacts-container {
     display: flex;
     flex-direction: column;
@@ -49,6 +62,10 @@ a.md_modal_action.md_modal_action_close:hover {
 
 .scrollbar-macosx-contacts {
     height: calc(100vh - 165px);
+}
+
+.scrollbar-macosx-creategroup {
+    height: calc(100vh - 205px);
 }
 
 .new-contact {
@@ -131,4 +148,7 @@ a.button.new-contact.hide{
 a.button.btn-delete-contact {
     color: red;
     font-weight: bold;
+}
+.create-group{
+    font-weight:bold;
 }

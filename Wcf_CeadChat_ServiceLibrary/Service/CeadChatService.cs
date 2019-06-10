@@ -796,27 +796,33 @@ namespace Wcf_CeadChat_ServiceLibrary
                                 context.SaveChanges();
                                 CallUsersInGroup(group.Users, (user) =>
                                 {
-                                    user.CreateChatCallback(new GroupWCF(group), sender.Id, Context(userChanged).Sessions.FirstOrDefault(s => s.User.Id.Equals(sender.Id))?.ConnectionId);
+                                    user.CreateChatCallback(new GroupWCF(group), sender.Id, Context(userChanged).Sessions.ToList().LastOrDefault(s => s.User.Id.Equals(sender.Id))?.ConnectionId);
                                 });
                             }
                             else
                             {
-                                oldGroup.IsVisible = true;
-                                var systemMessage = new Message
+                                if (!oldGroup.IsVisible)
                                 {
-                                    DateTime = DateTime.Now,
-                                    Group = oldGroup,
-                                    IsRead = true,
-                                    IsVisible = true,
-                                    Sender = system,
-                                    Text = "создана группа"
-                                };
-                                context.Messages.Add(systemMessage);
-                                oldGroup.LastMessage = systemMessage;
-                                context.SaveChanges();
+                                    var systemMessage = new Message
+                                    {
+                                        DateTime = DateTime.Now,
+                                        Group = oldGroup,
+                                        IsRead = true,
+                                        IsVisible = true,
+                                        Sender = system,
+                                        Text = "создана группа"
+                                    };
+                                    context.Messages.Add(systemMessage);
+                                    oldGroup.LastMessage = systemMessage;
+                                    context.SaveChanges();
+                                }
+                                oldGroup.IsVisible = true;
+                                var ses = Context(userChanged).Sessions.ToList();
+                                var se = ses.LastOrDefault(s => s.User.Id.Equals(sender.Id));
+                                var con = se.ConnectionId;
                                 CallUsersInGroup(oldGroup.Users, (user) =>
                                 {
-                                    user.CreateChatCallback(new GroupWCF(oldGroup), sender.Id, Context(userChanged).Sessions.FirstOrDefault(s => s.User.Id.Equals(sender.Id))?.ConnectionId);
+                                    user.CreateChatCallback(new GroupWCF(oldGroup), sender.Id, con);
                                 });
                             }
                         }

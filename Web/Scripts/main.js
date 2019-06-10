@@ -55,6 +55,28 @@ document.addEventListener('click', function (e) {
             }
         };
     }
+    else if (target.closest(".menu-create-group")) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', `/menucreategroup`);
+        xhr.send();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.Code === NotifyType.Success) {
+                    $(".dialog-container").html("");
+                    $(".dialog-container").html(data.view);
+                    $(".dialog-title > h2").text(data.title);
+                    $('.scrollbar-macosx-contacts').scrollbar({ disableBodyScroll: true });
+                    document.querySelector(".modal-backdrop").classList.remove("hide");
+                }
+                else {
+                    popup(data.Error, data.Code);
+                }
+            } else if (xhr.readyState == 4 && xhr.status == 0) {
+                popup(null, NotifyType.Error);
+            }
+        };
+    }
     else if (target.closest(".contact")) {
         target.closest(".contact").classList.toggle("select");
         if ($("a.contact.select").length > 0) {
@@ -79,6 +101,57 @@ document.addEventListener('click', function (e) {
                 </div>
             </div>
         `);
+    }
+    else if (target.closest(".create-group")) {
+        let groupName = $(".group-name").val();
+        console.log(groupName);
+        if ($("a.contact.select").length == 1) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', `/createchat`);
+            let data = new FormData();
+            data.append("id", $("a.contact.select").data("id"));
+            xhr.send(data);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if (data.Code === NotifyType.Success) {
+                        $(".modal-backdrop").addClass("hide");
+                    }
+                    else {
+                        popup(data.Message, data.Code);
+                    }
+                }
+                else if (xhr.readyState == 4 && xhr.status == 0) {
+                    popup(null, NotifyType.Error);
+                }
+            };
+        }
+        else if ($("a.contact.select").length > 1 && groupName.length > 0) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', `/creategroup`);
+            let data = new FormData();
+            let arr = new Array();
+            $("a.contact.select").each(function (index) {
+                arr.push($(this).data("id"));
+            });
+            data.append("idArr", JSON.stringify(arr));
+            data.append("groupName", groupName);
+            xhr.send(data);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if (data.Code === NotifyType.Success) {
+                        $(".modal-backdrop").addClass("hide");
+                    }
+                    else {
+                        popup(data.Message, data.Code);
+                    }
+                }
+                else if (xhr.readyState == 4 && xhr.status == 0) {
+                    popup(null, NotifyType.Error);
+                }
+            };
+        }
     }
     else if (target.closest(".delete-contact")) {
         $(".sub-modal-dialog").removeClass("hide");

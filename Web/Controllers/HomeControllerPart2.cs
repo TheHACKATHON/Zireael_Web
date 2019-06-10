@@ -159,13 +159,25 @@ namespace Web.Controllers
         public async Task<JsonResult> MenuContacts()
         {
             var friends = await _client.GetFriendsAsync();
-            if(friends!=null)
+            if (friends != null)
             {
                 var view = RazorViewToStringFormat.RenderRazorViewToString(this, "PartialMenuContacts", friends);
-                return Json(new { Code = NotifyType.Success, view, title = "Контакты"});
+                return Json(new { Code = NotifyType.Success, view, title = "Контакты" });
             }
             return Json(new NotifyError(_fatalError));
         }
+        [HttpPost]
+        public async Task<JsonResult> MenuCreateGroup()
+        {
+            var friends = await _client.GetFriendsAsync();
+            if (friends != null)
+            {
+                var view = RazorViewToStringFormat.RenderRazorViewToString(this, "PartialMenuCreateGroup", friends);
+                return Json(new { Code = NotifyType.Success, view, title = "Создание группы" });
+            }
+            return Json(new NotifyError(_fatalError));
+        }
+
 
         [HttpPost]
         public async Task<JsonResult> AddContact(string login)
@@ -173,7 +185,7 @@ namespace Web.Controllers
             var friend = await _client.AddFriendAsync(login);
             if (friend)
             {
-                return Json(new { Code = NotifyType.Success, Message = $"{login} успешно добавлен!"});
+                return Json(new { Code = NotifyType.Success, Message = $"{login} успешно добавлен!" });
             }
             return Json(new { Code = NotifyType.Warning, Message = $"Пользователь \"{login}\" НЕ добавлен..." });
         }
@@ -185,7 +197,33 @@ namespace Web.Controllers
             {
                 await _client.RemoveFriendAsync(new UserBaseWCF { Id = item });
             }
-            return Json(new { Code = NotifyType.Success});
+            return Json(new { Code = NotifyType.Success });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CreateChat(int id)
+        {
+
+            if (await _client.CreateChatAsync(new UserBaseWCF { Id = id }))
+            {
+                return Json(new { Code = NotifyType.Success });
+            }
+            return Json(new { Code = NotifyType.Warning, Message="Новый диалог не создан..." });
+        }
+        [HttpPost]
+        public async Task<JsonResult> CreateGroup(string idArr, string groupName)
+        {
+            var users = new List<UserBaseWCF>();
+            var id = JsonConvert.DeserializeObject<int[]>(idArr);
+            foreach (var item in id)
+            {
+                users.Add(new UserBaseWCF { Id = item });
+            }
+            if (await _client.CreateGroupAsync(users.ToArray(), groupName))
+            {
+                return Json(new { Code = NotifyType.Success });
+            }
+            return Json(new { Code = NotifyType.Warning, Message = "Новый диалог не создан..." });
         }
     }
 

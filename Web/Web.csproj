@@ -308,6 +308,7 @@
     <Content Include="Views\Home\PartialLearnMore.cshtml" />
     <Content Include="Views\Home\PartialSendCode.cshtml" />
     <Content Include="Views\Home\PartialMenuContacts.cshtml" />
+    <Content Include="Views\Home\PartialMenuCreateGroup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
