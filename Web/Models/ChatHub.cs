@@ -55,7 +55,11 @@ namespace Web.Models
 
         public void DeleteMessageCallback(MessageWCF message, string connectionId)
         {
-            //throw new NotImplementedException();
+            if (!string.IsNullOrWhiteSpace(connectionId))
+            {
+                var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                context.Clients.Client(connectionId).deleteMessage(message.Id);
+            }
         }
 
         public void NewLastMessageCallback(MessageWCF message, string connectionId)

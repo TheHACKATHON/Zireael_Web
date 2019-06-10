@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
@@ -30,6 +31,24 @@ namespace Web.Controllers
                 _fonts.AddFontFile(file);
             }
         }
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteMessages(int[] messagesId)
+        {
+            if (messagesId != null)
+            {
+                foreach (var id in messagesId)
+                {
+                    if (!await _client.DeleteMessageAsync(id))
+                    {
+                        return Json(new NotifyError("Произошла ошибка, обновите страницу или попробуйте позже"));
+                    }
+                }
+                return Json(new {Code = NotifyType.Success});
+            }
+            return Json(new NotifyError("Произошла ошибка, обновите страницу или попробуйте позже"));
+        }
+
         [HttpPost]
         public async Task<JsonResult> GetMessages(int? groupId)
         {
@@ -158,7 +177,7 @@ namespace Web.Controllers
                     return File(avatar.BigData, "image/png");
                 }
             }
-            
+
             return HttpNotFound();
         }
         [HttpGet]

@@ -1025,10 +1025,10 @@ namespace Web.ServiceReference1 {
         System.Threading.Tasks.Task<int> SendMessageTransactionAsync(Web.ServiceReference1.MessageWCF message, long hash);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/DeleteMessage", ReplyAction="http://tempuri.org/ICeadChatService/DeleteMessageResponse")]
-        bool DeleteMessage(Web.ServiceReference1.MessageWCF message);
+        bool DeleteMessage(int messageId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/DeleteMessage", ReplyAction="http://tempuri.org/ICeadChatService/DeleteMessageResponse")]
-        System.Threading.Tasks.Task<bool> DeleteMessageAsync(Web.ServiceReference1.MessageWCF message);
+        System.Threading.Tasks.Task<bool> DeleteMessageAsync(int messageId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/AddFriendsToGroup", ReplyAction="http://tempuri.org/ICeadChatService/AddFriendsToGroupResponse")]
         bool AddFriendsToGroup(Web.ServiceReference1.GroupWCF group, Web.ServiceReference1.UserBaseWCF[] friend);
@@ -1411,12 +1411,12 @@ namespace Web.ServiceReference1 {
             return base.Channel.SendMessageTransactionAsync(message, hash);
         }
         
-        public bool DeleteMessage(Web.ServiceReference1.MessageWCF message) {
-            return base.Channel.DeleteMessage(message);
+        public bool DeleteMessage(int messageId) {
+            return base.Channel.DeleteMessage(messageId);
         }
         
-        public System.Threading.Tasks.Task<bool> DeleteMessageAsync(Web.ServiceReference1.MessageWCF message) {
-            return base.Channel.DeleteMessageAsync(message);
+        public System.Threading.Tasks.Task<bool> DeleteMessageAsync(int messageId) {
+            return base.Channel.DeleteMessageAsync(messageId);
         }
         
         public bool AddFriendsToGroup(Web.ServiceReference1.GroupWCF group, Web.ServiceReference1.UserBaseWCF[] friend) {

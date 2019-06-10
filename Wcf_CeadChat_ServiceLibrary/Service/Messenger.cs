@@ -176,7 +176,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                 return null;
             }
         }//отправить сообщение
-        internal static Message DeleteMessage(MessageWCF message, int senderId)
+        internal static Message DeleteMessage(int messageId, int senderId)
         {
             ChatContext context;
             Group group = null;
@@ -189,7 +189,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                 {
                     context = new ChatContext();
                     var sender = context.Users.FirstOrDefault(u => u.Id == senderId);
-                    messageFromContex = context.Messages.FirstOrDefault(m => m.Id == message.Id);
+                    messageFromContex = context.Messages.FirstOrDefault(m => m.Id == messageId);
                     if (messageFromContex.Sender.Id == sender.Id)
                     {
                         group = context.Groups.FirstOrDefault(g => g.Id == messageFromContex.Group.Id);//получаем группу с контекста по id в сообщении         

@@ -320,6 +320,44 @@ document.addEventListener('click', function (e) {
     } else if (target.closest(".message-list li")) {
         let li = target.closest(".message-list li");
         li.classList.toggle("active");
+        if ($("ul.activeUl li.active").length > 0) {
+            if (!$(".panel-write").hasClass("hide")) $(".panel-write").addClass("hide");
+            if ($(".panel-select").hasClass("hide")) $(".panel-select").removeClass("hide");
+
+        } else {
+            if ($(".panel-write").hasClass("hide")) $(".panel-write").removeClass("hide");
+            if (!$(".panel-select").hasClass("hide")) $(".panel-select").addClass("hide");
+        }
+    }
+    else if (target.matches("a.btn-remove-messages")) {
+        if ($("ul.activeUl li.active").length > 0) {
+            let messages = [];
+            $("ul.activeUl li.active").each((id, message) => {
+                messages.push($(message).data("id"));
+            });
+
+            let data = new FormData();
+            data.append("messagesId", messages);
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', `/deletemessages`);
+            xhr.send(data);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if (data.Code == NotifyType.Success) {
+                        $("ul.activeUl li.active").removeClass("active");
+                        if ($(".panel-write").hasClass("hide")) $(".panel-write").removeClass("hide");
+                        if (!$(".panel-select").hasClass("hide")) $(".panel-select").addClass("hide");
+                    } else if (data.Code == NotifyType.Error){
+                        popup(data.Error, NotifyType.Error);
+                    }
+                }
+                else if (xhr.readyState == 4 && xhr.status == 0) {
+                    popup(null, NotifyType.Error);
+                }
+            };
+        }
     }
 
 });

@@ -11,6 +11,13 @@
         location.reload();
     };
 
+    chat.client.deleteMessage = function(messageId) {
+        if (messageId) {
+            $('ul.message-list li[data-id="' + messageId + '"]').remove();
+
+        }
+    };
+
     chat.client.giveMessageId = function (data) {
         if (data) {
             data = JSON.parse(data);

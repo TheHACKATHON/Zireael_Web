@@ -46,7 +46,7 @@ namespace Wcf_CeadChat_ServiceLibrary
         int SendMessageTransaction(MessageWCF message, long hash);
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
-        bool DeleteMessage(MessageWCF message);//удаление сообщения
+        bool DeleteMessage(int messageId);//удаление сообщения
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         bool AddFriendsToGroup(GroupWCF group, IEnumerable<UserBaseWCF> friend);//добавление пользователя в чат

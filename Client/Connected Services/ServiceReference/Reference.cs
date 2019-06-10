@@ -1025,10 +1025,10 @@ namespace Client.ServiceReference {
         System.Threading.Tasks.Task<int> SendMessageTransactionAsync(Client.ServiceReference.MessageWCF message, long hash);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/DeleteMessage", ReplyAction="http://tempuri.org/ICeadChatService/DeleteMessageResponse")]
-        bool DeleteMessage(Client.ServiceReference.MessageWCF message);
+        bool DeleteMessage(int messageId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/DeleteMessage", ReplyAction="http://tempuri.org/ICeadChatService/DeleteMessageResponse")]
-        System.Threading.Tasks.Task<bool> DeleteMessageAsync(Client.ServiceReference.MessageWCF message);
+        System.Threading.Tasks.Task<bool> DeleteMessageAsync(int messageId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/AddFriendsToGroup", ReplyAction="http://tempuri.org/ICeadChatService/AddFriendsToGroupResponse")]
         bool AddFriendsToGroup(Client.ServiceReference.GroupWCF group, Client.ServiceReference.UserBaseWCF[] friend);
@@ -1411,12 +1411,12 @@ namespace Client.ServiceReference {
             return base.Channel.SendMessageTransactionAsync(message, hash);
         }
         
-        public bool DeleteMessage(Client.ServiceReference.MessageWCF message) {
-            return base.Channel.DeleteMessage(message);
+        public bool DeleteMessage(int messageId) {
+            return base.Channel.DeleteMessage(messageId);
         }
         
-        public System.Threading.Tasks.Task<bool> DeleteMessageAsync(Client.ServiceReference.MessageWCF message) {
-            return base.Channel.DeleteMessageAsync(message);
+        public System.Threading.Tasks.Task<bool> DeleteMessageAsync(int messageId) {
+            return base.Channel.DeleteMessageAsync(messageId);
         }
         
         public bool AddFriendsToGroup(Client.ServiceReference.GroupWCF group, Client.ServiceReference.UserBaseWCF[] friend) {

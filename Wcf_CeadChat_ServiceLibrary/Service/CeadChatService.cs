@@ -455,20 +455,20 @@ namespace Wcf_CeadChat_ServiceLibrary
         //    string message = builder.ToString();
         //    return new Exception(message, dbu);
         //}
-        public bool DeleteMessage(MessageWCF message)
+        public bool DeleteMessage(int messageId)
         {
             var result = TryExecute(() =>
             {
                 Group group = null;
                 Message newLastMessage = null, messageFromContex = null;
                 var sender = GetCurrentUser();//получаем учетку по текущему подключению
-                messageFromContex = Messenger.DeleteMessage(message, sender.Id);
-                group = Messenger.GetGroupById(message.GroupId, sender.Id);
+                messageFromContex = Messenger.DeleteMessage(messageId, sender.Id);
+                group = Messenger.GetGroupById(messageFromContex.Group.Id, sender.Id);
                 CallUsersInGroup(group.Users, (user) =>
                 {
                     user.DeleteMessageCallback(new MessageWCF(messageFromContex), GetConnectionId(user, _onlineUsers[user].SessionId));//передаем сообщение всем пользователям которые онлайн(в этой группе)
                 });
-                if (group.LastMessage.Id == message.Id)
+                if (group.LastMessage.Id == messageId)
                 {
                     newLastMessage = Messenger.GetLastMessage(group.Id);
                     CallUsersInGroup(group.Users, (user) =>

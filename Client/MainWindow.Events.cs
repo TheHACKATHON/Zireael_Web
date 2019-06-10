@@ -302,7 +302,7 @@ namespace Client
         {
             if (sender is MenuItem menuItem && menuItem.DataContext is MessageItem messageItem)
             {
-                await CheckConnection(async () => await _client.DeleteMessageAsync(messageItem.Message));
+                await CheckConnection(async () => await _client.DeleteMessageAsync(messageItem.Message.Id));
             }
         }
 
@@ -424,7 +424,7 @@ namespace Client
             var messagesToDelete = _messageItems.Where(mItem => mItem.IsSelectedMessage && mItem.Message.Id != 0).ToList();
             for (var i = messagesToDelete.Count - 1; i >= 0; i--)
             {
-                if (!await CheckConnection(async () => await _client.DeleteMessageAsync(messagesToDelete[i].Message)))
+                if (!await CheckConnection(async () => await _client.DeleteMessageAsync(messagesToDelete[i].Message.Id)))
                 {
                     return;
                 }
