@@ -85,7 +85,12 @@
             `;
         //console.log(contactHtml);
         //console.log($(".contacts-container:last-child"));
-        $(".contacts-container li").last().after(contactHtml);
+        if ($(".contacts-container li").length > 0) {
+            $(".contacts-container li").last().after(contactHtml);
+        }
+        else {
+            $(".contacts-container").html(contactHtml);
+        }
     }
 
     $.connection.hub.start().done(function () {
