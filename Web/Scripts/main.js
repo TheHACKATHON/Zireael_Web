@@ -317,7 +317,7 @@ document.addEventListener('click', function (e) {
                 }
             };
         }
-    } else if (target.closest(".message-list li")) {
+    } else if (target.closest(".message-list li:not(.systemMsg)")) {
         let li = target.closest(".message-list li");
         li.classList.toggle("active");
         if ($("ul.activeUl li.active").length > 0) {
@@ -337,7 +337,7 @@ document.addEventListener('click', function (e) {
             });
 
             let data = new FormData();
-            data.append("messagesId", messages);
+            data.append("messagesIdJson", JSON.stringify(messages));
 
             let xhr = new XMLHttpRequest();
             xhr.open('POST', `/deletemessages`);

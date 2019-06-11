@@ -28,7 +28,7 @@ namespace Wcf_CeadChat_ServiceLibrary
 
         public static event Action<Dictionary<long, int>> MessagesReachedDB;
         private static readonly ConcurrentBag<MessageHash> UncommitedMessages;
-        private const int ThreadTimeout = 5000;
+        private const int ThreadTimeout = 3000;
 
         static Messenger()
         {

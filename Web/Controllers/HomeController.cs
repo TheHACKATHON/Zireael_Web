@@ -1,4 +1,5 @@
 ﻿using AdditionsLibrary;
+using Newtonsoft.Json;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -33,11 +34,12 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> DeleteMessages(int[] messagesId)
+        public async Task<JsonResult> DeleteMessages(string messagesIdJson)
         {
-            if (messagesId != null)
+            var messagesArray = JsonConvert.DeserializeObject<int[]>(messagesIdJson);
+            if (messagesArray != null)
             {
-                foreach (var id in messagesId)
+                foreach (var id in messagesArray)
                 {
                     if (!await _client.DeleteMessageAsync(id))
                     {
