@@ -1,7 +1,10 @@
 ﻿var Generator = {
-    DialogHTML: function(group, avatar, defaultAvatar, notReadMessageCount) {
-        let dateString = convertDateToFullDateString(group.LastMessage.DateTime);
-        let usernameLetter = avatar.avatar == defaultAvatar ? group.Name.substring(0, 1) : "";
+    DialogHTML: function (group, avatar, defaultAvatar, notReadMessageCount) {
+        if (avatar == null) {
+            avatar = `/group/${group.Id}/${Crypto.MD5(group.Name)}`;
+        }
+
+        let dateString = convertDateToShortTimeString(group.LastMessage.DateTime);
         let notReadMessageElem = "";
         if (parseInt(notReadMessageCount) > 0) {
             notReadMessageElem =
@@ -9,14 +12,12 @@
     ${notReadMessageCount}
 </span>`;
         }
-
-
+        
         let li = document.createElement("li");
         li.innerHTML =
 `<a data-id="${group.Id}" class="group">
-        <div class="wrap-img letter">
-            <h2>${usernameLetter}</h2>
-            <img src="avatar" alt="logo">
+        <div class="wrap-img">
+            <img src="${avatar}" alt="logo">
         </div>
         <div class="super">
             <div class="super-top">
@@ -110,6 +111,15 @@ function convertJsonToDate(jsonDate) {
         date = new Date(jsonDate);
     }
     return date;
+}
+
+function convertDateToShortTimeString(dateTime) {
+    if (typeof dateTime == "string") {
+        dateTime = convertJsonToDate(dateTime);
+    }
+    
+    dateString = dateTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return dateString;
 }
 
 function convertDateToFullDateString(dateTime) {
