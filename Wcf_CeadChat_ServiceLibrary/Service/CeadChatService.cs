@@ -733,7 +733,7 @@ namespace Wcf_CeadChat_ServiceLibrary
 
                     CallUsersInGroup(group.Users, (user) =>
                          {
-                             user.CreateChatCallback(new GroupWCF(group), sender.Id, context.Sessions.ToList().FirstOrDefault(s => s.User.Id.Equals(_onlineUsers[user].Id))?.ConnectionId);
+                             user.CreateChatCallback(new GroupWCF(group), sender.Id, GetConnectionId(user, _onlineUsers[user].SessionId));
                          });
 
                     return true;
@@ -796,7 +796,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                                 context.SaveChanges();
                                 CallUsersInGroup(group.Users, (user) =>
                                 {
-                                    user.CreateChatCallback(new GroupWCF(group), sender.Id, Context(userChanged).Sessions.ToList().LastOrDefault(s => s.User.Id.Equals(sender.Id))?.ConnectionId);
+                                    user.CreateChatCallback(new GroupWCF(group), sender.Id, GetConnectionId(user, _onlineUsers[user].SessionId));
                                 });
                             }
                             else
@@ -817,12 +817,10 @@ namespace Wcf_CeadChat_ServiceLibrary
                                     context.SaveChanges();
                                 }
                                 oldGroup.IsVisible = true;
-                                var ses = Context(userChanged).Sessions.ToList();
-                                var se = ses.LastOrDefault(s => s.User.Id.Equals(sender.Id));
-                                var con = se.ConnectionId;
+
                                 CallUsersInGroup(oldGroup.Users, (user) =>
                                 {
-                                    user.CreateChatCallback(new GroupWCF(oldGroup), sender.Id, con);
+                                    user.CreateChatCallback(new GroupWCF(oldGroup), sender.Id, GetConnectionId(user, _onlineUsers[user].SessionId));
                                 });
                             }
                         }
