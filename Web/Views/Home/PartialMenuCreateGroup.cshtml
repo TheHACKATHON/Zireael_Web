@@ -22,7 +22,7 @@
                                 <h3>@user.DisplayName</h3>
                             </div>
                             <div class="super-bottom">
-                                <p class="time">последний онлайн @user.LastTimeOnline.ToLocalTime()</p>
+                                <p class="time">@(AdditionsLibrary.DateTimeToOnlineStringConverter.Convert(user.LastTimeOnline))</p>
                             </div>
                         </div>
                     </a>

@@ -1,5 +1,6 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
     var chat = $.connection.chatHub;
+
     chat.client.addChat = function (group, creatorId) {
         let chats = document.querySelector(".chats ul");
         chats.insertBefore(Generator.DialogHTML(group), chats.firstChild);

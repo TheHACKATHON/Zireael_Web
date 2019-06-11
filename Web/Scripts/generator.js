@@ -103,11 +103,11 @@
 
 function convertJsonToDate(jsonDate) {
     let date = null;
-    if (ajaxDate.startsWith("/Date")) {
-        let tickdate = ajaxDate.substring(6, ajaxDate.indexOf(")"));
+    if (jsonDate.startsWith("/Date")) {
+        let tickdate = jsonDate.substring(6, jsonDate.indexOf(")"));
         date = new Date(parseInt(tickdate));
     } else {
-        date = new Date(ajaxDate);
+        date = new Date(jsonDate);
     }
     return date;
 }
