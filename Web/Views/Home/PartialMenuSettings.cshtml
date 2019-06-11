@@ -4,7 +4,7 @@
     var user = ViewData.Model as UserWCF;
 }
 <div class="settings-header">
-    <a class="contact">
+    <div class="profile contact">
         <div class="wrap-img">
             <img src="/user/@(user.Id)/@(HashCode.GetMD5(user.DisplayName))" alt="logo">
         </div>
@@ -16,7 +16,7 @@
                 <p class="time">@(user.IsOnline?"Online" : DateTimeToOnlineStringConverter.Convert(user.LastTimeOnline))</p>
             </div>
         </div>
-    </a>
+    </div>
 </div>
 <div class="settings-container">
     <a class="button">Сменить логин</a>

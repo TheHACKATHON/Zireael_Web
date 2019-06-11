@@ -34,8 +34,8 @@
     padding: 5px 0;
     height:100%;
 }
-    .contacts-container a:hover{
-        text-decoration:none;
+    a:hover {
+        text-decoration: none;
     }
     .search-container .icon-search {
         /*background-color:black;*/
@@ -52,9 +52,17 @@
     .contact.select p.time {
         color: white;
     }
-    .contact:hover {
+    /*.contact.select:hover{
+
+    }*/
+    .contact:not(.profile):not(.select):hover {
         background: #d3d3d373;
     }
+.profile {
+    border-bottom: 3px solid #0000001b;
+    padding-bottom: 10px;
+}
+
 a.md_modal_action.md_modal_action_close:hover {
     color: #c1e2ff;
     text-decoration: none;
@@ -151,4 +159,11 @@ a.button.btn-delete-contact {
 }
 .create-group{
     font-weight:bold;
+}
+.settings-container {
+    margin-top: 5px;
+}
+.settings-container .button {
+    padding: 20px;
+    margin-top: 0px;
 }

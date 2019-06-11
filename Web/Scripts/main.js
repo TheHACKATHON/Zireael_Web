@@ -38,7 +38,7 @@ document.addEventListener('click', function (e) {
     else if (target.closest(".menu-create-group")) {
         OpenMenu("menucreategroup");
     }
-    else if (target.closest(".contact")) {
+    else if (target.closest(".contact:not(.profile)")) {
         target.closest(".contact").classList.toggle("select");
         if ($("a.contact.select").length > 0) {
             $("a.button.delete-contact").removeClass("hide");
