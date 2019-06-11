@@ -1,6 +1,6 @@
 ﻿var Generator = {
     DialogHTML: function(group, avatar, defaultAvatar, notReadMessageCount) {
-        let dateString = convertAjaxDate(group.LastMessage.DateTime);
+        let dateString = convertDateToFullDateString(group.LastMessage.DateTime);
         let usernameLetter = avatar.avatar == defaultAvatar ? group.Name.substring(0, 1) : "";
         let notReadMessageElem = "";
         if (parseInt(notReadMessageCount) > 0) {
@@ -61,7 +61,7 @@
 
         let dateString = "";
         if (message.DateTime !=  null) {
-            dateString = convertAjaxDate(message.DateTime);
+            dateString = convertDateToFullDateString(message.DateTime);
         }
         else {
             dateString = "загрузка";
@@ -101,7 +101,7 @@
     },
 }
 
-function convertAjaxDate(ajaxDate) {
+function convertJsonToDate(jsonDate) {
     let date = null;
     if (ajaxDate.startsWith("/Date")) {
         let tickdate = ajaxDate.substring(6, ajaxDate.indexOf(")"));
@@ -109,8 +109,159 @@ function convertAjaxDate(ajaxDate) {
     } else {
         date = new Date(ajaxDate);
     }
-    dateString = `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`;
+    return date;
+}
 
-    // todo: в засивимости от дня редактировать строку
+function convertDateToFullDateString(dateTime) {
+    if (typeof dateTime == "string") {
+        dateTime = convertJsonToDate(dateTime);
+    }
+    
+    dateString = `${dateTime.toLocaleTimeString()} ${dateTime.toLocaleDateString()}`;
     return dateString;
+}
+
+function DateConvert(dateTime) {
+    if (typeof dateTime == "string") {
+        dateTime = convertJsonToDate(dateTime);
+    }
+
+    if (dateTime)
+    {
+        var now = new Date();
+        if (dateTime.getFullYear() == now.getFullYear() && dateTime.getMonth() == now.getMonth() && dateTime.getDate() == now.getDate()) {
+            let result = `был онлайн сегодня в ${dateTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+
+            let tmpDate = now - dateTime;
+            let minutes = Math.floor(tmpDate / 1000 / 60);
+            let hours = Math.floor(tmpDate / 1000 / 60 / 60);
+
+            if (hours < 1) {
+                if (minutes >= 1) {
+                    result = `был онлайн ${minutes} ${minutesToStringConverter(minutes)} назад`;
+                }
+                else {
+                    result = `был онлайн только что`;
+                }
+
+            }
+            else {
+                if (hours == 1) {
+                    result = `был онлайн час назад`;
+                }
+                else {
+                    result = `был онлайн ${hours} ${hoursToStringConverter(hours)} назад`;
+                }
+
+            }
+
+            return result;
+
+        }
+
+        if (dateTime.getFullYear() == now.getFullYear() && dateTime.getMonth() == now.getMonth() && dateTime.getDate() == now.getDate() - 1) {
+            return `был онлайн вчера в ${dateTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+        }
+
+        if (dateTime.getFullYear() != now.getFullYear()) {
+            
+
+        }
+        return `был онлайн ${dateTime.toLocaleDateString([], { day: "2-digit", month: "2-digit", year: "numeric" })} в ${dateTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+        //return `был онлайн ${dateTime.toLocaleDateString([], { day: "2-digit", month: "2-digit" })} в ${dateTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+    }
+
+    return null;
+}
+
+
+function minutesToStringConverter(min) {
+    min = parseInt(min);
+    var minString = "минут";
+
+    if (min < 10) {
+        switch (min) {
+            case 1:
+                {
+                    minString += "у";
+                }
+                break;
+            case 2:
+            case 3:
+            case 4:
+                {
+                    minString += "ы";
+                }
+                break;
+        }
+    }
+    else if (min < 20) {
+
+    }
+    else {
+        while (min > 10) {
+            min -= 10;
+        }
+        switch (min) {
+            case 1:
+                {
+                    minString += "у";
+                }
+                break;
+            case 2:
+            case 3:
+            case 4:
+                {
+                    minString += "ы";
+                }
+                break;
+        }
+    }
+
+    return minString;
+}
+
+function hoursToStringConverter(hour)
+{
+    hour = parseInt(hour);
+    var minString = "час";
+
+    if (hour < 10) {
+        switch (hour) {
+            case 2:
+            case 3:
+            case 4:
+                {
+                    minString += "а";
+                }
+                break;
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                {
+                    minString += "ов";
+                }
+                break;
+        }
+    }
+    else if (hour <= 20) {
+        minString += "ов";
+    }
+    else if (hour < 24) {
+        while (hour > 10) {
+            hour -= 10;
+        }
+        switch (hour) {
+            case 2:
+            case 3:
+                {
+                    minString += "а";
+                }
+                break;
+        }
+    }
+
+    return minString;
 }
