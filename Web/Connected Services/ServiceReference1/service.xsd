@@ -645,10 +645,22 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetMyProfile">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMyProfileResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="GetMyProfileResult" nillable="true" type="q33:UserWCF" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GiveIdToMessageCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/System.Collections.Generic" minOccurs="0" name="messageHashId" nillable="true" type="q33:ArrayOfKeyValuePairOflongint" />
+        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/System.Collections.Generic" minOccurs="0" name="messageHashId" nillable="true" type="q34:ArrayOfKeyValuePairOflongint" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -656,7 +668,7 @@
   <xs:element name="CreateChatCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="group" nillable="true" type="q34:GroupWCF" />
+        <xs:element xmlns:q35="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="group" nillable="true" type="q35:GroupWCF" />
         <xs:element minOccurs="0" name="creatorId" type="xs:int" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
@@ -665,7 +677,7 @@
   <xs:element name="CreateMessageCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q35="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="message" nillable="true" type="q35:MessageWCF" />
+        <xs:element xmlns:q36="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="message" nillable="true" type="q36:MessageWCF" />
         <xs:element minOccurs="0" name="hash" type="xs:long" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
@@ -674,7 +686,7 @@
   <xs:element name="DeleteMessageCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q36="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="message" nillable="true" type="q36:MessageWCF" />
+        <xs:element xmlns:q37="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="message" nillable="true" type="q37:MessageWCF" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -682,7 +694,7 @@
   <xs:element name="NewLastMessageCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q37="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="message" nillable="true" type="q37:MessageWCF" />
+        <xs:element xmlns:q38="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="message" nillable="true" type="q38:MessageWCF" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -690,8 +702,8 @@
   <xs:element name="AddFriendToGroupCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q38="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q38:UserBaseWCF" />
-        <xs:element xmlns:q39="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="group" nillable="true" type="q39:GroupWCF" />
+        <xs:element xmlns:q39="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q39:UserBaseWCF" />
+        <xs:element xmlns:q40="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="group" nillable="true" type="q40:GroupWCF" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -699,7 +711,7 @@
   <xs:element name="RemoveGroupCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q40="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="group" nillable="true" type="q40:GroupWCF" />
+        <xs:element xmlns:q41="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="group" nillable="true" type="q41:GroupWCF" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -707,24 +719,24 @@
   <xs:element name="SetAvatarCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q41="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="avatar" nillable="true" type="q41:AvatarWCF" />
-        <xs:element xmlns:q42="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q42:UserBaseWCF" />
+        <xs:element xmlns:q42="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="avatar" nillable="true" type="q42:AvatarWCF" />
+        <xs:element xmlns:q43="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q43:UserBaseWCF" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="SetAvatarForGroupCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q43="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="avatar" nillable="true" type="q43:AvatarWCF" />
-        <xs:element xmlns:q44="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="group" nillable="true" type="q44:GroupWCF" />
+        <xs:element xmlns:q44="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="avatar" nillable="true" type="q44:AvatarWCF" />
+        <xs:element xmlns:q45="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="group" nillable="true" type="q45:GroupWCF" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadedMessagesCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q45="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="group" nillable="true" type="q45:GroupWCF" />
-        <xs:element xmlns:q46="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="sender" nillable="true" type="q46:UserBaseWCF" />
+        <xs:element xmlns:q46="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="group" nillable="true" type="q46:GroupWCF" />
+        <xs:element xmlns:q47="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="sender" nillable="true" type="q47:UserBaseWCF" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -740,7 +752,7 @@
   <xs:element name="ChangeOnlineStatusCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q47="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q47:UserBaseWCF" />
+        <xs:element xmlns:q48="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q48:UserBaseWCF" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -755,7 +767,7 @@
   <xs:element name="ChangeTextInMessageCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q48="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="message" nillable="true" type="q48:MessageWCF" />
+        <xs:element xmlns:q49="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="message" nillable="true" type="q49:MessageWCF" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -764,7 +776,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="groupId" type="xs:int" />
-        <xs:element xmlns:q49="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q49:UserBaseWCF" />
+        <xs:element xmlns:q50="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q50:UserBaseWCF" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -779,7 +791,7 @@
   <xs:element name="AddUserToBlackListCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q50="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q50:UserBaseWCF" />
+        <xs:element xmlns:q51="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q51:UserBaseWCF" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -787,7 +799,7 @@
   <xs:element name="RemoveUserFromBlackListCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q51="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q51:UserBaseWCF" />
+        <xs:element xmlns:q52="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q52:UserBaseWCF" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -795,7 +807,7 @@
   <xs:element name="AddContactCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q52="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q52:UserBaseWCF" />
+        <xs:element xmlns:q53="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q53:UserBaseWCF" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -803,7 +815,7 @@
   <xs:element name="RemoveContactCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q53="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q53:UserBaseWCF" />
+        <xs:element xmlns:q54="http://schemas.datacontract.org/2004/07/Wcf_CeadChat_ServiceLibrary" minOccurs="0" name="user" nillable="true" type="q54:UserBaseWCF" />
         <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>

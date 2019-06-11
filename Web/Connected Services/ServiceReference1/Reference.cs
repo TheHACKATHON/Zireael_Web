@@ -1221,6 +1221,12 @@ namespace Web.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetGroupName", ReplyAction="http://tempuri.org/ICeadChatService/GetGroupNameResponse")]
         System.Threading.Tasks.Task<string> GetGroupNameAsync(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetMyProfile", ReplyAction="http://tempuri.org/ICeadChatService/GetMyProfileResponse")]
+        Web.ServiceReference1.UserWCF GetMyProfile();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetMyProfile", ReplyAction="http://tempuri.org/ICeadChatService/GetMyProfileResponse")]
+        System.Threading.Tasks.Task<Web.ServiceReference1.UserWCF> GetMyProfileAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1673,6 +1679,14 @@ namespace Web.ServiceReference1 {
         
         public System.Threading.Tasks.Task<string> GetGroupNameAsync(int id) {
             return base.Channel.GetGroupNameAsync(id);
+        }
+        
+        public Web.ServiceReference1.UserWCF GetMyProfile() {
+            return base.Channel.GetMyProfile();
+        }
+        
+        public System.Threading.Tasks.Task<Web.ServiceReference1.UserWCF> GetMyProfileAsync() {
+            return base.Channel.GetMyProfileAsync();
         }
     }
 }

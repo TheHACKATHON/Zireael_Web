@@ -25,7 +25,7 @@ document.addEventListener('click', function (e) {
     }
 
     if (target.closest(".menu-settings")) {
-        document.querySelector(".modal-backdrop").classList.remove("hide");
+        OpenMenu("menusettings");
     }
     else if (target.closest(".menu-exit")) {
         let xhr = new XMLHttpRequest();
@@ -33,49 +33,10 @@ document.addEventListener('click', function (e) {
         xhr.send();
     }
     else if (target.closest(".menu-contacts")) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', `/menucontacts`);
-        xhr.send();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                let data = JSON.parse(xhr.responseText);
-                if (data.Code === NotifyType.Success) {
-                    $(".dialog-container").html("");
-                    $(".dialog-container").html(data.view);
-                    $(".dialog-title > h2").text(data.title);
-                    //console.log(data);
-                    $('.scrollbar-macosx-contacts').scrollbar({ disableBodyScroll: true });
-                    document.querySelector(".modal-backdrop").classList.remove("hide");
-                }
-                else {
-                    popup(data.Error, data.Code);
-                }
-            } else if (xhr.readyState == 4 && xhr.status == 0) {
-                popup(null, NotifyType.Error);
-            }
-        };
+        OpenMenu("menucontacts");
     }
     else if (target.closest(".menu-create-group")) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', `/menucreategroup`);
-        xhr.send();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                let data = JSON.parse(xhr.responseText);
-                if (data.Code === NotifyType.Success) {
-                    $(".dialog-container").html("");
-                    $(".dialog-container").html(data.view);
-                    $(".dialog-title > h2").text(data.title);
-                    $('.scrollbar-macosx-contacts').scrollbar({ disableBodyScroll: true });
-                    document.querySelector(".modal-backdrop").classList.remove("hide");
-                }
-                else {
-                    popup(data.Error, data.Code);
-                }
-            } else if (xhr.readyState == 4 && xhr.status == 0) {
-                popup(null, NotifyType.Error);
-            }
-        };
+        OpenMenu("menucreategroup");
     }
     else if (target.closest(".contact")) {
         target.closest(".contact").classList.toggle("select");
@@ -443,3 +404,26 @@ document.addEventListener('input', function (e) {
 //$('input[type=text].search').change(function (e) {
 //    console.log(e);
 //});
+
+function OpenMenu (methodName) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', `/` + methodName);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            let data = JSON.parse(xhr.responseText);
+            if (data.Code === NotifyType.Success) {
+                $(".dialog-container").html("");
+                $(".dialog-container").html(data.view);
+                $(".dialog-title > h2").text(data.title);
+                $('.scrollbar-macosx-contacts').scrollbar({ disableBodyScroll: true });
+                document.querySelector(".modal-backdrop").classList.remove("hide");
+            }
+            else {
+                popup(data.Error, data.Code);
+            }
+        } else if (xhr.readyState == 4 && xhr.status == 0) {
+            popup(null, NotifyType.Error);
+        }
+    };
+}
