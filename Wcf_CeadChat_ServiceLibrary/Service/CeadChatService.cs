@@ -1900,7 +1900,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     sender.LastTimeOnline = DateTime.Now;
                     sender.IsOnline = true;
                     context.SaveChanges();
-                    return new UserWCF( context.Users.FirstOrDefault(u=> u.Id== sender.Id));
+                    return new UserWCF(sender);
                 }
                 return null;
             }, true);

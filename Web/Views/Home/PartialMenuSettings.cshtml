@@ -13,7 +13,7 @@
                 <h3>@(user.DisplayName)</h3>
             </div>
             <div class="super-bottom">
-                <p class="time">последний онлайн 05.06.2019 15:15:48</p>
+                <p class="time">@(user.IsOnline?"Online" : DateTimeToOnlineStringConverter.Convert(user.LastTimeOnline))</p>
             </div>
         </div>
     </a>

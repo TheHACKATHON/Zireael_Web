@@ -41,6 +41,7 @@ namespace Wcf_CeadChat_ServiceLibrary
             PasswordHash = user.PasswordHash;
             Session = session;
             DateCreated = user.DateCreated;
+            IsOnline = user.IsOnline;
             //Friends = new List<UserBaseWCF>();
             foreach (var item in user.Groups.Where(g=> g.IsVisible))
             {
