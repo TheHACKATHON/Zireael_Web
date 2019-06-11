@@ -1885,6 +1885,30 @@ namespace Wcf_CeadChat_ServiceLibrary
             }
             return null;
         }
+
+        public UserWCF GetMyProfile()
+        {
+            var result = TryExecute(() =>
+            {
+                var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();//получаем текущее подключение клиента
+                ChatContext context = Context(userChanged);
+                if (context != null)
+                {
+                    var sender = GetCurrentUser();
+                    sender.LastTimeOnline = DateTime.Now;
+                    sender.IsOnline = true;
+                    context.SaveChanges();
+                    return new UserWCF( context.Users.FirstOrDefault(u=> u.Id== sender.Id));
+                }
+                return null;
+            }, true);
+            if (result is UserWCF user)
+            {
+                return user;
+            }
+            return null;
+        }
+
         #endregion
 
         #region avatar

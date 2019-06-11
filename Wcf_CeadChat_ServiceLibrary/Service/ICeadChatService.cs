@@ -142,6 +142,8 @@ namespace Wcf_CeadChat_ServiceLibrary
         string GetName(int id);
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         string GetGroupName(int id);
+        [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
+        UserWCF GetMyProfile();
         #endregion
     }
 

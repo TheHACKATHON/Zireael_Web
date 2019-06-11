@@ -177,7 +177,17 @@ namespace Web.Controllers
             }
             return Json(new NotifyError(_fatalError));
         }
-
+        [HttpPost]
+        public async Task<JsonResult> MenuSettings()
+        {
+            var account = await _client.GetMyProfileAsync();
+            if (account != null)
+            {
+                var view = RazorViewToStringFormat.RenderRazorViewToString(this, "PartialMenuSettings", account);
+                return Json(new { Code = NotifyType.Success, view, title = "Настройки" });
+            }
+            return Json(new NotifyError(_fatalError));
+        }
 
         [HttpPost]
         public async Task<JsonResult> AddContact(string login)
@@ -208,7 +218,7 @@ namespace Web.Controllers
             {
                 return Json(new { Code = NotifyType.Success });
             }
-            return Json(new { Code = NotifyType.Warning, Message="Новый диалог не создан..." });
+            return Json(new { Code = NotifyType.Warning, Message = "Новый диалог не создан..." });
         }
         [HttpPost]
         public async Task<JsonResult> CreateGroup(string idArr, string groupName)
