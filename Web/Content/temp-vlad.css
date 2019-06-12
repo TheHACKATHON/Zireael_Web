@@ -98,18 +98,23 @@ a.md_modal_action.md_modal_action_close:hover {
 }
 .sub-dialog-container {
     background: white;
-    padding: 10px;
+    padding: 15px 15px 5px 15px;
     border-radius: 5px;
 }
-    .sub-dialog-container h3{
+    .sub-dialog-container h3 {
+        margin: 10px 0px;
+        color: #284665;
+        font-size:16px;
+    }
+    .dialog .sub-dialog-container h2{
         margin:10px;
     }
-    .sub-dialog-container .login {
+    .sub-dialog-container .text {
         height: 25px;
         outline: none;
         border: none;
-        width: 250px;
-        margin: 10px;
+        width: 100%;
+        margin: 10px 0px;
         border-bottom: 2px solid #0000004f;
     }
 .new-contact-btn-container {
@@ -166,4 +171,23 @@ a.button.btn-delete-contact {
 .settings-container .button {
     padding: 20px;
     margin-top: 0px;
+}
+.info-container {
+    /*padding-left: 10px;*/
+    color: #000000a8;
+}
+    .info-container p {
+        margin-left: 10px;
+    }
+a.button.btn-change-login {
+    font-weight: bold;
+}
+a.button.btn-change-display-name {
+    font-weight: bold;
+}
+.button.setting:hover{
+    font-weight:bold;
+}
+a.button.btn-change-password {
+    font-weight: bold;
 }

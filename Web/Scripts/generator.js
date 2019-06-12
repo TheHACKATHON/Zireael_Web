@@ -46,9 +46,11 @@
         let li = document.createElement("li");
         if (message.Id == null || message.Id == 0) {
             li.setAttribute("data-hash", message.Hash);
+            li.setAttribute("sender-id", message.Sender.Id);
         }
         else {
             li.setAttribute("data-id", message.Id);
+            li.setAttribute("sender-id", message.Sender.Id);
         }
 
         if (message.Sender.Login != null && message.Sender.Login === "system" && message.Sender.Id == 1) {

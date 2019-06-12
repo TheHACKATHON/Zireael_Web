@@ -143,7 +143,7 @@ example@gmail.com</value>
   </data>
   <data name="LoginRequiredString" xml:space="preserve">
     <value>Требования для логина:
-может состоять только из латинских символов и цифр
+только латинские символы и цифры
 минимум 6 символов
 максимум 24 символа</value>
   </data>

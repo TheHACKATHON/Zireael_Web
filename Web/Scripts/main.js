@@ -55,10 +55,62 @@ document.addEventListener('click', function (e) {
         $(".sub-modal-dialog").html(`
             <div class="sub-dialog-container">
                 <h3>Добавление контакта</h3>
-                <input required="" autocomplete="login" class="login" type="text" placeholder="Логин пользователя"/>
+                <input required="" autocomplete="login" class="text login" type="text" placeholder="Логин пользователя"/>
                 <div class="new-contact-btn-container">
                     <a class="button btn-cancel">отмена</a>
                     <a class="button btn-add-contact">добавить</a>
+                </div>
+            </div>
+        `);
+    }
+    else if (target.closest(".settings-container .change-login")) {
+        $(".sub-modal-dialog").removeClass("hide");
+        $(".sub-modal-dialog").html("");
+        $(".sub-modal-dialog").html(`
+            <div class="sub-dialog-container">
+                <h3>Изменение логина для ${_currentUser.Login}</h3>
+                <div class="info-container">
+                      <h4>Требования для логина:</h4>
+                      <p>только латинские символы и цифры<br>минимум 6 символов<br>максимум 24 символа</p>
+                </div>
+                <input required="" autocomplete="login" class="text login" type="text" placeholder="Новый логин"/>
+                <div class="new-contact-btn-container">
+                    <a class="button btn-cancel">отмена</a>
+                    <a class="button btn-change-login">изменить</a>
+                </div>
+            </div>
+        `);
+    }
+    else if (target.closest(".settings-container .change-password")) {
+        $(".sub-modal-dialog").removeClass("hide");
+        $(".sub-modal-dialog").html("");
+        $(".sub-modal-dialog").html(`
+            <div class="sub-dialog-container">
+                <h3>Изменение пароля для ${_currentUser.Login}</h3>
+                <div class="info-container">
+                      <h4>Требования для пароля:</h4>
+                      <p>минимум 8 символов<br>максимум 32 символа<br>буква в нижнем регистре<br>буква в верхнем регистре</p>
+                </div>
+                     <input required="" class="text new-password" type="password" placeholder="Новый пароль"/>
+                     <input required="" class="text rep-new-password" type="password" placeholder="Повторите пароль"/>
+                     <input required="" class="text old-password" type="password" placeholder="Текущий пароль"/>
+                <div class="new-contact-btn-container">
+                    <a class="button btn-cancel">отмена</a>
+                    <a class="button btn-change-password">изменить</a>
+                </div>
+            </div>
+        `);
+    }
+    else if (target.closest(".settings-container .change-display-name")) {
+        $(".sub-modal-dialog").removeClass("hide");
+        $(".sub-modal-dialog").html("");
+        $(".sub-modal-dialog").html(`
+            <div class="sub-dialog-container">
+                <h3>Изменение отображаемого имени</h3>
+                <input required="" class="text display-name" type="text" placeholder="Новое имя"/>
+                <div class="new-contact-btn-container">
+                    <a class="button btn-cancel">отмена</a>
+                    <a class="button btn-change-display-name">изменить</a>
                 </div>
             </div>
         `);
@@ -155,6 +207,36 @@ document.addEventListener('click', function (e) {
             }
         };
     }
+    else if (target.closest(".btn-change-display-name")) {
+        let displayName = $(".sub-dialog-container .display-name").val();
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', `/changedisplayname`);
+        let data = new FormData();
+        data.append("displayName", displayName);
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.Code === NotifyType.Success) {
+                    $(".sub-dialog-container .displayName").val("");
+                    $(".sub-modal-dialog").addClass("hide");
+                    _currentUser.DisplayName = displayName;
+                    _currentUser.Avatar = `/user/${_currentUser.Id}/${Crypto.MD5(_currentUser.DisplayName)}`;
+                    $(".profile .wrap-img img").attr("src", `/user/${_currentUser.Id}/${Crypto.MD5(_currentUser.DisplayName)}`);
+                    $(".profile h3").html(displayName);
+                    $("li[sender-id=\"" + _currentUser.Id + "\"] img").attr("src", `/user/${_currentUser.Id}/${Crypto.MD5(_currentUser.DisplayName)}`);
+                    $("li[sender-id='" + _currentUser.Id + "'] h3").html(displayName);
+                    popup(data.Message, data.Code);
+                }
+                else {
+                    popup(data.Message, data.Code);
+                }
+            }
+            else if (xhr.readyState == 4 && xhr.status == 0) {
+                popup(null, NotifyType.Error);
+            }
+        };
+    }
     else if (target.closest(".btn-cancel")) {
         $(".sub-modal-dialog").addClass("hide");
     }
@@ -180,6 +262,65 @@ document.addEventListener('click', function (e) {
                 popup(null, NotifyType.Error);
             }
         };
+    }
+    else if (target.closest(".btn-change-login")) {
+        let login = $(".sub-dialog-container .login").val();
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', `/changelogin`);
+        let data = new FormData();
+        data.append("login", login);
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.Code === NotifyType.Success) {
+                    $(".sub-dialog-container .login").val("");
+                    $(".sub-modal-dialog").addClass("hide");
+                    _currentUser.Login = login;
+                    //$(".profile h3").html(login);
+                    popup(data.Message, data.Code);
+                }
+                else {
+                    popup(data.Message, data.Code);
+                }
+            }
+            else if (xhr.readyState == 4 && xhr.status == 0) {
+                popup(null, NotifyType.Error);
+            }
+        };
+    }
+    else if (target.closest(".btn-change-password")) {
+        let newPass = $(".sub-dialog-container .new-password").val();
+        let repNewPass = $(".sub-dialog-container .rep-new-password").val();
+        let oldPass = $(".sub-dialog-container .old-password").val();
+        if (newPass != repNewPass) {
+            popup("Пароли НЕ совпадают!", NotifyType.Warning);
+        }
+        else {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', `/changepassword`);
+            let data = new FormData();
+            data.append("login", login);
+            xhr.send(data);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if (data.Code === NotifyType.Success) {
+                        $(".sub-dialog-container .login").val("");
+                        $(".sub-modal-dialog").addClass("hide");
+                        _currentUser.Login = login;
+                        //$(".profile h3").html(login);
+                        popup(data.Message, data.Code);
+                    }
+                    else {
+                        popup(data.Message, data.Code);
+                    }
+                }
+                else if (xhr.readyState == 4 && xhr.status == 0) {
+                    popup(null, NotifyType.Error);
+                }
+            };
+        }
     }
     else if (target.closest(".group")) {
         let data = new FormData();

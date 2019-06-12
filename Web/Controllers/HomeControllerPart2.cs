@@ -18,7 +18,10 @@ namespace Web.Controllers
         private string _patternLogin = @"^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d]{5,24}$";
         private string _patternPassword = @"^(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,32}$";
         private string _fatalError = "Мы потеряли связь с космосом, пытаемся восстановить квантовый соединитель. Попробуйте позже";
-
+        private string _loginMessage = "Требования для логина:\n" +
+                    "только латинские символы и цифры\n" +
+                    "минимум 6 символов\n" +
+                    "максимум 24 символа";
         #region Registration
         [HttpPost]
         public async Task<ActionResult> SendCodeForChangePassword(string loginOrEmail)
@@ -146,10 +149,7 @@ namespace Web.Controllers
             {
                 return Json(new
                 {
-                    message = "Требования для логина:\n" +
-                    "может состоять только из латинских символов и цифр\n" +
-                    "минимум 6 символов\n" +
-                    "максимум 24 символа",
+                    message = _loginMessage,
                     type = NotifyType.Warning
                 });
             }
@@ -234,6 +234,47 @@ namespace Web.Controllers
                 return Json(new { Code = NotifyType.Success });
             }
             return Json(new { Code = NotifyType.Warning, Message = "Новый диалог не создан..." });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangeLogin(string login)
+        {
+            if (string.IsNullOrWhiteSpace(login))
+            {
+                return Json(new { Code = NotifyType.Warning, Message = $"Логин не может быть пустым!" });
+            }
+            if (await _client.ChangeProfileInfoAsync(null, login))
+            {
+                return Json(new { Code = NotifyType.Success, Message = $"Логин изменен на {login}!" });
+            }
+            return Json(new { Code = NotifyType.Warning, Message = $"Логин НЕ изменен..."});
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangeDisplayName(string displayName)
+        {
+            if (string.IsNullOrWhiteSpace(displayName))
+            {
+                return Json(new { Code = NotifyType.Warning, Message = $"Имя не может быть пустым!" });
+            }
+            if (await _client.ChangeProfileInfoAsync(displayName, null))
+            {
+                return Json(new { Code = NotifyType.Success, Message = $"Имя изменено на {displayName}!" });
+            }
+            return Json(new { Code = NotifyType.Warning, Message = $"Имя НЕ изменен..." });
+        }
+        [HttpPost]
+        public async Task<JsonResult> ChangePassword(string newPass, string repnewPass, string oldPass)
+        {
+            //if (string.IsNullOrWhiteSpace(displayName))
+            //{
+            //    return Json(new { Code = NotifyType.Warning, Message = $"Имя не может быть пустым!" });
+            //}
+            //if (await _client.ChangeProfileInfoAsync(displayName, null))
+            //{
+            //    return Json(new { Code = NotifyType.Success, Message = $"Имя изменено на {displayName}!" });
+            //}
+            return Json(new { Code = NotifyType.Warning, Message = $"Имя НЕ изменен..." });
         }
     }
 

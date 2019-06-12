@@ -1557,18 +1557,26 @@ namespace Wcf_CeadChat_ServiceLibrary
                 {
                     var sender = _onlineUsers.FirstOrDefault(o => o.Key == userChanged).Value;//получаем учетку по текущему подключению
                     sender = context.Users.FirstOrDefault(u => u.Id == sender.Id);
-                    if (displayName != null && displayName.Length > 0 && displayName != sender.DisplayName)
-                    {
-                        sender.DisplayName = displayName;
-                    }
-                    if (login != null && login.Length >= 6 && login != sender.Login && !LoginExist(login))
-                    {
-                        sender.Login = login;
-                    }
                     sender.LastTimeOnline = DateTime.Now;
                     sender.IsOnline = true;
                     context.SaveChanges();
-                    return true;
+
+                    if (displayName != null && displayName.Length > 0 && displayName != sender.DisplayName)
+                    {
+                        sender.DisplayName = displayName;
+                        context.SaveChanges();
+                        if(login == null)
+                        {
+                            return true;
+                        }
+                    }
+                    if (login != null && Regex.IsMatch(login, _patternLogin) && login != sender.Login && !LoginExist(login))
+                    {
+                        sender.Login = login;
+                        context.SaveChanges();
+                        return true;
+                    }
+                    return false;
                 }
                 else
                 {
@@ -1895,6 +1903,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                 if (context != null)
                 {
                     var sender = GetCurrentUser();
+                    sender = context.Users.FirstOrDefault(u => u.Id == sender.Id);
                     sender.LastTimeOnline = DateTime.Now;
                     sender.IsOnline = true;
                     context.SaveChanges();
