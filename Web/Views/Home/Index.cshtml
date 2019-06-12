@@ -3,174 +3,177 @@
 }
 
 @Styles.Render("~/Content/modal-dialogs.css")
-@Styles.Render("~/Content/main_style.css")
+
 @Styles.Render("~/Content/dialogs.css")
 @Styles.Render("~/Content/jquery.scrollbar.css")
-<div class="my-head" my-head="">
-    <div class="tg_page_head tg_head_wrap noselect clearfix">
-        <div class="tg_head_split">
+@Styles.Render("~/Content/main_style.css")
+<div class="body">
+    <div class="my-head" my-head="">
+        <div class="tg_page_head tg_head_wrap noselect clearfix">
+            <div class="tg_head_split">
 
-            <div class="tg_head_logo_wrap">
-                <div class="tg_head_logo_dropdown dropdown" dropdown="" style="">
-                    <a class="tg_head_btn dropdown-toggle main-menu" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
-                        <div class="icon-hamburger-wrap">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </div><p class="icon icon-tg-title">Zireael</p>
-                    </a>
-
-                    <ul class="dropdown-menu">
-                        <li class="menu-create-group">
-                            <a>
-                                <i class="icon icon-new-group"></i><span my-i18n="im_new_group">Создать группу</span>
-                            </a>
-                        </li>
-                        <li class="menu-contacts">
-                            <a>
-                                <i class="icon icon-contacts"></i><span my-i18n="im_contacts">Контанты</span>
-                            </a>
-                        </li>
-                        <li class="menu-settings">
-                            <a>
-                                <i class="icon icon-settings"></i><span my-i18n="im_settings">Настройки</span>
-                            </a>
-                        </li>
-                        <li class="menu-exit">
-                            <a href="">
-                                <i class="icon icon-about"></i><span my-i18n="head_about">Выход</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="tg_head_main_wrap">
-                <div class="tg_head_main_peer_wrap" style="">
-
-                    <div class="tg_head_peer_dropdown tg_head_peer_media_dropdown dropdown" dropdown="">
-                        <a class="tg_head_btn dropdown-toggle dots" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
+                <div class="tg_head_logo_wrap">
+                    <div class="tg_head_logo_dropdown dropdown" dropdown="" style="">
+                        <a class="tg_head_btn dropdown-toggle main-menu" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+                            <div class="icon-hamburger-wrap">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </div><p class="icon icon-tg-title">Zireael</p>
                         </a>
+
                         <ul class="dropdown-menu">
-                            <li><a my-i18n="head_select_messages">Select messages</a></li>
-                            <li class="divider ng-scope"></li>
-                            <li><a my-i18n="head_media_photos">Photos</a></li>
-                            <li><a my-i18n="head_media_video">Videos</a></li>
-                            <li><a my-i18n="head_media_documents">Files</a></li>
-                            <li><a my-i18n="head_media_music">Audio</a></li>
-                            <li><a my-i18n="head_media_links">Shared links</a></li>
-                            <li><a my-i18n="head_media_audio">Voice messages</a></li>
-                            <li><a my-i18n="head_media_round">Video messages</a></li>
+                            <li class="menu-create-group">
+                                <a>
+                                    <i class="icon icon-new-group"></i><span my-i18n="im_new_group">Создать группу</span>
+                                </a>
+                            </li>
+                            <li class="menu-contacts">
+                                <a>
+                                    <i class="icon icon-contacts"></i><span my-i18n="im_contacts">Контанты</span>
+                                </a>
+                            </li>
+                            <li class="menu-settings">
+                                <a>
+                                    <i class="icon icon-settings"></i><span my-i18n="im_settings">Настройки</span>
+                                </a>
+                            </li>
+                            <li class="menu-exit">
+                                <a href="">
+                                    <i class="icon icon-about"></i><span my-i18n="head_about">Выход</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
+                    <a href="#" class="backBtn">назад</a>
+                </div>
 
-                    <a class="tg_head_btn tg_head_peer_search_btn">
-                        <i class="icon icon-search"></i>
-                    </a>
+                <div class="tg_head_main_wrap">
+                    <div class="tg_head_main_peer_wrap" style="">
+
+                        <div class="tg_head_peer_dropdown tg_head_peer_media_dropdown dropdown" dropdown="">
+                            <a class="tg_head_btn dropdown-toggle dots" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a my-i18n="head_select_messages">Select messages</a></li>
+                                <li class="divider ng-scope"></li>
+                                <li><a my-i18n="head_media_photos">Photos</a></li>
+                                <li><a my-i18n="head_media_video">Videos</a></li>
+                                <li><a my-i18n="head_media_documents">Files</a></li>
+                                <li><a my-i18n="head_media_music">Audio</a></li>
+                                <li><a my-i18n="head_media_links">Shared links</a></li>
+                                <li><a my-i18n="head_media_audio">Voice messages</a></li>
+                                <li><a my-i18n="head_media_round">Video messages</a></li>
+                            </ul>
+                        </div>
+
+                        <a class="tg_head_btn tg_head_peer_search_btn">
+                            <i class="icon icon-search"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<style>
-</style>
+    <style>
+    </style>
 
-<div class="wrap">
-    <div class="chats scrollbar-macosx scrollbar-macosx-chats">
-        <ul>
-            @{
-                if (ViewBag.Groups != null)
-                {
-                    foreach (var group in ViewBag.Groups)
+    <div class="wrap">
+        <div class="chats scrollbar-macosx scrollbar-macosx-chats">
+            <ul>
+                @{
+                    if (ViewBag.Groups != null)
                     {
-                        var md5 = AdditionsLibrary.HashCode.GetMD5(group.Name);
+                        foreach (var group in ViewBag.Groups)
+                        {
+                            var md5 = AdditionsLibrary.HashCode.GetMD5(group.Name);
 
-                        //var letter = string.Empty;
-                        //var classletter = string.Empty;
-                        //if (ViewBag.Avatars[group.Id] == ViewBag.DefaultAvatar)
-                        //{
-                        //    if (group?.Name?.Length > 0)
-                        //    {
-                        //        letter = group.Name.Substring(0, 1);
-                        //        classletter = "letter";
-                        //    }
-                        //}
+                            //var letter = string.Empty;
+                            //var classletter = string.Empty;
+                            //if (ViewBag.Avatars[group.Id] == ViewBag.DefaultAvatar)
+                            //{
+                            //    if (group?.Name?.Length > 0)
+                            //    {
+                            //        letter = group.Name.Substring(0, 1);
+                            //        classletter = "letter";
+                            //    }
+                            //}
 
-                        var time = group.LastMessage?.DateTime?.ToShortTimeString();
-                        <li>
-                            <a data-id="@group.Id" class="group">
-                                <div class="wrap-img">
-                                    <img src="/group/@group.Id/@(md5)" alt="logo">
-                                </div>
-                                <div class="super">
-                                    <div class="super-top">
-                                        <h3>@group.Name</h3>
-                                        <p class="time">@time</p>
+                            var time = group.LastMessage?.DateTime?.ToShortTimeString();
+                            <li>
+                                <a data-id="@group.Id" class="group">
+                                    <div class="wrap-img">
+                                        <img src="/group/@group.Id/@(md5)" alt="logo">
                                     </div>
-                                    <div class="super-bottom">
-                                        <p class="last-message">@group.LastMessage.Text</p>
-                                        @{
-                                            if (@ViewBag.DontReaded[group.Id] > 0)
-                                            {
-                                                <span class="count-unred-messages">
-                                                    @ViewBag.DontReaded[group.Id]
-                                                </span>
+                                    <div class="super">
+                                        <div class="super-top">
+                                            <h3>@(group.Name.Length > 20 ? group.Name.Substring(0, 17) + "..." : group.Name)</h3>
+                                            <p class="time">@time</p>
+                                        </div>
+                                        <div class="super-bottom">
+                                            <p class="last-message">@(group.LastMessage.Text.Length > 25 ? group.LastMessage.Text.Substring(0, 23) + "..." : group.LastMessage.Text)</p>
+                                            @{
+                                                if (@ViewBag.DontReaded[group.Id] > 0)
+                                                {
+                                                    <span class="count-unred-messages">
+                                                        @ViewBag.DontReaded[group.Id]
+                                                    </span>
+                                                }
                                             }
-                                        }
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        </li>
+                                </a>
+                            </li>
 
+                        }
                     }
                 }
-            }
-        </ul>
-   </div>
-
-    <div class="messages">
-        <div class="message-list-wrap scrollbar-macosx scrollbar-macosx-messages">
+            </ul>
         </div>
-        <div class="panel-write hide">
-            <div class="line-write">
-                <div class="append-file">
-                    <input type="file" id="file">
-                    <label class="icon icon-file" for="file"></label>
+
+        <div class="messages">
+            <div class="message-list-wrap scrollbar-macosx scrollbar-macosx-messages">
+            </div>
+            <div class="panel-write hide">
+                <div class="line-write">
+                    <div class="append-file">
+                        <input type="file" id="file">
+                        <label class="icon icon-file" for="file"></label>
+                    </div>
+                    <textarea placeholder="Напишите сообщение..." name="msg"></textarea>
+                    <a href="#" class="send icon icon-send"></a>
                 </div>
-                <textarea placeholder="Напишите сообщение..." name="msg"></textarea>
-                <a href="#" class="send icon icon-send"></a>
             </div>
-        </div>
 
-        <div class="panel-select hide">
-           <a  class="button btn-remove-messages">Удалить</a>
-        </div>
-    </div>
-</div>
-
-<div class="back"></div>
-
-<div class="modal-backdrop hide">
-    <div class="modal-backdrop-dialog">
-        <div class="dialog">
-            <div class="sub-modal-dialog hide">
-
-            </div>
-            <div class="dialog-header">
-                <div class="dialog-title"><h2>Настройки</h2></div>
-                <a class="md_modal_action md_modal_action_close">закрыть</a>
-            </div>
-            <div class="dialog-container">
-
+            <div class="panel-select hide">
+                <a class="button btn-remove-messages">Удалить</a>
             </div>
         </div>
     </div>
-</div>
 
+    <div class="back"></div>
+
+    <div class="modal-backdrop hide">
+        <div class="modal-backdrop-dialog">
+            <div class="dialog">
+                <div class="sub-modal-dialog hide">
+
+                </div>
+                <div class="dialog-header">
+                    <div class="dialog-title"><h2>Настройки</h2></div>
+                    <a class="md_modal_action md_modal_action_close">закрыть</a>
+                </div>
+                <div class="dialog-container">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @Scripts.Render("~/Scripts/jquery.signalR-2.4.1.min.js")
 @Scripts.Render("~/signalr/hubs")
 

@@ -489,19 +489,12 @@ a:active, a:hover {
     padding-bottom: 15px;
 }
 
-@media screen and (max-width:1010px) {
-    .open > .dropdown-menu {
-        display: block;
-        width: 100vw;
-    }
-}
-
 .back {
     position: absolute;
     top: 18px;
     right:0;
     left:0;
-    height: calc(100vh - 30px);
+    /*height: calc(100vh - 30px);*/
     margin: auto;
     width: 1010px;
     border-radius: 5px;
@@ -509,4 +502,135 @@ a:active, a:hover {
     -webkit-box-shadow: 0px 0px 12px rgba(0,0,0,0.4);
     -moz-box-shadow: 0px 0px 12px rgba(0,0,0,0.4);
     box-shadow: 0px 0px 12px rgba(0,0,0,0.4);
+}
+.backBtn {
+    display: none;
+    height: 100%;
+    line-height: 38px;
+    padding: 5px 21px;
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none;
+}
+.mega-left p {
+    width: 360px;
+    word-break: break-all;
+}
+/*https://frontender.info/fullscreen/*/
+@media screen and (max-width:1030px) {
+    body{
+        height: 0;
+    }
+
+    .body {
+        /*height: 100vh;*/
+        overflow: hidden;
+    }
+
+    .open > .dropdown-menu {
+        display: block;
+        width: 100vw;
+    }
+
+    .my-head {
+        margin: 0;
+    }
+
+    .wrap {
+        width: 100%;
+        /*height: calc(100vh - 50px);*/
+        border-radius: 0;
+        /*overflow:hidden;*/
+    }
+
+    .back {
+        display: none;
+    }
+
+    .tg_head_split {
+        max-width: 100%;
+        border-radius: 0;
+    }
+
+    .chats {
+        width: 100%;
+    }
+
+    .messages {
+        width: 0
+    }
+
+    .checkDialog.wrap .chats {
+        width: 0;
+    }
+
+    .checkDialog.wrap .messages {
+        width: 100%;
+    }
+
+    .messages {
+        border: 0;
+        /*overflow: hidden;
+        overflow-y: scroll;*/
+    }
+
+    .super-top, .super-bottom {
+        width: 100%
+    }
+
+    .chats a {
+        padding: 7px 21px 7px 21px;
+    }
+
+    .tg_head_peer_dropdown.tg_head_peer_media_dropdown.dropdown {
+        display: none
+    }
+
+    .checkDialog.my-head .tg_head_peer_dropdown.tg_head_peer_media_dropdown.dropdown {
+        display: block;
+    }
+
+    .checkDialog.my-head .tg_head_logo_dropdown.dropdown {
+        display: none
+    }
+
+    .checkDialog.my-head .backBtn {
+        display: block
+    }
+
+    .checked-btn {
+        display: none;
+    }
+
+    .mega-right p.time {
+        padding: 0
+    }
+
+    .mega-right {
+        width: 80px;
+    }
+
+    .mega-left {
+        width: calc(100% - 178px);
+    }
+
+    .line-write {
+        padding: 0 10px
+    }
+
+    .append-file {
+        padding-left: 0;
+    }
+
+    textarea[name=msg] {
+        width: 95%;
+        margin: 0 12px;
+    }
+
+    .messages .wrap-img {
+        margin-left: 21px;
+    }
+    .mega-left p {
+        width: 100%;
+    }
 }

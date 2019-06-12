@@ -76,7 +76,7 @@
 <div class="wrap-img letter">
     <img src="${avatar}" alt="logo">
 </div>
-<div class="mega-left" style=" width: calc(100% - 300px);padding-right: 10px;">
+<div class="mega-left">
    <h3>${message.Sender.DisplayName}</h3>
    <p>${message.Text}</p>
 </div>

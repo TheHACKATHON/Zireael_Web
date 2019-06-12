@@ -12,7 +12,7 @@
         location.reload();
     };
 
-    chat.client.deleteMessage = function(messageId) {
+    chat.client.deleteMessage = function (messageId) {
         if (messageId) {
             $('ul.message-list li[data-id="' + messageId + '"]').remove();
 
@@ -32,20 +32,23 @@
         }
     };
 
-    chat.client.newLastMessage = function(message) {
+    chat.client.newLastMessage = function (message) {
         if (message) {
             var date = new Date(message.DateTime);
             let li = document.querySelector('.chats li a[data-id="' + message.GroupId + '"]');
             li = li.parentElement;
             li.querySelector(".last-message").textContent = message.Text;
             li.querySelector("p.time").textContent = `${date.getHours()}:${date.getMinutes()}`;
-            let unreadElement = li.querySelector("span.count-unred-messages");
-            if (unreadElement != null) {
-                let unreadCount = parseInt(unreadElement.textContent);
-                unreadElement.textContent = unreadCount + 1;
-            } else {
-                if (!li.classList.contains("active")) li.querySelector(".super-bottom").appendChild(Generator.UnreadMessages());
+            if (message.Sender.Id != _currentUser.Id) {
+                let unreadElement = li.querySelector("span.count-unred-messages");
+                if (unreadElement != null) {
+                    let unreadCount = parseInt(unreadElement.textContent);
+                    unreadElement.textContent = unreadCount + 1;
+                } else {
+                    if (!li.classList.contains("active")) li.querySelector(".super-bottom").appendChild(Generator.UnreadMessages());
+                }
             }
+
             li.remove();
 
             let chats = document.querySelector(".chats ul");
@@ -67,7 +70,7 @@
                 $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
             }
         }
-    }; 
+    };
     chat.client.removeContact = function (id) {
         $(".contacts-container .contact[data-id=" + id + "]").parent().remove();
     }
