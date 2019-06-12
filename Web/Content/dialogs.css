@@ -5,7 +5,7 @@
     display: flex;
     /*border: 1px solid rgba(40, 70, 101, 0.17);*/
     border-top: 0;
-    height: calc(100vh - 70px);
+    /*height: calc(100vh - 70px);*/
     background: white;
     border-radius: 0 0 5px 5px;
     /*-webkit-box-shadow: 10px 10px 24px -9px rgba(0,0,0,0.53);
@@ -283,7 +283,7 @@ ul.message-list.activeUl {
 }
 
     .message-list-wrap {
-    height: calc(100% - 70px);
+    /*height: calc(100% - 70px);*/
     /* overflow-y: scroll; */
     position: relative;
 }
@@ -300,7 +300,7 @@ textarea[name=msg]:focus {
 }
 
 a.send {
-    width: 30px;
+    width: 35px;
     height: 30px;
     /*background: #000;*/
 }

@@ -7,7 +7,7 @@ document.addEventListener('click', function (e) {
     let target = e.target;
 
     if (!target.matches('label[for="file"], input[type="file"]')) {
-        //e.preventDefault();
+        e.preventDefault();
     }
 
     if (target.matches(".main-menu") || target.closest(".main-menu")) {
@@ -239,6 +239,7 @@ document.addEventListener('click', function (e) {
     }
     else if (target.closest(".btn-cancel")) {
         $(".sub-modal-dialog").addClass("hide");
+
     }
     else if (target.closest(".btn-add-contact")) {
         let login = $(".sub-dialog-container .login").val();
@@ -322,7 +323,13 @@ document.addEventListener('click', function (e) {
             };
         }
     }
+    else if (target.matches('.backBtn')) {
+        $('.wrap').add('.my-head').removeClass('checkDialog');
+        hideChats();
+    }
     else if (target.closest(".group")) {
+
+
         let data = new FormData();
         data.append("groupId", target.closest(".group").getAttribute("data-id"));
 
@@ -333,6 +340,8 @@ document.addEventListener('click', function (e) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 hideChats();
+                //$(window).on('resize', function () {})
+                if ($(window).width() <= 1030) $('.wrap').add('.my-head').addClass('checkDialog');
 
                 let data2 = new FormData();
                 data2.append("groupId", target.closest(".group").getAttribute("data-id"));
@@ -366,6 +375,7 @@ document.addEventListener('click', function (e) {
                     if (firstBoot) {
                         $('.scrollbar-macosx-messages').scrollbar({ disableBodyScroll: true });
                     }
+                    calc();
                     $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
                 }
                 else {
@@ -451,7 +461,7 @@ document.addEventListener('click', function (e) {
                         $("ul.activeUl li.active").removeClass("active");
                         if ($(".panel-write").hasClass("hide")) $(".panel-write").removeClass("hide");
                         if (!$(".panel-select").hasClass("hide")) $(".panel-select").addClass("hide");
-                    } else if (data.Code == NotifyType.Error){
+                    } else if (data.Code == NotifyType.Error) {
                         popup(data.Error, NotifyType.Error);
                     }
                 }
@@ -479,9 +489,36 @@ function changeActive(elem) {
 
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+//document.addEventListener("DOMContentLoaded", function () {
+//    $('.scrollbar-macosx-chats').scrollbar({ disableBodyScroll: true });
+//    if ($(window).width() <= 1030) {
+
+//    }
+//});
+//$(document).ready(function () {
+
+
+
+
+function calc() {
+    let check = ($(window).width() > 1030) ? true : false;
+    let wHeight = $(window).height();
+    let headHeight = $('.my-head').height() + ((check) ? 20 : 0);
+    let panelHeight = $('.panel-write').height() + 10 + (check ? 20 : 20);
+    // console.log(headHeight, $('.my-head').height());
+    //console.log(panelHeight, $('.panel-write').height());
+    $('.wrap').height(wHeight - headHeight);
+    $('.message-list-wrap').height(wHeight - headHeight - panelHeight);
+}
+
+$(window).on("load resize", function () {
     $('.scrollbar-macosx-chats').scrollbar({ disableBodyScroll: true });
-});
+    //if ($(window).width() <= 1030) {
+    calc();
+    $('.back').height($(window).height() - 30);
+    //}
+})
+//})
 
 $('.scrollbar-macosx-messages').mousewheel(function (event) {
     if (parseFloat($(".scrollbar-macosx-messages .scroll-element.scroll-y .scroll-bar").css("top")) < 36) {
@@ -546,7 +583,7 @@ document.addEventListener('input', function (e) {
 //    console.log(e);
 //});
 
-function OpenMenu (methodName) {
+function OpenMenu(methodName) {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', `/` + methodName);
     xhr.send();
