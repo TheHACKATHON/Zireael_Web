@@ -69,11 +69,11 @@ a.md_modal_action.md_modal_action_close:hover {
 }
 
 .scrollbar-macosx-contacts {
-    height: calc(100vh - 165px);
+    /*height: calc(100vh - 165px);*/
 }
 
 .scrollbar-macosx-creategroup {
-    height: calc(100vh - 205px);
+    /*height: calc(100vh - 205px);*/
 }
 
 .new-contact {
