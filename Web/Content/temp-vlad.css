@@ -110,6 +110,7 @@ a.md_modal_action.md_modal_action_close:hover {
         margin:10px;
     }
     .sub-dialog-container .text {
+        display:block;
         height: 25px;
         outline: none;
         border: none;

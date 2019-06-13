@@ -117,12 +117,18 @@ document.addEventListener('click', function (e) {
     }
     else if (target.closest(".create-group")) {
         let groupName = $(".group-name").val();
-        console.log(groupName);
-        if ($("a.contact.select").length == 1) {
+        //console.log(groupName);
+
+        if ($("a.contact.select").length > 0 && groupName.length > 0) {
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', `/createchat`);
+            xhr.open('POST', `/creategroup`);
             let data = new FormData();
-            data.append("id", $("a.contact.select").data("id"));
+            let arr = new Array();
+            $("a.contact.select").each(function (index) {
+                arr.push($(this).data("id"));
+            });
+            data.append("idArr", JSON.stringify(arr));
+            data.append("groupName", groupName);
             xhr.send(data);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
@@ -139,16 +145,11 @@ document.addEventListener('click', function (e) {
                 }
             };
         }
-        else if ($("a.contact.select").length > 1 && groupName.length > 0) {
+        else if ($("a.contact.select").length == 1) {
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', `/creategroup`);
+            xhr.open('POST', `/createchat`);
             let data = new FormData();
-            let arr = new Array();
-            $("a.contact.select").each(function (index) {
-                arr.push($(this).data("id"));
-            });
-            data.append("idArr", JSON.stringify(arr));
-            data.append("groupName", groupName);
+            data.append("id", $("a.contact.select").data("id"));
             xhr.send(data);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
@@ -297,20 +298,29 @@ document.addEventListener('click', function (e) {
         if (newPass != repNewPass) {
             popup("Пароли НЕ совпадают!", NotifyType.Warning);
         }
-        else {
+        else
+        {
             let xhr = new XMLHttpRequest();
             xhr.open('POST', `/changepassword`);
             let data = new FormData();
-            data.append("login", login);
+            //data.append({
+            //    newPass: newPass,
+            //    repNewPass: repNewPass,
+            //    oldPass: oldPass
+            //});
+            data.append("newPass", newPass);
+            data.append("repNewPass", repNewPass);
+            data.append("oldPass", oldPass);
+
             xhr.send(data);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     let data = JSON.parse(xhr.responseText);
                     if (data.Code === NotifyType.Success) {
-                        $(".sub-dialog-container .login").val("");
                         $(".sub-modal-dialog").addClass("hide");
-                        _currentUser.Login = login;
-                        //$(".profile h3").html(login);
+                        $(".sub-dialog-container .new-password").val("");
+                        $(".sub-dialog-container .rep-new-password").val("")
+                        $(".sub-dialog-container .old-password").val("");
                         popup(data.Message, data.Code);
                     }
                     else {
@@ -401,10 +411,7 @@ document.addEventListener('click', function (e) {
                     Text: text,
                     GroupId: groupId,
                     DateTime: null,
-                    Sender: {
-                        Login: _currentUser.Login,
-                        DisplayName: _currentUser.DisplayName,
-                    },
+                    Sender: _currentUser,
                 },
                     _currentUser.Avatar));
             $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);

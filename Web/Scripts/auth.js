@@ -1,22 +1,26 @@
 ﻿function SendCodeSuccess(data) {
     if (data) {
         $("input[type=button]").removeAttr("disabled");
+        if (data.includes("/sendcodeforchangepassword")) {
+            popup("Неверный логин или почта...", NotifyType.Warning);
+        }
     }
 }
 function ChangePasswordSuccess(data) {
     if (data) {
         if (data.type) {
             switch (data.type) {
-                case NotifyType.Error: {
+                case NotifyType.Warning: {
                     $("input:not([type='email'])").removeAttr("disabled");
-                    console.log(data.message);
+                    popup(data.message, NotifyType.Warning);
                     break;
                 }
                 case NotifyType.Success: {
-                    console.log(data.message);
+                    $(".go-to-auth").click();
+                    popup(data.message, NotifyType.Success);
                     break;
                 }
-                default: console.log(data.message);
+                default: popup(data.message, NotifyType.Notice);
             }
         }
     }
@@ -38,3 +42,7 @@ document.onkeyup = function(e) {
 $(document).ready(() => {
     $("#loading").css("display", "none");
 })
+
+function OnFailure() {
+    popup("Ошибка", NotifyType.Error);
+}

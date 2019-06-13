@@ -1431,8 +1431,9 @@ namespace Wcf_CeadChat_ServiceLibrary
                 {
                     var senderUChanged = _onlineUsers.FirstOrDefault(o => o.Key == userChanged);//получаем учетку по текущему подключению
                     userChanged.LogOutCallback(GetConnectionId(senderUChanged.Key, senderUChanged.Value.SessionId));
-                    _onlineUsers.Remove(senderUChanged.Key);
                     var sender = context.Users.FirstOrDefault(u => u.Id == senderUChanged.Value.Id);
+                    var session = context.Sessions.ToList().First(s => s.User.Id == sender.Id && s.SessionId == _onlineUsers[userChanged].SessionId);
+                    _onlineUsers.Remove(senderUChanged.Key);
                     sender.IsOnline = false;
                     foreach (var item in _onlineUsers)
                     {
@@ -1442,6 +1443,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                         }
                     }
                     sender.LastTimeOnline = DateTime.Now;
+                    context.Sessions.Remove(session);
                     context.SaveChanges();
                     NotificationAboutChangeOnlineStatus(sender);
                     return true;
@@ -1607,12 +1609,14 @@ namespace Wcf_CeadChat_ServiceLibrary
                         sender.Token = CreateToken(sender);
                         context.SaveChanges();
 
-                        CallUsersInGroup(_onlineUsers.Where(u => u.Key != userChanged && u.Value.Id == sender.Id).Select(u => u.Value).ToList(), (user) =>
-                          {
-                              user.LogOutCallback(GetConnectionId(user, _onlineUsers[user].SessionId));
-                          });
+                        context.Sessions.RemoveRange(context.Sessions.ToList().Where(s => s.User.Id == sender.Id && s.SessionId != _onlineUsers[userChanged].SessionId).ToList());
+                        context.SaveChanges();
 
-                        var list = _onlineUsers.Where(u => u.Value.Id == sender.Id).ToList();
+                        CallUsersInGroup(_onlineUsers.Where(u => u.Key != userChanged && u.Value.Id == sender.Id).Select(u => u.Value).ToList(), (user) =>
+                        {
+                            user.LogOutCallback(GetConnectionId(user, _onlineUsers[user].SessionId));
+                        });
+                        var list = _onlineUsers.Where(u => u.Value.Id == sender.Id && u.Key != userChanged).ToList();
                         for (int i = 0; i < list.Count; i++)
                         {
                             _onlineUsers.Remove(list[i].Key);
