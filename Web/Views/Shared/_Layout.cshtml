@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1; user-scalable=0; shrink-to-fit=no;">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, shrink-to-fit=no">
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Cache-Control" content="max-age=3600, must-revalidate" />
 
@@ -30,17 +30,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
     <title>Zireael</title>
-    @Styles.Render("~/Content/temp-vlad.css")
-    @Styles.Render("~/Content/temp-nikita.css")
-    @Styles.Render("~/Content/loading.css")
 
-    @Scripts.Render("~/Scripts/jquery-3.4.1.min.js")
-    @Scripts.Render("~/Scripts/jquery.scrollbar.min.js")
-    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
-
-    @Scripts.Render("~/Scripts/NotifyType.js")
-    @Styles.Render("~/Content/notifications.css")
-    @Scripts.Render("~/Scripts/notifications.js")
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/js")
 </head>
 <body>
     @RenderBody()

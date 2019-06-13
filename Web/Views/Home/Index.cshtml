@@ -2,11 +2,8 @@
     ViewBag.Title = "Home Page";
 }
 
-@Styles.Render("~/Content/modal-dialogs.css")
+@Styles.Render("~/bundles/indexcss")
 
-@Styles.Render("~/Content/dialogs.css")
-@Styles.Render("~/Content/jquery.scrollbar.css")
-@Styles.Render("~/Content/main_style.css")
 <div class="body">
     <div class="my-head" my-head="">
         <div class="tg_page_head tg_head_wrap noselect clearfix">
@@ -174,14 +171,6 @@
         </div>
     </div>
 </div>
-@Scripts.Render("~/Scripts/jquery.signalR-2.4.1.min.js")
+
+@Scripts.Render("~/bundles/indexjs")
 @Scripts.Render("~/signalr/hubs")
-
-@Scripts.Render("~/Scripts/2.5.3-crypto-md5.js")
-@Scripts.Render("~/Scripts/generator.js")
-
-@Scripts.Render("~/Scripts/signal-callback.js")
-@Scripts.Render("~/Scripts/modal-dialogs.js")
-@Scripts.Render("~/Scripts/jquery.mousewheel.min.js")
-
-@Scripts.Render("~/Scripts/main.js")

@@ -1,5 +1,5 @@
 ﻿var Generator = {
-    DialogHTML: function (group, avatar, defaultAvatar, notReadMessageCount) {
+    DialogHTML: (group, avatar, defaultAvatar, notReadMessageCount) => {
         if (avatar == null) {
             avatar = `/group/${group.Id}/${Crypto.MD5(group.Name)}`;
         }
@@ -7,10 +7,7 @@
         let dateString = convertDateToShortTimeString(group.LastMessage.DateTime);
         let notReadMessageElem = "";
         if (parseInt(notReadMessageCount) > 0) {
-            notReadMessageElem =
-`<span class="count-unred-messages">
-    ${notReadMessageCount}
-</span>`;
+            notReadMessageElem = `<span class="count-unred-messages">${notReadMessageCount}</span>`;
         }
         
         let li = document.createElement("li");
@@ -33,7 +30,7 @@
 
         return li;
     },
-    MessageHTML: function (message, avatar) {
+    MessageHTML: (message, avatar) => {
         if (avatar == null) {
             if (message.Sender.Id == _currentUser.Id) {
                 avatar = _currentUser.Avatar;
@@ -68,7 +65,6 @@
         }
         else {
             dateString = "загрузка";
-            // todo: переделать на знак
         }
         
         li.innerHTML =
@@ -85,23 +81,20 @@
 <div class="mega-right">
     <p class="time">${dateString}</p >
 </div>`;
-
         return li;
     },
-    MessagesContainerHTML: function (groupId) {
-        let ul = document.createElement("ul");
-        ul.setAttribute("data-id", groupId);
-        ul.classList.add("message-list");
-        ul.classList.add("permanent");
-        
-        return ul;
-    },
-    UnreadMessages: function () {
+    UnreadMessages: () => {
         let span = document.createElement("span");
         span.classList.add("count-unred-messages");
         span.textContent = 1;
         return span;
     },
+    MessagesContainerHTML: (groupId) => {
+        let ul = document.createElement("ul");
+        ul.setAttribute("data-id", groupId);
+        ul.classList.add("message-list");
+        return ul;
+    }
 }
 
 function convertJsonToDate(jsonDate) {
