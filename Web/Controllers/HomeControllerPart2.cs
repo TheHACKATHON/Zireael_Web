@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Web.Models;
 using Web.ServiceReference1;
-
+using AdditionsLibrary;
 namespace Web.Controllers
 {
     public partial class HomeController
@@ -330,6 +330,33 @@ namespace Web.Controllers
                 return Json(new { Code = NotifyType.Success, Message = $"Почта изменена УСПЕШНО!" });
             }
             return Json(new { Code = NotifyType.Warning, Message = $"Почта НЕ изменена..." });
+        }
+        [HttpPost]
+        public async Task<JsonResult> ChangeImage()
+        {
+            if (Request.Files.Count > 0)
+            {
+                var file = Request.Files[0];
+                byte[] bData = null, sData = null;
+                try
+                {
+                    ImageWork.ImageForDB(file.InputStream, out sData, out bData);
+                }
+                catch (NotSupportedException ex)
+                {
+                    return Json(new { Code = NotifyType.Warning, Message = $"Изображение должно быть минимум {ImageWork.MinimumSize}x{ImageWork.MinimumSize}px" });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { Code = NotifyType.Error, Message = $"Ошибка обработки файла!" });
+                }
+                var avatar = new AvatarUserWCF{ BigData = sData, SmallData = sData, Format=".png" };
+                if (await _client.SetAvatarUserAsync(avatar))
+                {
+                    return Json(new { Code = NotifyType.Success, Message = $"Аватар изменен УСПЕШНО!" });
+                }
+            }
+            return Json(new { Code = NotifyType.Error, Message = $"Файл не найден!" });
         }
     }
 

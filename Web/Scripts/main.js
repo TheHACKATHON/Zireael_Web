@@ -6,7 +6,7 @@ document.addEventListener('click', function (e) {
 
     let target = e.target;
 
-    if (!target.matches('label[for="file"], input[type="file"]')) {
+    if (!target.matches('label, img, label[for="file"], input[type="file"]')) {
         e.preventDefault();
     }
 
@@ -375,6 +375,13 @@ document.addEventListener('click', function (e) {
             }
         };
     }
+    //else if (target.closest(".profile .wrap-img img")) {
+    //    console.log("картинка");
+    //    var input = document.createElement("input");
+    //    $(input).attr("type", "file");
+    //    $(input).trigger("click"); // opening dialog
+    //    console.log(input.files);
+    //}
     else if (target.closest(".btn-send-code")) {
         let pass = $(".sub-dialog-container .new-email .password").val();
         let newEmail = $(".sub-dialog-container .new-email .email").val();
@@ -663,9 +670,35 @@ document.addEventListener('input', function (e) {
 
     }
 });
-//$('input[type=text].search').change(function (e) {
-//    console.log(e);
-//});
+document.addEventListener("change", function (e) {
+    let target = e.target;
+    if (target.matches(".wrap-img input[type=file]")) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', `/changeimage`);
+        let data = new FormData();
+        let files = document.querySelector(".wrap-img input[type=file]").files;
+        console.log(files);
+        for (let i = 0; i < files.length; i++) {
+            data.append(files[i].name, files[i]);
+        }
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.Code === NotifyType.Success) {
+                    popup(data.Message, data.Code);
+                }
+                else {
+                    popup(data.Message, data.Code);
+                }
+            }
+            else if (xhr.readyState == 4 && xhr.status == 0) {
+                popup(null, NotifyType.Error);
+            }
+        };
+    }
+});
+
 
 function OpenMenu(methodName) {
     $("#loading").css("display", "block");

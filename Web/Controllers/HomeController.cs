@@ -103,7 +103,7 @@ namespace Web.Controllers
             return Json(false);
         }
         [HttpGet]
-        [OutputCache(Duration = 1800, Location = OutputCacheLocation.Downstream)]
+        [OutputCache(Duration = 600, Location = OutputCacheLocation.Client)]
         public async Task<ActionResult> UserImage(int userId = 0, string hash = "")
         {
             var avatar = (await _client.GetAvatarUsersAsync(new[] { userId }))?.SingleOrDefault();

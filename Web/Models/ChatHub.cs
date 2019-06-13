@@ -81,14 +81,22 @@ namespace Web.Models
             //throw new NotImplementedException();
         }
 
-        public void SetAvatarCallback(AvatarWCF avatar, UserBaseWCF user)
+        public void SetAvatarCallback(AvatarWCF avatar, UserBaseWCF user, string connectionId)
         {
-            //throw new NotImplementedException();
+            if (!string.IsNullOrWhiteSpace(connectionId))
+            {
+                var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                context.Clients.Client(connectionId).newAvatar($"user/{user.Id}/{AdditionsLibrary.HashCode.GetMD5(user.DisplayName)}");
+            }
         }
 
-        public void SetAvatarForGroupCallback(AvatarWCF avatar, GroupWCF group)
+        public void SetAvatarForGroupCallback(AvatarWCF avatar, GroupWCF group, string connectionId)
         {
-            //throw new NotImplementedException();
+            if (!string.IsNullOrWhiteSpace(connectionId))
+            {
+                var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                context.Clients.Client(connectionId).newAvatar($"group/{group.Id}/{AdditionsLibrary.HashCode.GetMD5(group.Name)}");
+            }
         }
 
         public void ReadedMessagesCallback(GroupWCF group, UserBaseWCF sender, string connectionId)

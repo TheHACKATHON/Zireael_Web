@@ -72,7 +72,7 @@ namespace Client
             }
         }
 
-        public void SetAvatarCallback(AvatarWCF avatar, UserBaseWCF user)
+        public void SetAvatarCallback(AvatarWCF avatar, UserBaseWCF user, string connectionId)
         {
             // TODO set avater callback
             if (LoginedUser != null)
@@ -81,7 +81,7 @@ namespace Client
             }
         }
 
-        public void SetAvatarForGroupCallback(AvatarWCF avatar, GroupWCF group)
+        public void SetAvatarForGroupCallback(AvatarWCF avatar, GroupWCF group, string connectionId)
         {
             // TODO set avater callback
             if (LoginedUser != null)

@@ -1233,64 +1233,64 @@ namespace Web.ServiceReference1 {
     public interface ICeadChatServiceCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/GiveIdToMessageCallback")]
-        void GiveIdToMessageCallback(System.Collections.Generic.KeyValuePair<long, int>[] messageHashId, string sessionId);
+        void GiveIdToMessageCallback(System.Collections.Generic.KeyValuePair<long, int>[] messageHashId, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/CreateChatCallback")]
-        void CreateChatCallback(Web.ServiceReference1.GroupWCF group, int creatorId, string sessionId);
+        void CreateChatCallback(Web.ServiceReference1.GroupWCF group, int creatorId, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/CreateMessageCallback")]
-        void CreateMessageCallback(Web.ServiceReference1.MessageWCF message, long hash, string sessionId);
+        void CreateMessageCallback(Web.ServiceReference1.MessageWCF message, long hash, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/DeleteMessageCallback")]
-        void DeleteMessageCallback(Web.ServiceReference1.MessageWCF message, string sessionId);
+        void DeleteMessageCallback(Web.ServiceReference1.MessageWCF message, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/NewLastMessageCallback")]
-        void NewLastMessageCallback(Web.ServiceReference1.MessageWCF message, string sessionId);
+        void NewLastMessageCallback(Web.ServiceReference1.MessageWCF message, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/AddFriendToGroupCallback")]
-        void AddFriendToGroupCallback(Web.ServiceReference1.UserBaseWCF user, Web.ServiceReference1.GroupWCF group, string sessionId);
+        void AddFriendToGroupCallback(Web.ServiceReference1.UserBaseWCF user, Web.ServiceReference1.GroupWCF group, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/RemoveGroupCallback")]
-        void RemoveGroupCallback(Web.ServiceReference1.GroupWCF group, string sessionId);
+        void RemoveGroupCallback(Web.ServiceReference1.GroupWCF group, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/SetAvatarCallback")]
-        void SetAvatarCallback(Web.ServiceReference1.AvatarWCF avatar, Web.ServiceReference1.UserBaseWCF user);
+        void SetAvatarCallback(Web.ServiceReference1.AvatarWCF avatar, Web.ServiceReference1.UserBaseWCF user, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/SetAvatarForGroupCallback")]
-        void SetAvatarForGroupCallback(Web.ServiceReference1.AvatarWCF avatar, Web.ServiceReference1.GroupWCF group);
+        void SetAvatarForGroupCallback(Web.ServiceReference1.AvatarWCF avatar, Web.ServiceReference1.GroupWCF group, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/ReadedMessagesCallback")]
-        void ReadedMessagesCallback(Web.ServiceReference1.GroupWCF group, Web.ServiceReference1.UserBaseWCF sender, string sessionId);
+        void ReadedMessagesCallback(Web.ServiceReference1.GroupWCF group, Web.ServiceReference1.UserBaseWCF sender, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/SendedPackageCallback")]
         void SendedPackageCallback(int msgId, int numberPackage);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/ChangeOnlineStatusCallback")]
-        void ChangeOnlineStatusCallback(Web.ServiceReference1.UserBaseWCF user, string sessionId);
+        void ChangeOnlineStatusCallback(Web.ServiceReference1.UserBaseWCF user, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/IsOnlineCallback")]
-        void IsOnlineCallback(string sessionId);
+        void IsOnlineCallback(string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/ChangeTextInMessageCallback")]
-        void ChangeTextInMessageCallback(Web.ServiceReference1.MessageWCF message, string sessionId);
+        void ChangeTextInMessageCallback(Web.ServiceReference1.MessageWCF message, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/RemoveOrExitUserFromGroupCallback")]
-        void RemoveOrExitUserFromGroupCallback(int groupId, Web.ServiceReference1.UserBaseWCF user, string sessionId);
+        void RemoveOrExitUserFromGroupCallback(int groupId, Web.ServiceReference1.UserBaseWCF user, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/LogOutCallback")]
-        void LogOutCallback(string sessionId);
+        void LogOutCallback(string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/AddUserToBlackListCallback")]
-        void AddUserToBlackListCallback(Web.ServiceReference1.UserBaseWCF user, string sessionId);
+        void AddUserToBlackListCallback(Web.ServiceReference1.UserBaseWCF user, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/RemoveUserFromBlackListCallback")]
-        void RemoveUserFromBlackListCallback(Web.ServiceReference1.UserBaseWCF user, string sessionId);
+        void RemoveUserFromBlackListCallback(Web.ServiceReference1.UserBaseWCF user, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/AddContactCallback")]
-        void AddContactCallback(Web.ServiceReference1.UserBaseWCF user, string sessionId);
+        void AddContactCallback(Web.ServiceReference1.UserBaseWCF user, string connectionId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICeadChatService/RemoveContactCallback")]
-        void RemoveContactCallback(Web.ServiceReference1.UserBaseWCF user, string sessionId);
+        void RemoveContactCallback(Web.ServiceReference1.UserBaseWCF user, string connectionId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

@@ -70,6 +70,13 @@
             }
         }
     };
+    chat.client.newAvatar = function (avatar) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', `/` + avatar);
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.setRequestHeader("Pragma", "no-cache");
+        xhr.send();
+    };
     chat.client.removeContact = function (id) {
         $(".contacts-container .contact[data-id=" + id + "]").parent().remove();
     }

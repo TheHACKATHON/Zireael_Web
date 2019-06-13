@@ -24,7 +24,7 @@ namespace AdditionsLibrary
 
                 if(width < MinimumSize || height < MinimumSize)
                 {
-                    throw new Exception("Изображение слишком маленькое");
+                    throw new NotSupportedException("Изображение слишком маленькое");
                 }
 
                 int newHeight;

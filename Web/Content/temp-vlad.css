@@ -212,3 +212,9 @@ a.button.btn-change-email {
 .sub-dialog-container .code.hide{
     display:none;
 }
+.wrap-img label{
+    height:100%;
+}
+.wrap-img input[type=file]{
+    display:none;
+}
