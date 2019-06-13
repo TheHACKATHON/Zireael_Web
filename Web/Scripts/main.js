@@ -591,12 +591,13 @@ document.addEventListener('input', function (e) {
 //});
 
 function OpenMenu(methodName) {
+    $("#loading").css("display", "block");
     let xhr = new XMLHttpRequest();
     xhr.open('POST', `/` + methodName);
     xhr.send();
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
-
+            $("#loading").css("display", "none");
             let data = JSON.parse(xhr.responseText);
             if (data.Code === NotifyType.Success) {
                 $(".dialog-container").html("");

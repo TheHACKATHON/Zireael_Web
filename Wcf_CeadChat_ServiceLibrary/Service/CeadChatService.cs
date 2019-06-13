@@ -1903,10 +1903,10 @@ namespace Wcf_CeadChat_ServiceLibrary
                 if (context != null)
                 {
                     var sender = GetCurrentUser();
-                    sender = context.Users.FirstOrDefault(u => u.Id == sender.Id);
-                    sender.LastTimeOnline = DateTime.Now;
-                    sender.IsOnline = true;
-                    context.SaveChanges();
+                    //sender = context.Users.FirstOrDefault(u => u.Id == sender.Id);
+                    //sender.LastTimeOnline = DateTime.Now;
+                    //sender.IsOnline = true;
+                    //context.SaveChanges();
                     return new UserWCF(sender);
                 }
                 return null;
