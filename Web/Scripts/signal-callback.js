@@ -34,11 +34,10 @@
 
     chat.client.newLastMessage = function (message) {
         if (message) {
-            var date = new Date(message.DateTime);
             let li = document.querySelector('.chats li a[data-id="' + message.GroupId + '"]');
             li = li.parentElement;
-            li.querySelector(".last-message").textContent = message.Text;
-            li.querySelector("p.time").textContent = `${date.getHours()}:${date.getMinutes()}`;
+            li.querySelector(".last-message").textContent = message.Text.length > 25 ? message.Text.substring(0, 25) + "..." : message.Text;
+            li.querySelector("p.time").textContent = convertDateToShortTimeString(message.DateTime);
             if (message.Sender.Id != _currentUser.Id) {
                 let unreadElement = li.querySelector("span.count-unred-messages");
                 if (unreadElement != null) {

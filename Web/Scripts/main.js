@@ -504,9 +504,6 @@ function changeActive(elem) {
 //});
 //$(document).ready(function () {
 
-
-
-
 function calc() {
     let check = ($(window).width() > 1030) ? true : false;
     let wHeight = $(window).height();
@@ -514,16 +511,26 @@ function calc() {
     let panelHeight = $('.panel-write').height() + 10 + (check ? 20 : 20);
     // console.log(headHeight, $('.my-head').height());
     //console.log(panelHeight, $('.panel-write').height());
+    let popupHeaderHeight = $(".dialog-header").height();
+    let popupSearchHeight = $(".search-container").height();
+    let popupButton = $(".dialog-container .button").height();
+    
+    $(".modal-backdrop-dialog").height(wHeight - 30);
+    $(".scroll-wrapper.scrollbar-macosx-creategroup").height(wHeight - popupButton - popupHeaderHeight - popupSearchHeight - popupSearchHeight - 100);
+    $(".scroll-wrapper.scrollbar-macosx-contacts").height(wHeight - popupButton - popupHeaderHeight - popupSearchHeight - 100);
+   
     $('.wrap').height(wHeight - headHeight);
     $('.message-list-wrap').height(wHeight - headHeight - panelHeight);
+    $('.back').height($(window).height() - 30);
 }
 
-$(window).on("load resize", function () {
+$(window).on("load", function () {
     $('.scrollbar-macosx-chats').scrollbar({ disableBodyScroll: true });
-    //if ($(window).width() <= 1030) {
     calc();
-    $('.back').height($(window).height() - 30);
-    //}
+})
+
+$(window).on("resize", function () {
+    calc();
 })
 //})
 
@@ -591,18 +598,22 @@ document.addEventListener('input', function (e) {
 //});
 
 function OpenMenu(methodName) {
+    $("#loading").css("display", "block");
     let xhr = new XMLHttpRequest();
     xhr.open('POST', `/` + methodName);
     xhr.send();
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
+            $("#loading").css("display", "none");
             let data = JSON.parse(xhr.responseText);
             if (data.Code === NotifyType.Success) {
                 $(".dialog-container").html("");
                 $(".dialog-container").html(data.view);
                 $(".dialog-title > h2").text(data.title);
                 $('.scrollbar-macosx-contacts').scrollbar({ disableBodyScroll: true });
+                $('.scrollbar-macosx-creategroup').scrollbar({ disableBodyScroll: true });
                 document.querySelector(".modal-backdrop").classList.remove("hide");
+                calc();
             }
             else {
                 popup(data.Error, data.Code);
