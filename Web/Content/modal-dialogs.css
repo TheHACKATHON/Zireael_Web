@@ -50,7 +50,7 @@ a.md_modal_action {
     background: #2f6ea5;
     align-items: center;
     color: white;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
     border-radius: 5px 5px 0 0;
 }
 

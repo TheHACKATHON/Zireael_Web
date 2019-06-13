@@ -115,6 +115,25 @@ document.addEventListener('click', function (e) {
             </div>
         `);
     }
+    else if (target.closest(".settings-container .change-email")) {
+        $(".sub-modal-dialog").removeClass("hide");
+        $(".sub-modal-dialog").html("");
+        $(".sub-modal-dialog").html(`
+            <div class="sub-dialog-container">
+                <h3>${_currentUser.Email == null ? "Почта не прикреплена" : _currentUser.Email}</h3>
+                <div class="new-email">
+                    <input required="" class="text email" type="email" placeholder="Новая почта"/>
+                    <input required="" class="text password" type="password" placeholder="Пароль от аккаунта"/>
+                    <a class="button btn-send-code">отправить код на почту</a>
+                </div>
+                <input required="" class="text code hide" type="text" placeholder="Код отправленный на почту"/>
+                <div class="new-contact-btn-container">
+                    <a class="button btn-cancel">отмена</a>
+                    <a disabled class="button btn-change-email">изменить</a>
+                </div>
+            </div>
+        `);
+    }
     else if (target.closest(".create-group")) {
         let groupName = $(".group-name").val();
         //console.log(groupName);
@@ -298,16 +317,10 @@ document.addEventListener('click', function (e) {
         if (newPass != repNewPass) {
             popup("Пароли НЕ совпадают!", NotifyType.Warning);
         }
-        else
-        {
+        else {
             let xhr = new XMLHttpRequest();
             xhr.open('POST', `/changepassword`);
             let data = new FormData();
-            //data.append({
-            //    newPass: newPass,
-            //    repNewPass: repNewPass,
-            //    oldPass: oldPass
-            //});
             data.append("newPass", newPass);
             data.append("repNewPass", repNewPass);
             data.append("oldPass", oldPass);
@@ -332,6 +345,63 @@ document.addEventListener('click', function (e) {
                 }
             };
         }
+    }
+    else if (target.closest(".btn-change-email")) {
+        let code = $(".sub-dialog-container .code").val();
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', `/changeemail`);
+        let data = new FormData();
+        data.append("code", code);
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.Code === NotifyType.Success) {
+                    $(".sub-modal-dialog").addClass("hide");
+                    $(".sub-dialog-container .new-email .password").val("");
+                    $(".sub-dialog-container .new-email .email").val("");
+                    $(".sub-dialog-container .code").val("");
+                    _currentUser.Email = _currentUser.tempEmail;
+                    _currentUser.tempEmai = undefined;
+                    $(".sub-dialog-container .new-email .email").val(_currentUser.Email);
+                    popup(data.Message, data.Code);
+                }
+                else {
+                    popup(data.Message, data.Code);
+                }
+            }
+            else if (xhr.readyState == 4 && xhr.status == 0) {
+                popup(null, NotifyType.Error);
+            }
+        };
+    }
+    else if (target.closest(".btn-send-code")) {
+        let pass = $(".sub-dialog-container .new-email .password").val();
+        let newEmail = $(".sub-dialog-container .new-email .email").val();
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', `/changeemailsendcode`);
+        let data = new FormData();
+        data.append("newEmail", newEmail);
+        data.append("pass", pass);
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.Code === NotifyType.Success) {
+                    popup(data.Message, data.Code);
+                    $(".sub-dialog-container .code").val("");
+                    $(".sub-dialog-container .code.hide").removeClass("hide");
+                    _currentUser.tempEmail = newEmail;
+                }
+                else {
+                    popup(data.Message, data.Code);
+                }
+            }
+            else if (xhr.readyState == 4 && xhr.status == 0) {
+                popup(null, NotifyType.Error);
+            }
+        };
     }
     else if (target.matches('.backBtn')) {
         $('.wrap').add('.my-head').removeClass('checkDialog');
@@ -514,11 +584,11 @@ function calc() {
     let popupHeaderHeight = $(".dialog-header").height();
     let popupSearchHeight = $(".search-container").height();
     let popupButton = $(".dialog-container .button").height();
-    
+
     $(".modal-backdrop-dialog").height(wHeight - 30);
     $(".scroll-wrapper.scrollbar-macosx-creategroup").height(wHeight - popupButton - popupHeaderHeight - popupSearchHeight - popupSearchHeight - 100);
     $(".scroll-wrapper.scrollbar-macosx-contacts").height(wHeight - popupButton - popupHeaderHeight - popupSearchHeight - 100);
-   
+
     $('.wrap').height(wHeight - headHeight);
     $('.message-list-wrap').height(wHeight - headHeight - panelHeight);
     $('.back').height($(window).height() - 30);

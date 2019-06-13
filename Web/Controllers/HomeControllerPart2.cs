@@ -17,6 +17,7 @@ namespace Web.Controllers
         private string _nameEmailTokenCookie = "emailToken";
         private string _patternLogin = @"^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d]{5,24}$";
         private string _patternPassword = @"^(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,32}$";
+        private string _patternEmail = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
         private string _fatalError = "Мы потеряли связь с космосом, пытаемся восстановить квантовый соединитель. Попробуйте позже";
         private string _loginMessage = "Требования для логина:\n" +
                     "только латинские символы и цифры\n" +
@@ -289,6 +290,46 @@ namespace Web.Controllers
                 return Json(new { Code = NotifyType.Success, Message = $"Пароль изменен УСПЕШНО!" });
             }
             return Json(new { Code = NotifyType.Warning, Message = $"Пароль НЕ изменен..." });
+        }
+        [HttpPost]
+        public async Task<JsonResult> ChangeEmailSendCode(string newEmail, string pass)
+        {
+            if (string.IsNullOrWhiteSpace(pass) &&
+                string.IsNullOrWhiteSpace(newEmail))
+            {
+                return Json(new { Code = NotifyType.Warning, Message = $"Заполните все поля!" });
+            }
+
+            if (Regex.IsMatch(newEmail, _patternEmail))
+            {
+                if (await _client.SendCodeForSetNewEmailAsync(newEmail, pass))
+                {
+                    return Json(new { Code = NotifyType.Success, Message = $"Код отправлен на {newEmail}" });
+                }
+                else
+                {
+                    return Json(new { Code = NotifyType.Warning, Message = $"Проверьте правильность пароля" });
+                }
+            }
+            else
+            {
+                return Json(new { Code = NotifyType.Warning, Message = $"Некорректно введена почта!" });
+            }
+            return Json(new { Code = NotifyType.Warning, Message = $"Код НЕ отправлен." });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangeEmail(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                return Json(new { Code = NotifyType.Warning, Message = $"Введите код с почты!" });
+            }
+            if (await _client.SetNewEmailAsync(code))
+            {
+                return Json(new { Code = NotifyType.Success, Message = $"Почта изменена УСПЕШНО!" });
+            }
+            return Json(new { Code = NotifyType.Warning, Message = $"Почта НЕ изменена..." });
         }
     }
 

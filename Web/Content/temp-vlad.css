@@ -11,8 +11,9 @@
         width: 100%;
         padding: 0px 10px 5px 10px;
         height: 25px;
-        outline:none;
+        outline: none;
         border: none;
+        margin-top: 10px;
     }
     .search-container .group-name {
         width: 100%;
@@ -20,6 +21,7 @@
         height: 25px;
         outline: none;
         border: none;
+        margin-top: 10px;
     }
     .search-container .group-description {
         width: 100%;
@@ -27,6 +29,9 @@
         height: 25px;
         outline: none;
         border: none;
+    }
+    .search-container .icon-search-contact {
+        margin-top: 10px;
     }
 .contacts-container {
     display: flex;
@@ -37,9 +42,7 @@
     a:hover {
         text-decoration: none;
     }
-    .search-container .icon-search {
-        /*background-color:black;*/
-    }
+
 
 .contact {
     display: flex;
@@ -59,10 +62,16 @@
         background: #d3d3d373;
     }
 .profile {
-    border-bottom: 3px solid #0000001b;
+    border-bottom: 3px solid #0000000d;
     padding-bottom: 10px;
+    background: #2f6da5;
 }
-
+    .profile .super-top h3{
+        color:white;
+    }
+    .profile p.time{
+        color:white;
+    }
 a.md_modal_action.md_modal_action_close:hover {
     color: #c1e2ff;
     text-decoration: none;
@@ -191,4 +200,15 @@ a.button.btn-change-display-name {
 }
 a.button.btn-change-password {
     font-weight: bold;
+}
+.new-email {
+    border: 3px solid #0000000f;
+    padding: 10px;
+}
+a.button.btn-change-email {
+    font-weight: bold;
+}
+
+.sub-dialog-container .code.hide{
+    display:none;
 }
