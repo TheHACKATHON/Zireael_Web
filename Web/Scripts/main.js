@@ -115,14 +115,39 @@ document.addEventListener('click', function (e) {
             </div>
         `);
     }
+    else if (target.closest(".settings-container .change-email")) {
+        $(".sub-modal-dialog").removeClass("hide");
+        $(".sub-modal-dialog").html("");
+        $(".sub-modal-dialog").html(`
+            <div class="sub-dialog-container">
+                <h3>${_currentUser.Email == null ? "Почта не прикреплена" : _currentUser.Email}</h3>
+                <div class="new-email">
+                    <input required="" class="text email" type="email" placeholder="Новая почта"/>
+                    <input required="" class="text password" type="password" placeholder="Пароль от аккаунта"/>
+                    <a class="button btn-send-code">отправить код на почту</a>
+                </div>
+                <input required="" class="text code hide" type="text" placeholder="Код отправленный на почту"/>
+                <div class="new-contact-btn-container">
+                    <a class="button btn-cancel">отмена</a>
+                    <a disabled class="button btn-change-email">изменить</a>
+                </div>
+            </div>
+        `);
+    }
     else if (target.closest(".create-group")) {
         let groupName = $(".group-name").val();
-        console.log(groupName);
-        if ($("a.contact.select").length == 1) {
+        //console.log(groupName);
+
+        if ($("a.contact.select").length > 0 && groupName.length > 0) {
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', `/createchat`);
+            xhr.open('POST', `/creategroup`);
             let data = new FormData();
-            data.append("id", $("a.contact.select").data("id"));
+            let arr = new Array();
+            $("a.contact.select").each(function (index) {
+                arr.push($(this).data("id"));
+            });
+            data.append("idArr", JSON.stringify(arr));
+            data.append("groupName", groupName);
             xhr.send(data);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
@@ -139,16 +164,11 @@ document.addEventListener('click', function (e) {
                 }
             };
         }
-        else if ($("a.contact.select").length > 1 && groupName.length > 0) {
+        else if ($("a.contact.select").length == 1) {
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', `/creategroup`);
+            xhr.open('POST', `/createchat`);
             let data = new FormData();
-            let arr = new Array();
-            $("a.contact.select").each(function (index) {
-                arr.push($(this).data("id"));
-            });
-            data.append("idArr", JSON.stringify(arr));
-            data.append("groupName", groupName);
+            data.append("id", $("a.contact.select").data("id"));
             xhr.send(data);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
@@ -301,16 +321,19 @@ document.addEventListener('click', function (e) {
             let xhr = new XMLHttpRequest();
             xhr.open('POST', `/changepassword`);
             let data = new FormData();
-            data.append("login", login);
+            data.append("newPass", newPass);
+            data.append("repNewPass", repNewPass);
+            data.append("oldPass", oldPass);
+
             xhr.send(data);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     let data = JSON.parse(xhr.responseText);
                     if (data.Code === NotifyType.Success) {
-                        $(".sub-dialog-container .login").val("");
                         $(".sub-modal-dialog").addClass("hide");
-                        _currentUser.Login = login;
-                        //$(".profile h3").html(login);
+                        $(".sub-dialog-container .new-password").val("");
+                        $(".sub-dialog-container .rep-new-password").val("")
+                        $(".sub-dialog-container .old-password").val("");
                         popup(data.Message, data.Code);
                     }
                     else {
@@ -322,6 +345,63 @@ document.addEventListener('click', function (e) {
                 }
             };
         }
+    }
+    else if (target.closest(".btn-change-email")) {
+        let code = $(".sub-dialog-container .code").val();
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', `/changeemail`);
+        let data = new FormData();
+        data.append("code", code);
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.Code === NotifyType.Success) {
+                    $(".sub-modal-dialog").addClass("hide");
+                    $(".sub-dialog-container .new-email .password").val("");
+                    $(".sub-dialog-container .new-email .email").val("");
+                    $(".sub-dialog-container .code").val("");
+                    _currentUser.Email = _currentUser.tempEmail;
+                    _currentUser.tempEmai = undefined;
+                    $(".sub-dialog-container .new-email .email").val(_currentUser.Email);
+                    popup(data.Message, data.Code);
+                }
+                else {
+                    popup(data.Message, data.Code);
+                }
+            }
+            else if (xhr.readyState == 4 && xhr.status == 0) {
+                popup(null, NotifyType.Error);
+            }
+        };
+    }
+    else if (target.closest(".btn-send-code")) {
+        let pass = $(".sub-dialog-container .new-email .password").val();
+        let newEmail = $(".sub-dialog-container .new-email .email").val();
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', `/changeemailsendcode`);
+        let data = new FormData();
+        data.append("newEmail", newEmail);
+        data.append("pass", pass);
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.Code === NotifyType.Success) {
+                    popup(data.Message, data.Code);
+                    $(".sub-dialog-container .code").val("");
+                    $(".sub-dialog-container .code.hide").removeClass("hide");
+                    _currentUser.tempEmail = newEmail;
+                }
+                else {
+                    popup(data.Message, data.Code);
+                }
+            }
+            else if (xhr.readyState == 4 && xhr.status == 0) {
+                popup(null, NotifyType.Error);
+            }
+        };
     }
     else if (target.matches('.backBtn')) {
         $('.wrap').add('.my-head').removeClass('checkDialog');
@@ -401,10 +481,7 @@ document.addEventListener('click', function (e) {
                     Text: text,
                     GroupId: groupId,
                     DateTime: null,
-                    Sender: {
-                        Login: _currentUser.Login,
-                        DisplayName: _currentUser.DisplayName,
-                    },
+                    Sender: _currentUser,
                 },
                     _currentUser.Avatar));
             $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
@@ -507,11 +584,11 @@ function calc() {
     let popupHeaderHeight = $(".dialog-header").height();
     let popupSearchHeight = $(".search-container").height();
     let popupButton = $(".dialog-container .button").height();
-    
+
     $(".modal-backdrop-dialog").height(wHeight - 30);
     $(".scroll-wrapper.scrollbar-macosx-creategroup").height(wHeight - popupButton - popupHeaderHeight - popupSearchHeight - popupSearchHeight - 100);
     $(".scroll-wrapper.scrollbar-macosx-contacts").height(wHeight - popupButton - popupHeaderHeight - popupSearchHeight - 100);
-   
+
     $('.wrap').height(wHeight - headHeight);
     $('.message-list-wrap').height(wHeight - headHeight - panelHeight);
     $('.back').height($(window).height() - 30);

@@ -17,11 +17,17 @@ namespace Web.Controllers
         private string _nameEmailTokenCookie = "emailToken";
         private string _patternLogin = @"^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d]{5,24}$";
         private string _patternPassword = @"^(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,32}$";
+        private string _patternEmail = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
         private string _fatalError = "Мы потеряли связь с космосом, пытаемся восстановить квантовый соединитель. Попробуйте позже";
         private string _loginMessage = "Требования для логина:\n" +
                     "только латинские символы и цифры\n" +
                     "минимум 6 символов\n" +
                     "максимум 24 символа";
+        private string _passwordMessage = "Требования для пароля:\n" +
+                                "минимум 8 символов\n" +
+                                "максимум 32 символа\n" +
+                                "буква в нижнем регистре\n" +
+                                "буква в верхнем регистре";
         #region Registration
         [HttpPost]
         public async Task<ActionResult> SendCodeForChangePassword(string loginOrEmail)
@@ -33,27 +39,34 @@ namespace Web.Controllers
             }
             else
             {
-                throw new ArgumentException();
+                return PartialView("PartialPassword");
             }
         }
 
         [HttpPost]
-        public async Task<JsonResult> ChangePassword(string loginOrEmail, string pass, string repPass, string code)
+        public async Task<JsonResult> RestorePassword(string loginOrEmail, string pass, string repPass, string code)
         {
             if (pass == repPass)
             {
-                if (await _client.RestorePasswordAsync(loginOrEmail, code, pass))
+                if (Regex.IsMatch(pass, _patternPassword))
                 {
-                    return Json(new { message = "Пароль успешно изменен!", type = NotifyType.Error });
+                    if (await _client.RestorePasswordAsync(loginOrEmail, code, pass))
+                    {
+                        return Json(new { message = "Пароль успешно изменен!", type = NotifyType.Success });
+                    }
+                    else
+                    {
+                        return Json(new { message = "Ошибка! Проверте правильность введенных данных.", type = NotifyType.Warning });
+                    }
                 }
                 else
                 {
-                    return Json(new { message = "Ошибка! Проверте правильность введенных данных.", type = NotifyType.Error });
+                    return Json(new { message = _passwordMessage, type = NotifyType.Warning });
                 }
             }
             else
             {
-                return Json(new { message = "Пароли не совпадают!", type = NotifyType.Error });
+                return Json(new { message = "Пароли не совпадают!", type = NotifyType.Warning });
             }
         }
         public async Task<JsonResult> RegistrationSendCode(string email)
@@ -126,11 +139,7 @@ namespace Web.Controllers
                         {
                             return Json(new
                             {
-                                message = "Требования для пароля:\n" +
-                                "минимум 8 символов\n" +
-                                "максимум 32 символа\n" +
-                                "буква в нижнем регистре\n" +
-                                "буква в верхнем регистре",
+                                message = _passwordMessage,
                                 type = NotifyType.Warning
                             });
                         }
@@ -264,17 +273,63 @@ namespace Web.Controllers
             return Json(new { Code = NotifyType.Warning, Message = $"Имя НЕ изменен..." });
         }
         [HttpPost]
-        public async Task<JsonResult> ChangePassword(string newPass, string repnewPass, string oldPass)
+        public async Task<JsonResult> ChangePassword(string newPass, string repNewPass, string oldPass)
         {
-            //if (string.IsNullOrWhiteSpace(displayName))
-            //{
-            //    return Json(new { Code = NotifyType.Warning, Message = $"Имя не может быть пустым!" });
-            //}
-            //if (await _client.ChangeProfileInfoAsync(displayName, null))
-            //{
-            //    return Json(new { Code = NotifyType.Success, Message = $"Имя изменено на {displayName}!" });
-            //}
-            return Json(new { Code = NotifyType.Warning, Message = $"Имя НЕ изменен..." });
+            if (string.IsNullOrWhiteSpace(newPass) &&
+                string.IsNullOrWhiteSpace(repNewPass) &&
+                string.IsNullOrWhiteSpace(oldPass))
+            {
+                return Json(new { Code = NotifyType.Warning, Message = $"Заполните все поля!" });
+            }
+            if(newPass != repNewPass)
+            {
+                return Json(new { Code = NotifyType.Warning, Message = $"Пароли не совпадают..." });
+            }
+            if (await _client.ChangePasswordAsync(newPass, oldPass))
+            {
+                return Json(new { Code = NotifyType.Success, Message = $"Пароль изменен УСПЕШНО!" });
+            }
+            return Json(new { Code = NotifyType.Warning, Message = $"Пароль НЕ изменен..." });
+        }
+        [HttpPost]
+        public async Task<JsonResult> ChangeEmailSendCode(string newEmail, string pass)
+        {
+            if (string.IsNullOrWhiteSpace(pass) &&
+                string.IsNullOrWhiteSpace(newEmail))
+            {
+                return Json(new { Code = NotifyType.Warning, Message = $"Заполните все поля!" });
+            }
+
+            if (Regex.IsMatch(newEmail, _patternEmail))
+            {
+                if (await _client.SendCodeForSetNewEmailAsync(newEmail, pass))
+                {
+                    return Json(new { Code = NotifyType.Success, Message = $"Код отправлен на {newEmail}" });
+                }
+                else
+                {
+                    return Json(new { Code = NotifyType.Warning, Message = $"Проверьте правильность пароля" });
+                }
+            }
+            else
+            {
+                return Json(new { Code = NotifyType.Warning, Message = $"Некорректно введена почта!" });
+            }
+            return Json(new { Code = NotifyType.Warning, Message = $"Код НЕ отправлен." });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangeEmail(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                return Json(new { Code = NotifyType.Warning, Message = $"Введите код с почты!" });
+            }
+            if (await _client.SetNewEmailAsync(code))
+            {
+                return Json(new { Code = NotifyType.Success, Message = $"Почта изменена УСПЕШНО!" });
+            }
+            return Json(new { Code = NotifyType.Warning, Message = $"Почта НЕ изменена..." });
         }
     }
 
