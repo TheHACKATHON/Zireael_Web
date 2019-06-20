@@ -50,9 +50,7 @@ document.addEventListener('click', function (e) {
         }
     }
     else if (target.closest(".new-contact")) {
-        $(".sub-modal-dialog").removeClass("hide");
-        $(".sub-modal-dialog").html("");
-        $(".sub-modal-dialog").html(`
+        OpenSubModalDialog(`
             <div class="sub-dialog-container">
                 <h3>Добавление контакта</h3>
                 <input required="" autocomplete="login" class="text login" type="text" placeholder="Логин пользователя"/>
@@ -64,9 +62,7 @@ document.addEventListener('click', function (e) {
         `);
     }
     else if (target.closest(".settings-container .change-login")) {
-        $(".sub-modal-dialog").removeClass("hide");
-        $(".sub-modal-dialog").html("");
-        $(".sub-modal-dialog").html(`
+        OpenSubModalDialog(`
             <div class="sub-dialog-container">
                 <h3>Изменение логина для ${_currentUser.Login}</h3>
                 <div class="info-container">
@@ -82,9 +78,7 @@ document.addEventListener('click', function (e) {
         `);
     }
     else if (target.closest(".settings-container .change-password")) {
-        $(".sub-modal-dialog").removeClass("hide");
-        $(".sub-modal-dialog").html("");
-        $(".sub-modal-dialog").html(`
+        OpenSubModalDialog(`
             <div class="sub-dialog-container">
                 <h3>Изменение пароля для ${_currentUser.Login}</h3>
                 <div class="info-container">
@@ -102,9 +96,7 @@ document.addEventListener('click', function (e) {
         `);
     }
     else if (target.closest(".settings-container .change-display-name")) {
-        $(".sub-modal-dialog").removeClass("hide");
-        $(".sub-modal-dialog").html("");
-        $(".sub-modal-dialog").html(`
+        OpenSubModalDialog(`
             <div class="sub-dialog-container">
                 <h3>Изменение отображаемого имени</h3>
                 <input required="" class="text display-name" type="text" placeholder="Новое имя"/>
@@ -116,9 +108,7 @@ document.addEventListener('click', function (e) {
         `);
     }
     else if (target.closest(".settings-container .change-email")) {
-        $(".sub-modal-dialog").removeClass("hide");
-        $(".sub-modal-dialog").html("");
-        $(".sub-modal-dialog").html(`
+        OpenSubModalDialog(`
             <div class="sub-dialog-container">
                 <h3>${_currentUser.Email == null ? "Почта не прикреплена" : _currentUser.Email}</h3>
                 <div class="new-email">
@@ -187,9 +177,7 @@ document.addEventListener('click', function (e) {
         }
     }
     else if (target.closest(".delete-contact")) {
-        $(".sub-modal-dialog").removeClass("hide");
-        $(".sub-modal-dialog").html("");
-        $(".sub-modal-dialog").html(`
+        OpenSubModalDialog(`
             <div class="sub-dialog-container">
                 <h3>Вы уверены?</h3>
                 <div class="new-contact-btn-container">
@@ -557,6 +545,13 @@ document.addEventListener('click', function (e) {
     }
 
 });
+function OpenSubModalDialog(html)
+{
+    $(".sub-modal-dialog").removeClass("hide");
+    $(".sub-modal-dialog").html("");
+    $(".sub-modal-dialog").html(html);
+    // todo посчитать размер окна
+}
 
 function hideChats() {
     $(".message-list-wrap ul").removeClass("activeUl");

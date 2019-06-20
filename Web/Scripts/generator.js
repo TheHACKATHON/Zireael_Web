@@ -9,7 +9,7 @@
         if (parseInt(notReadMessageCount) > 0) {
             notReadMessageElem = `<span class="count-unred-messages">${notReadMessageCount}</span>`;
         }
-        
+
         let li = document.createElement("li");
         li.innerHTML =
 `<a data-id="${group.Id}" class="group">
@@ -37,36 +37,31 @@
             } else {
                 avatar = `/user/${message.Sender.Id}/${Crypto.MD5(message.Sender.DisplayName)}`;
             }
-            
+
         }
 
         let li = document.createElement("li");
         if (message.Id == null || message.Id == 0) {
             li.setAttribute("data-hash", message.Hash);
             li.setAttribute("sender-id", message.Sender.Id);
-        }
-        else {
+        } else {
             li.setAttribute("data-id", message.Id);
             li.setAttribute("sender-id", message.Sender.Id);
         }
 
         if (message.Sender.Login != null && message.Sender.Login === "system" && message.Sender.Id == 1) {
             li.classList.add("systemMsg");
-            li.innerHTML =
-`
-    <span>${message.Text}</span>
-`;
+            li.innerHTML = `<span>${message.Text}</span>`;
             return li;
         }
 
         let dateString = "";
-        if (message.DateTime !=  null) {
+        if (message.DateTime != null) {
             dateString = convertDateToFullDateString(message.DateTime);
-        }
-        else {
+        } else {
             dateString = "загрузка";
         }
-        
+
         li.innerHTML =
 `<div class="checked-btn">
    <a href="#" class="checked-btn-on" style="background-image: url(../Content/Images/Icons2.png);background-repeat: no-repeat; background-position: -9px -481px;"></a>
