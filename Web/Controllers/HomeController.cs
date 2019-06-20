@@ -1,18 +1,17 @@
-﻿using AdditionsLibrary;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.UI;
+using AdditionsLibrary;
+using Newtonsoft.Json;
 using Web.Models;
 using Web.ServiceReference1;
 
@@ -23,6 +22,7 @@ namespace Web.Controllers
         private const string DefaultAvatar = "/Content/Images/Zireael_back_128px.png";
         private readonly CeadChatServiceClient _client;
         private readonly PrivateFontCollection _fonts = new PrivateFontCollection();
+
         public HomeController(CeadChatServiceClient client)
         {
             _client = client;
@@ -46,8 +46,10 @@ namespace Web.Controllers
                         return Json(new NotifyError("Произошла ошибка, обновите страницу или попробуйте позже"));
                     }
                 }
+
                 return Json(new {Code = NotifyType.Success});
             }
+
             return Json(new NotifyError("Произошла ошибка, обновите страницу или попробуйте позже"));
         }
 
@@ -56,15 +58,15 @@ namespace Web.Controllers
         {
             if (groupId != null)
             {
-                var messages = await _client.GetMessagesBetweenAsync((int)groupId, 0, 20);
+                var messages = await _client.GetMessagesBetweenAsync((int) groupId, 0, 20);
                 if (messages != null)
                 {
                     messages = messages.OrderBy(m => m.DateTime).ToArray();
-                    return Json(new { Code = NotifyType.Success, messages, groupId });
+                    return Json(new {Code = NotifyType.Success, messages, groupId});
                 }
             }
-            return Json(new NotifyError("Чат не найден, обновите страницу или попробуйте позже"));
 
+            return Json(new NotifyError("Чат не найден, обновите страницу или попробуйте позже"));
         }
 
         [HttpPost]
@@ -72,7 +74,7 @@ namespace Web.Controllers
         {
             if (groupId != null)
             {
-                await _client.ReadAllMessagesInGroupAsync((int)groupId);
+                await _client.ReadAllMessagesInGroupAsync((int) groupId);
             }
         }
 
@@ -83,16 +85,18 @@ namespace Web.Controllers
             {
                 Text = text,
                 GroupId = groupId,
-                DateTime = DateTime.Now,
+                DateTime = DateTime.Now
             };
 
             var messageId = await _client.SendMessageTransactionAsync(msg, hash);
             if (messageId != -1)
             {
-                return Json(new { Code = NotifyType.Success });
+                return Json(new {Code = NotifyType.Success});
             }
+
             return Json(new NotifyError("Не удалось отправить сообщение"));
         }
+
         [HttpPost]
         public async Task<JsonResult> Logout()
         {
@@ -100,71 +104,100 @@ namespace Web.Controllers
             {
                 return Json(true);
             }
+
             return Json(false);
         }
+
         [HttpGet]
         [OutputCache(Duration = 600, Location = OutputCacheLocation.Client)]
         public async Task<ActionResult> UserImage(int userId = 0, string hash = "")
         {
-            var avatar = (await _client.GetAvatarUsersAsync(new[] { userId }))?.SingleOrDefault();
+            var avatar = (await _client.GetAvatarUsersAsync(new[] {userId}))?.SingleOrDefault();
             if (avatar is null)
             {
                 var username = await _client.GetNameAsync(userId);
                 if (username is null) return HttpNotFound();
                 avatar = new AvatarUserWCF
                 {
-                    User = new UserBaseWCF { Id = userId, DisplayName = username }
+                    User = new UserBaseWCF {Id = userId, DisplayName = username}
                 };
-                using (var bitmap = Image.FromFile(HostingEnvironment.MapPath(DefaultAvatar)))
+                var path = HostingEnvironment.MapPath(DefaultAvatar);
+                if (path != null)
                 {
-                    using (var g = Graphics.FromImage(bitmap))
+                    using (var bitmap = Image.FromFile(path))
                     {
-                        g.DrawString(username.Substring(0, 1).ToUpper(), new Font(_fonts.Families[0], 90), Brushes.White, new RectangleF(7, -20, 128, 128), new StringFormat(StringFormatFlags.NoClip));
-                    }
-                    using (var ms = new MemoryStream())
-                    {
-                        bitmap.Save(ms, ImageFormat.Png);
-                        avatar.BigData = ms.ToArray();
+                        using (var g = Graphics.FromImage(bitmap))
+                        {
+                            g.DrawString(username.Substring(0, 1).ToUpper(), new Font(_fonts.Families[0], 90),
+                                Brushes.White, new RectangleF(7, -20, 128, 128),
+                                new StringFormat(StringFormatFlags.NoClip));
+                        }
+
+                        using (var ms = new MemoryStream())
+                        {
+                            bitmap.Save(ms, ImageFormat.Png);
+                            avatar.BigData = ms.ToArray();
+                        }
                     }
                 }
+                else
+                {
+                    return HttpNotFound();
+                }
             }
-            if (avatar != null)
+
+            if (avatar.BigData != null)
             {
                 if (HashCode.GetMD5(avatar.User.DisplayName).Equals(hash, StringComparison.OrdinalIgnoreCase))
                 {
                     return File(avatar.BigData, "image/png");
                 }
             }
+
             return HttpNotFound();
         }
+
         [HttpGet]
         [OutputCache(Duration = 1800, Location = OutputCacheLocation.Downstream)]
         public async Task<ActionResult> GroupImage(int groupId = 0, string hash = "")
         {
-            var avatar = (await _client.GetAvatarGroupsAsync(new[] { groupId }))?.SingleOrDefault();
+            var avatar = (await _client.GetAvatarGroupsAsync(new[] {groupId}))?.SingleOrDefault();
             if (avatar is null)
             {
                 var username = await _client.GetGroupNameAsync(groupId);
                 if (username is null) return HttpNotFound();
                 avatar = new AvatarGroupWCF
                 {
-                    Group = new GroupWCF { Id = groupId, Name = username }
+                    Group = new GroupWCF {Id = groupId, Name = username}
                 };
-                using (var bitmap = Image.FromFile(HostingEnvironment.MapPath(DefaultAvatar)))
+                var path = HostingEnvironment.MapPath(DefaultAvatar);
+                if (path != null)
                 {
-                    using (var g = Graphics.FromImage(bitmap))
+                    using (var bitmap = Image.FromFile(path))
                     {
-                        g.SmoothingMode = SmoothingMode.HighQuality;
+                        using (var g = Graphics.FromImage(bitmap))
+                        {
+                            g.SmoothingMode = SmoothingMode.HighQuality;
 
-                        g.DrawString(username.Substring(0, 1).ToUpper(), new Font(_fonts.Families[0], 84), Brushes.White, new RectangleF(12, -13, 128, 128), new StringFormat(StringFormatFlags.NoClip));
-                    }
-                    using (var ms = new MemoryStream())
-                    {
-                        bitmap.Save(ms, ImageFormat.Png);
-                        avatar.BigData = ms.ToArray();
+                            g.DrawString(username.Substring(0, 1).ToUpper(), new Font(_fonts.Families[0], 84),
+                                Brushes.White, new RectangleF(12, -13, 128, 128),
+                                new StringFormat(StringFormatFlags.NoClip));
+                        }
+
+                        using (var ms = new MemoryStream())
+                        {
+                            bitmap.Save(ms, ImageFormat.Png);
+                            avatar.BigData = ms.ToArray();
+                        }
                     }
                 }
+                else
+                {
+                    return HttpNotFound();
+                }
+
             }
+
             if (avatar is AvatarGroupWCF groupAvatar)
             {
                 if (HashCode.GetMD5(groupAvatar.Group.Name).Equals(hash, StringComparison.OrdinalIgnoreCase))
@@ -182,6 +215,7 @@ namespace Web.Controllers
 
             return HttpNotFound();
         }
+
         [HttpGet]
         public async Task<ActionResult> Index()
         {
@@ -193,8 +227,8 @@ namespace Web.Controllers
                     ViewBag.DontReaded = _client.GetDontReadMessagesFromGroups(user.Groups.Select(g => g.Id).ToArray());
                     user.Groups.ToList().ForEach(g =>
                         g.Name = g.Type.Equals(GroupType.SingleUser)
-                        ? g.Users.SingleOrDefault(u => u.Id != user.Id)?.DisplayName
-                        : g.Name);
+                            ? g.Users.SingleOrDefault(u => u.Id != user.Id)?.DisplayName
+                            : g.Name);
 
                     ViewBag.Groups = user.Groups.OrderByDescending(g => g.LastMessage.DateTime);
 
@@ -206,36 +240,34 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AuthAjax(string type = "log")
+        public ActionResult AuthAjax(string type = "log")
         {
-            var view = string.Empty;
+            string view = null;
             switch (type)
             {
                 case "reg":
-                    {
-                        view = "PartialRegistration";
-
-                    }
+                {
+                    view = "PartialRegistration";
+                }
                     break;
                 case "log":
-                    {
-                        view = "PartialLogin";
-
-                    }
+                {
+                    view = "PartialLogin";
+                }
                     break;
                 case "pass":
-                    {
-                        view = "PartialPassword";
-
-                    }
+                {
+                    view = "PartialPassword";
+                }
                     break;
                 case "learn":
-                    {
-                        view = "PartialLearnMore";
-                    }
+                {
+                    view = "PartialLearnMore";
+                }
                     break;
                 default: goto case "log";
             }
+
             return PartialView(view);
         }
 
@@ -255,7 +287,7 @@ namespace Web.Controllers
             }
 
             if (user is null) return Json(new NotifyError("Неверный логин или пароль"));
-            return Json(new { Code = NotifyType.Success });
+            return Json(new {Code = NotifyType.Success});
         }
     }
 }
