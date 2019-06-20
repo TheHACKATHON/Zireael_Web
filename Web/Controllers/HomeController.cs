@@ -112,64 +112,56 @@ namespace Web.Controllers
         [OutputCache(Duration = 600, Location = OutputCacheLocation.Client)]
         public async Task<ActionResult> UserImage(int userId = 0, string hash = "")
         {
-            var avatar = (await _client.GetAvatarUsersAsync(new[] {userId}))?.SingleOrDefault();
-            if (avatar is null)
-            {
-                var username = await _client.GetNameAsync(userId);
-                if (username is null) return HttpNotFound();
-                avatar = new AvatarUserWCF
-                {
-                    User = new UserBaseWCF {Id = userId, DisplayName = username}
-                };
-                var path = HostingEnvironment.MapPath(DefaultAvatar);
-                if (path != null)
-                {
-                    using (var bitmap = Image.FromFile(path))
-                    {
-                        using (var g = Graphics.FromImage(bitmap))
-                        {
-                            g.DrawString(username.Substring(0, 1).ToUpper(), new Font(_fonts.Families[0], 90),
-                                Brushes.White, new RectangleF(7, -20, 128, 128),
-                                new StringFormat(StringFormatFlags.NoClip));
-                        }
-
-                        using (var ms = new MemoryStream())
-                        {
-                            bitmap.Save(ms, ImageFormat.Png);
-                            avatar.BigData = ms.ToArray();
-                        }
-                    }
-                }
-                else
-                {
-                    return HttpNotFound();
-                }
-            }
-
+            var avatar = await GetAvatar(true, userId, hash);
             if (avatar.BigData != null)
             {
-                if (HashCode.GetMD5(avatar.User.DisplayName).Equals(hash, StringComparison.OrdinalIgnoreCase))
-                {
-                    return File(avatar.BigData, "image/png");
-                }
+                return File(avatar.BigData, "image/png");
             }
 
             return HttpNotFound();
         }
 
         [HttpGet]
-        [OutputCache(Duration = 1800, Location = OutputCacheLocation.Downstream)]
+        [OutputCache(Duration = 600, Location = OutputCacheLocation.Client)]
         public async Task<ActionResult> GroupImage(int groupId = 0, string hash = "")
         {
-            var avatar = (await _client.GetAvatarGroupsAsync(new[] {groupId}))?.SingleOrDefault();
+            var avatar = await GetAvatar(false, groupId, hash);
+            if (avatar.BigData != null)
+            {
+                return File(avatar.BigData, "image/png");
+            }
+
+            return HttpNotFound();
+        }
+
+        private async Task<AvatarWCF> GetAvatar(bool isUserImage, int id, string hash)
+        {
+            var avatar = isUserImage
+                ? (await _client.GetAvatarUsersAsync(new[] {id}))?.SingleOrDefault()
+                : (await _client.GetAvatarGroupsAsync(new[] {id}))?.SingleOrDefault();
+
             if (avatar is null)
             {
-                var username = await _client.GetGroupNameAsync(groupId);
-                if (username is null) return HttpNotFound();
-                avatar = new AvatarGroupWCF
+                string username = null;
+                if (isUserImage)
                 {
-                    Group = new GroupWCF {Id = groupId, Name = username}
-                };
+                    username = await _client.GetNameAsync(id);
+                    if (username is null) return null;
+                    avatar = new AvatarUserWCF
+                    {
+                        User = new UserBaseWCF {Id = id, DisplayName = username}
+                    };
+                }
+                else
+                {
+                    username = await _client.GetGroupNameAsync(id);
+                    if (username is null) return null;
+                    avatar = new AvatarGroupWCF
+                    {
+                        Group = new GroupWCF {Id = id, Name = username}
+                    };
+                }
+
                 var path = HostingEnvironment.MapPath(DefaultAvatar);
                 if (path != null)
                 {
@@ -178,7 +170,6 @@ namespace Web.Controllers
                         using (var g = Graphics.FromImage(bitmap))
                         {
                             g.SmoothingMode = SmoothingMode.HighQuality;
-
                             g.DrawString(username.Substring(0, 1).ToUpper(), new Font(_fonts.Families[0], 84),
                                 Brushes.White, new RectangleF(12, -13, 128, 128),
                                 new StringFormat(StringFormatFlags.NoClip));
@@ -193,27 +184,27 @@ namespace Web.Controllers
                 }
                 else
                 {
-                    return HttpNotFound();
+                    return null;
                 }
-
             }
+
 
             if (avatar is AvatarGroupWCF groupAvatar)
             {
                 if (HashCode.GetMD5(groupAvatar.Group.Name).Equals(hash, StringComparison.OrdinalIgnoreCase))
                 {
-                    return File(avatar.BigData, "image/png");
+                    return avatar;
                 }
             }
             else if (avatar is AvatarUserWCF userAvatar)
             {
                 if (HashCode.GetMD5(userAvatar.User.DisplayName).Equals(hash, StringComparison.OrdinalIgnoreCase))
                 {
-                    return File(avatar.BigData, "image/png");
+                    return avatar;
                 }
             }
 
-            return HttpNotFound();
+            return null;
         }
 
         [HttpGet]

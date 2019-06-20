@@ -2014,7 +2014,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     List<AvatarUserWCF> avatars = new List<AvatarUserWCF>();
                     foreach (var user in users)
                     {
-                        foreach (var item in context.AvatarUsers.ToList().Where(a => a.User.Id == user))
+                        foreach (var item in context.AvatarUsers.Where(a => a.User.Id == user))
                         {
                             avatars.Add(new AvatarUserWCF(item));
                         }
@@ -2099,7 +2099,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     List<AvatarWCF> avatars = new List<AvatarWCF>();
                     foreach (var group in groups)
                     {
-                        var groupOriginal = context.Groups.ToList().SingleOrDefault(g => g.Id.Equals(group));
+                        var groupOriginal = context.Groups.SingleOrDefault(g => g.Id.Equals(group));
                         if (groupOriginal.Type.Equals(GroupType.SingleUser))
                         {
                             var sender = _onlineUsers[userChanged];
