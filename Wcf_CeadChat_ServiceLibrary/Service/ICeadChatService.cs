@@ -79,6 +79,9 @@ namespace Wcf_CeadChat_ServiceLibrary
         IEnumerable<AvatarUserWCF> GetAvatarUsers(IEnumerable<int> users);//получение аватара пользователей
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
+        AvatarUserWCF GetAvatarUser(int userId, int avatarNumber = 0);
+
+        [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         Dictionary<int, int> GetDontReadMessagesFromGroups(IEnumerable<int> groupsId);//получение количество не прочитаных сообщений для отправляющего запрос
 
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]

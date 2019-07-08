@@ -176,6 +176,12 @@
   <wsdl:message name="ICeadChatService_GetAvatarUsers_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetAvatarUsersResponse" />
   </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetAvatarUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvatarUser" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetAvatarUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvatarUserResponse" />
+  </wsdl:message>
   <wsdl:message name="ICeadChatService_GetDontReadMessagesFromGroups_InputMessage">
     <wsdl:part name="parameters" element="tns:GetDontReadMessagesFromGroups" />
   </wsdl:message>
@@ -472,6 +478,10 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetAvatarUsers">
       <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetAvatarUsers" message="tns:ICeadChatService_GetAvatarUsers_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetAvatarUsersResponse" message="tns:ICeadChatService_GetAvatarUsers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetAvatarUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetAvatarUser" message="tns:ICeadChatService_GetAvatarUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetAvatarUserResponse" message="tns:ICeadChatService_GetAvatarUser_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetDontReadMessagesFromGroups">
       <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetDontReadMessagesFromGroups" message="tns:ICeadChatService_GetDontReadMessagesFromGroups_InputMessage" />
@@ -833,6 +843,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetAvatarUsers">
       <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetAvatarUsers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAvatarUser">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetAvatarUser" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

@@ -1090,6 +1090,12 @@ namespace Web.ServiceReference1 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetAvatarUsers", ReplyAction="http://tempuri.org/ICeadChatService/GetAvatarUsersResponse")]
         System.Threading.Tasks.Task<Web.ServiceReference1.AvatarUserWCF[]> GetAvatarUsersAsync(int[] users);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetAvatarUser", ReplyAction="http://tempuri.org/ICeadChatService/GetAvatarUserResponse")]
+        Web.ServiceReference1.AvatarUserWCF GetAvatarUser(int userId, int avatarNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetAvatarUser", ReplyAction="http://tempuri.org/ICeadChatService/GetAvatarUserResponse")]
+        System.Threading.Tasks.Task<Web.ServiceReference1.AvatarUserWCF> GetAvatarUserAsync(int userId, int avatarNumber);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetDontReadMessagesFromGroups", ReplyAction="http://tempuri.org/ICeadChatService/GetDontReadMessagesFromGroupsResponse")]
         System.Collections.Generic.Dictionary<int, int> GetDontReadMessagesFromGroups(int[] groupsId);
         
@@ -1509,6 +1515,14 @@ namespace Web.ServiceReference1 {
         
         public System.Threading.Tasks.Task<Web.ServiceReference1.AvatarUserWCF[]> GetAvatarUsersAsync(int[] users) {
             return base.Channel.GetAvatarUsersAsync(users);
+        }
+        
+        public Web.ServiceReference1.AvatarUserWCF GetAvatarUser(int userId, int avatarNumber) {
+            return base.Channel.GetAvatarUser(userId, avatarNumber);
+        }
+        
+        public System.Threading.Tasks.Task<Web.ServiceReference1.AvatarUserWCF> GetAvatarUserAsync(int userId, int avatarNumber) {
+            return base.Channel.GetAvatarUserAsync(userId, avatarNumber);
         }
         
         public System.Collections.Generic.Dictionary<int, int> GetDontReadMessagesFromGroups(int[] groupsId) {

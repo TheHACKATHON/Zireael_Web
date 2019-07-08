@@ -3,6 +3,9 @@
 
     chat.client.addChat = function (group, creatorId) {
         let chats = document.querySelector(".chats ul");
+        if (group.Name == null) {
+            group.Name = group.Users.find(u => u.Id != _currentUser.Id).DisplayName;
+        }
         chats.insertBefore(Generator.DialogHTML(group), chats.firstChild);
 
     };
@@ -77,12 +80,14 @@
             }
         }
     };
-    chat.client.newAvatar = function (avatar) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', `/` + avatar);
-        xhr.setRequestHeader("Cache-Control", "no-cache");
-        xhr.setRequestHeader("Pragma", "no-cache");
-        xhr.send();
+    chat.client.newAvatar = function (avatar, user) {
+        let oldAvatar = avatar;
+        avatar += "?" + new Date().valueOf();
+        if (user != null && user.Id == _currentUser.Id) {
+            $('img[src="/' + _currentUser.Avatar + '"]').prop("src", "/" + avatar);
+            $('img[src="/' + oldAvatar + '"]').prop("src", "/" + avatar);
+            _currentUser.Avatar = avatar;
+        }
     };
     chat.client.removeContact = function (id) {
         $(".contacts-container .contact[data-id=" + id + "]").parent().remove();

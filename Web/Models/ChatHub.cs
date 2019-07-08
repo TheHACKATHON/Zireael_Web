@@ -86,7 +86,7 @@ namespace Web.Models
             if (!string.IsNullOrWhiteSpace(connectionId))
             {
                 var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-                context.Clients.Client(connectionId).newAvatar($"user/{user.Id}/{AdditionsLibrary.HashCode.GetMD5(user.DisplayName)}");
+                context.Clients.Client(connectionId).newAvatar($"user/{user.Id}/{AdditionsLibrary.HashCode.GetMD5(user.DisplayName)}", user);
             }
         }
 
@@ -95,7 +95,7 @@ namespace Web.Models
             if (!string.IsNullOrWhiteSpace(connectionId))
             {
                 var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-                context.Clients.Client(connectionId).newAvatar($"group/{group.Id}/{AdditionsLibrary.HashCode.GetMD5(group.Name)}");
+                context.Clients.Client(connectionId).newAvatar($"group/{group.Id}/{AdditionsLibrary.HashCode.GetMD5(group.Name)}", group);
             }
         }
 

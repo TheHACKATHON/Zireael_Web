@@ -35,7 +35,7 @@
             if (message.Sender.Id == _currentUser.Id) {
                 avatar = _currentUser.Avatar;
             } else {
-                avatar = `/user/${message.Sender.Id}/${Crypto.MD5(message.Sender.DisplayName)}`;
+                avatar = `user/${message.Sender.Id}/${Crypto.MD5(message.Sender.DisplayName)}`;
             }
 
         }
@@ -67,7 +67,7 @@
    <a href="#" class="checked-btn-on" style="background-image: url(../Content/Images/Icons2.png);background-repeat: no-repeat; background-position: -9px -481px;"></a>
 </div>
 <div class="wrap-img letter">
-    <img src="${avatar}" alt="logo">
+    <img src="/${avatar}" alt="logo">
 </div>
 <div class="mega-left">
    <h3>${message.Sender.DisplayName}</h3>

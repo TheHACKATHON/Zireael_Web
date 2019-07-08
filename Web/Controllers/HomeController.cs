@@ -18,6 +18,7 @@ using Web.ServiceReference1;
 
 namespace Web.Controllers
 {
+    // ConfigurationManager.AppSettings.Get("PatternPassword");
     public partial class HomeController : Controller
     {
         private const int MESSAGES_COUNT = 20;
@@ -126,10 +127,11 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        [OutputCache(Duration = 600, Location = OutputCacheLocation.Client)]
-        public async Task<ActionResult> UserImage(int userId = 0, string hash = "")
+        //[OutputCache(Duration = 600, Location = OutputCacheLocation.Client)]
+        public async Task<ActionResult> UserImage(int userId = 0, string hash = "", int number = 0)
         {
-            var avatar = await GetAvatar(true, userId, hash);
+            if (number > 1000) number = 0;
+            var avatar = await GetAvatar(true, userId, hash, number);
             if (avatar.BigData != null)
             {
                 return File(avatar.BigData, "image/png");
@@ -139,10 +141,10 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        [OutputCache(Duration = 600, Location = OutputCacheLocation.Client)]
-        public async Task<ActionResult> GroupImage(int groupId = 0, string hash = "")
+        //[OutputCache(Duration = 600, Location = OutputCacheLocation.Client)]
+        public async Task<ActionResult> GroupImage(int groupId = 0, string hash = "", int number = 0)
         {
-            var avatar = await GetAvatar(false, groupId, hash);
+            var avatar = await GetAvatar(false, groupId, hash, number);
             if (avatar.BigData != null)
             {
                 return File(avatar.BigData, "image/png");
@@ -151,10 +153,10 @@ namespace Web.Controllers
             return HttpNotFound();
         }
 
-        private async Task<AvatarWCF> GetAvatar(bool isUserImage, int id, string hash)
+        private async Task<AvatarWCF> GetAvatar(bool isUserImage, int id, string hash, int avatarNumber = 0)
         {
             var avatar = isUserImage
-                ? (await _client.GetAvatarUsersAsync(new[] { id }))?.SingleOrDefault()
+                ? (await _client.GetAvatarUserAsync(id, avatarNumber))
                 : (await _client.GetAvatarGroupsAsync(new[] { id }))?.SingleOrDefault();
 
             if (avatar is null)

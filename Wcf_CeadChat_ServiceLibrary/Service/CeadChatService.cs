@@ -12,6 +12,7 @@ using System.Configuration;
 using System.Data;
 using Liphsoft.Crypto.Argon2;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace Wcf_CeadChat_ServiceLibrary
 {
@@ -24,6 +25,7 @@ namespace Wcf_CeadChat_ServiceLibrary
         private delegate object ExceptionDelegate();
         private static Random _random = new Random((int)DateTime.Now.Ticks);
 
+        private string _avatarsPath = ConfigurationManager.AppSettings.Get("AvatarPath");
         private string _mailLogin = ConfigurationManager.AppSettings.Get("CorporateMail");
         private string _mailPassword = ConfigurationManager.AppSettings.Get("CorporateMailPass");
         private string _mailHost = ConfigurationManager.AppSettings.Get("CorporateMailHost");
@@ -35,6 +37,7 @@ namespace Wcf_CeadChat_ServiceLibrary
         private int _lenghtRecoveryCode;
         private int _checkTimeOnline;
         private int _tokenLifetime;//количество дней
+
 
         public CeadChatService()
         {
@@ -652,7 +655,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     }
 
                     var message = context.Messages.SingleOrDefault(m => m.Id.Equals(messageId));
-                    if(message != null)
+                    if (message != null)
                     {
                         var selectedMessages = context.Messages.ToList()
                             .OrderByDescending(m => m.DateTime)
@@ -669,7 +672,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     {
                         return null;
                     }
-                    
+
                     return messages;
                 }
                 else
@@ -1392,6 +1395,40 @@ namespace Wcf_CeadChat_ServiceLibrary
         #endregion
 
         #region login and profile
+        IEnumerable<User> GetUniqueUsers(User sender, ChatContext context, bool addSender = true)
+        {
+            var list = new List<User>();
+            foreach (var item in sender.Groups)
+            {
+                list.AddRange(item.Users.Where(u => u.Id != sender.Id));
+            }
+            list.AddRange(context.Friends.ToList().Where(uu => uu.User2.Id == sender.Id).Select(f => f.Sender));
+            if (addSender)
+            {
+                list.Add(sender);
+            }
+            return list.Distinct();
+        }
+        public string GetName(int id) => /* todo: добавить TryExecute */ new ChatContext().Users.SingleOrDefault(u => u.Id.Equals(id))?.DisplayName;
+
+        public string GetGroupName(int id)
+        {
+            /* todo: добавить TryExecute */
+            var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();
+            var context = Context(userChanged);
+            if (context != null)
+            {
+                var group = context.Groups.SingleOrDefault(g => g.Id.Equals(id));
+                if (group.Type.Equals(GroupType.SingleUser))
+                {
+                    var sender = _onlineUsers[userChanged];
+                    var userResipient = group.Users.SingleOrDefault(u => u.Id != sender.Id);
+                    return userResipient.DisplayName;
+                }
+                return group.Name;
+            }
+            return null;
+        }
 
         public UserWCF CheckSession(string session)
         {
@@ -1976,7 +2013,7 @@ namespace Wcf_CeadChat_ServiceLibrary
 
         #region avatar
 
-        public bool SetAvatarUser(AvatarUserWCF avatar)//установить аватарку пользователю
+        public bool SetAvatarUser(AvatarUserWCF avatarWcf)//установить аватарку пользователю
         {
             var result = TryExecute(() =>
             {
@@ -1985,26 +2022,57 @@ namespace Wcf_CeadChat_ServiceLibrary
                 if (context != null)
                 {
                     var sender = GetCurrentUser();
-                    var oldAvatar = context.AvatarUsers.FirstOrDefault(u => u.User.Id == sender.Id);
                     sender = context.Users.FirstOrDefault(u => u.Id == sender.Id);
-                    if (oldAvatar == null)
+
+                    //var oldAvatar = context.AvatarUsers.FirstOrDefault(u => u.User.Id == sender.Id);
+                    //if (oldAvatar == null)
+                    //{
+                    //    oldAvatar = new AvatarUser();
+                    //    context.AvatarUsers.Add(oldAvatar);
+                    //    oldAvatar.User = sender;
+                    //}
+                    //sender.LastTimeOnline = DateTime.Now;
+                    //sender.IsOnline = true;
+                    //oldAvatar.SmallData = avatar.SmallData;
+                    //oldAvatar.BigData = avatar.BigData;
+                    //oldAvatar.Format = avatar.Format;
+
+                    //oldAvatar.DateTime = DateTime.Now;
+                    //context.SaveChanges();
+                    
+                    var dirPath = $"{_avatarsPath}\\u{sender.Id}";
+                    var dirInfo = new DirectoryInfo(dirPath);
+                    var avatar = new AvatarUser
                     {
-                        oldAvatar = new AvatarUser();
-                        context.AvatarUsers.Add(oldAvatar);
-                        oldAvatar.User = sender;
-                    }
-                    sender.LastTimeOnline = DateTime.Now;
-                    sender.IsOnline = true;
-                    oldAvatar.SmallData = avatar.SmallData;
-                    oldAvatar.BigData = avatar.BigData;
-                    oldAvatar.Format = avatar.Format;
-                    oldAvatar.DateTime = DateTime.Now;
+                        DateTime = DateTime.Now,
+                        User = sender,
+                    };
+                    context.AvatarUsers.Add(avatar);
                     context.SaveChanges();
-                    CallUsersInGroup(GetUniqueUsers(sender, context).ToList(), (user) =>
+                    avatar.FilePath = $"{dirPath}\\{avatar.Id}{avatarWcf.Format}";
+                    avatar.SmallFilePath = $"{dirPath}\\{avatar.Id}.thumbnail{avatarWcf.Format}";
+                    context.SaveChanges();
+
+                    if (!dirInfo.Exists) Directory.CreateDirectory(dirInfo.FullName);
+                    File.WriteAllBytes(avatar.SmallFilePath, avatarWcf.SmallData);
+                    File.WriteAllBytes(avatar.FilePath, avatarWcf.BigData);
+
+                    if (File.Exists(avatar.SmallFilePath) && File.Exists(avatar.FilePath))
                     {
-                        user.SetAvatarCallback(new AvatarWCF(oldAvatar), new UserBaseWCF(sender), GetConnectionId(user, _onlineUsers[user].SessionId));//передаем сообщение всем пользователям которые онлайн
-                    });
-                    return true;
+
+                        CallUsersInGroup(GetUniqueUsers(sender, context).ToList(), (user) =>
+                        {
+                            user.SetAvatarCallback(new AvatarUserWCF(avatar), new UserBaseWCF(sender), GetConnectionId(user, _onlineUsers[user].SessionId));//передаем сообщение всем пользователям которые онлайн
+                        });
+
+                        return true;
+                    }
+
+                    context.AvatarUsers.Remove(avatar);
+                    context.SaveChanges();
+
+
+                    return false;
                 }
                 else
                 {
@@ -2017,37 +2085,26 @@ namespace Wcf_CeadChat_ServiceLibrary
             }
             return false;
         }
-        IEnumerable<User> GetUniqueUsers(User sender, ChatContext context, bool addSender =true)
-        {
-            var list = new List<User>();
-            foreach (var item in sender.Groups)
-            {
-                list.AddRange(item.Users.Where(u=> u.Id!= sender.Id));
-            }
-            list.AddRange(context.Friends.ToList().Where(uu => uu.User2.Id == sender.Id).Select(f => f.Sender));
-            if(addSender)
-            {
-                list.Add(sender);
-            }
-            return list.Distinct();
-        }
-        public string GetName(int id) => /* todo: добавить TryExecute */ new ChatContext().Users.SingleOrDefault(u => u.Id.Equals(id))?.DisplayName;
 
-        public string GetGroupName(int id)
+        public AvatarUserWCF GetAvatarUser(int userId, int avatarNumber = 0)
         {
-            /* todo: добавить TryExecute */
-            var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();
-            var context = Context(userChanged);
-            if (context != null)
+            var result = TryExecute(() =>
             {
-                var group = context.Groups.SingleOrDefault(g => g.Id.Equals(id));
-                if (group.Type.Equals(GroupType.SingleUser))
-                {
-                    var sender = _onlineUsers[userChanged];
-                    var userResipient = group.Users.SingleOrDefault(u => u.Id != sender.Id);
-                    return userResipient.DisplayName;
+                var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();//получаем текущее подключение клиента
+
+                ChatContext context = Context(userChanged);
+                if (context != null)
+                { 
+                    return new AvatarUserWCF(context.AvatarUsers.OrderByDescending(a => a.Id).Skip(avatarNumber).First(a => a.User.Id == userId));
                 }
-                return group.Name;
+                else
+                {
+                    return null;
+                }
+            });
+            if (result is AvatarUserWCF avatar)
+            {
+                return avatar;
             }
             return null;
         }
@@ -2064,10 +2121,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     List<AvatarUserWCF> avatars = new List<AvatarUserWCF>();
                     foreach (var user in users)
                     {
-                        foreach (var item in context.AvatarUsers.Where(a => a.User.Id == user))
-                        {
-                            avatars.Add(new AvatarUserWCF(item));
-                        }
+                        avatars.Add(new AvatarUserWCF(context.AvatarUsers.OrderByDescending(a => a.Id).First(a => a.User.Id == user)));
                     }
                     return avatars;
                 }
@@ -2083,7 +2137,7 @@ namespace Wcf_CeadChat_ServiceLibrary
             return null;
         }//получить автарки пользователей
 
-        public bool SetAvatarGroup(AvatarGroupWCF avatar)//установить аватарку группе
+        public bool SetAvatarGroup(AvatarGroupWCF avatarWcf)//установить аватарку группе
         {
             var result = TryExecute(() =>
             {
@@ -2091,40 +2145,90 @@ namespace Wcf_CeadChat_ServiceLibrary
                 ChatContext context = Context(userChanged);
                 if (context != null)
                 {
-                    var group = context.Groups.FirstOrDefault(g => g.Id == avatar.Group.Id);
-                    var oldAvatar = context.AvatarGroups.FirstOrDefault(a => a.Group.Id == avatar.Group.Id);
-                    if (oldAvatar == null)
+                    //var group = context.Groups.FirstOrDefault(g => g.Id == avatar.Group.Id);
+                    //var oldAvatar = context.AvatarGroups.FirstOrDefault(a => a.Group.Id == avatar.Group.Id);
+                    //if (oldAvatar == null)
+                    //{
+                    //    oldAvatar = new AvatarGroup();
+                    //    context.AvatarGroups.Add(oldAvatar);
+                    //    oldAvatar.Group = group;
+                    //}
+                    //oldAvatar.SmallData = avatar.SmallData;
+                    //oldAvatar.BigData = avatar.BigData;
+                    //oldAvatar.Format = avatar.Format;
+                    //oldAvatar.DateTime = avatar.DateTime;
+                    //context.SaveChanges();
+
+                    //foreach (var us in group.Users)
+                    //{
+                    //    var users = _onlineUsers.Where(o => o.Value.Id == us.Id);
+                    //    foreach (var user in users)
+                    //    {
+                    //        if (user.Key != null || user.Value != null)
+                    //        {
+                    //            try
+                    //            {
+                    //                user.Key.SetAvatarForGroupCallback(avatar, new GroupWCF(group), GetConnectionId(user.Key, _onlineUsers[user.Key].SessionId));//передаем сообщение всем пользователям которые онлайн
+                    //            }
+                    //            catch
+                    //            {
+                    //                _onlineUsers.Remove(user.Key);
+                    //                NotificationAboutChangeOnlineStatus(user.Value);
+                    //            }
+                    //        }
+                    //    }
+                    //}
+                    //return true;
+                    var sender = GetCurrentUser();
+                    sender = context.Users.FirstOrDefault(u => u.Id == sender.Id);
+                    var group = context.Groups.FirstOrDefault(g => g.Id == avatarWcf.Group.Id);
+                    if (!group.Creator.Id.Equals(sender.Id)) return false;
+
+                    var dirPath = $"{_avatarsPath}\\g{group.Id}";
+                    var avatar = new AvatarGroup
                     {
-                        oldAvatar = new AvatarGroup();
-                        context.AvatarGroups.Add(oldAvatar);
-                        oldAvatar.Group = group;
-                    }
-                    oldAvatar.SmallData = avatar.SmallData;
-                    oldAvatar.BigData = avatar.BigData;
-                    oldAvatar.Format = avatar.Format;
-                    oldAvatar.DateTime = avatar.DateTime;
+                        DateTime = DateTime.Now,
+                        Group = group,
+                    };
+                    context.AvatarGroups.Add(avatar);
+                    context.SaveChanges();
+                    avatar.FilePath = $"{dirPath}\\{avatar.Id}{avatarWcf.Format}";
+                    avatar.SmallFilePath = $"{dirPath}\\{avatar.Id}.thumbnail{avatarWcf.Format}";
                     context.SaveChanges();
 
-                    foreach (var us in group.Users)
+                    if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
+                    File.WriteAllBytes(avatar.SmallFilePath, avatarWcf.SmallData);
+                    File.WriteAllBytes(avatar.FilePath, avatarWcf.BigData);
+
+                    if (File.Exists(avatar.SmallFilePath) && File.Exists(avatar.FilePath))
                     {
-                        var users = _onlineUsers.Where(o => o.Value.Id == us.Id);
-                        foreach (var user in users)
+                        foreach (var us in group.Users)
                         {
-                            if (user.Key != null || user.Value != null)
+                            var users = _onlineUsers.Where(o => o.Value.Id == us.Id);
+                            foreach (var user in users)
                             {
-                                try
+                                if (user.Key != null || user.Value != null)
                                 {
-                                    user.Key.SetAvatarForGroupCallback(avatar, new GroupWCF(group), GetConnectionId(user.Key, _onlineUsers[user.Key].SessionId));//передаем сообщение всем пользователям которые онлайн
-                                }
-                                catch
-                                {
-                                    _onlineUsers.Remove(user.Key);
-                                    NotificationAboutChangeOnlineStatus(user.Value);
+                                    try
+                                    {
+                                        user.Key.SetAvatarForGroupCallback(avatarWcf, new GroupWCF(group), GetConnectionId(user.Key, _onlineUsers[user.Key].SessionId));//передаем сообщение всем пользователям которые онлайн
+                                    }
+                                    catch
+                                    {
+                                        _onlineUsers.Remove(user.Key);
+                                        NotificationAboutChangeOnlineStatus(user.Value);
+                                    }
                                 }
                             }
                         }
+
+                        return true;
                     }
-                    return true;
+
+                    context.AvatarGroups.Remove(avatar);
+                    context.SaveChanges();
+
+                    return false;
                 }
                 else
                 {
@@ -2154,17 +2258,11 @@ namespace Wcf_CeadChat_ServiceLibrary
                         {
                             var sender = _onlineUsers[userChanged];
                             var avatarUserId = groupOriginal.Users.SingleOrDefault(u => u.Id != sender.Id).Id;
-                            foreach (var item in context.AvatarUsers.Where(a => a.User.Id == avatarUserId))
-                            {
-                                avatars.Add(new AvatarUserWCF(item));
-                            }
+                            avatars.Add(new AvatarUserWCF(context.AvatarUsers.OrderByDescending(a => a.Id).First(a => a.User.Id == avatarUserId)));
                         }
                         else
                         {
-                            foreach (var item in context.AvatarGroups.Where(a => a.Group.Id == group))
-                            {
-                                avatars.Add(new AvatarGroupWCF(item));
-                            }
+                            avatars.Add(new AvatarGroupWCF(context.AvatarGroups.OrderByDescending(a => a.Id).First(a => a.Group.Id == group)));
                         }
                     }
                     return avatars;

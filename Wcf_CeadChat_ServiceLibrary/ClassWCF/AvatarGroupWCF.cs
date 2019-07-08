@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.IO;
+using System.Runtime.Serialization;
 
 namespace Wcf_CeadChat_ServiceLibrary
 {
@@ -9,11 +10,16 @@ namespace Wcf_CeadChat_ServiceLibrary
         public GroupWCF Group { get; set; }
         public AvatarGroupWCF(AvatarGroup avatar)
         {
-            SmallData = avatar.SmallData;
-            BigData = avatar.BigData;
-            Format = avatar.Format;
-            DateTime = avatar.DateTime;
-            Group = new GroupWCF(avatar.Group);
+            if(!string.IsNullOrWhiteSpace(avatar.FilePath) 
+                && !string.IsNullOrWhiteSpace(avatar.SmallFilePath) 
+                && avatar.Group != null)
+            {
+                SmallData = File.ReadAllBytes(avatar.SmallFilePath);
+                BigData = File.ReadAllBytes(avatar.FilePath);
+                Format = new FileInfo(avatar.FilePath).Extension;
+                DateTime = avatar.DateTime;
+                Group = new GroupWCF(avatar.Group);
+            }
         }
     }
 

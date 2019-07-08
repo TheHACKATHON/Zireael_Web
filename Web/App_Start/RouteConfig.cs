@@ -19,14 +19,14 @@ namespace Web
             );
             routes.MapRoute(
                name: "UserImage",
-               url: "user/{userId}/{hash}/{id}",
-                defaults: new { controller = "Home", action = "UserImage", userId = UrlParameter.Optional, hash = UrlParameter.Optional, id = UrlParameter.Optional }
+               url: "user/{userId}/{hash}/{number}",
+                defaults: new { controller = "Home", action = "UserImage", userId = UrlParameter.Optional, hash = UrlParameter.Optional, number = UrlParameter.Optional }
 
            );
             routes.MapRoute(
               name: "GroupImage",
-              url: "group/{groupId}/{hash}/{id}",
-                defaults: new { controller = "Home", action = "GroupImage", groupId = UrlParameter.Optional, hash = UrlParameter.Optional, id = UrlParameter.Optional }
+              url: "group/{groupId}/{hash}/{number}",
+                defaults: new { controller = "Home", action = "GroupImage", groupId = UrlParameter.Optional, hash = UrlParameter.Optional, number = UrlParameter.Optional }
 
           );
         }

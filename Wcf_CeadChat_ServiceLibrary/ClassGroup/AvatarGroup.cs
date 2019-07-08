@@ -13,13 +13,5 @@ namespace Wcf_CeadChat_ServiceLibrary
         {
 
         }
-        public AvatarGroup(AvatarUserWCF avatar, Group group)
-        {
-            SmallData = avatar.SmallData;
-            BigData = avatar.BigData;
-            Format = avatar.Format;
-            DateTime = avatar.DateTime;
-            Group = group;
-        }
     }
 }

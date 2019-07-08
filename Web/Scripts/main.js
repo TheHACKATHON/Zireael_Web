@@ -466,8 +466,7 @@ document.addEventListener('click', function (e) {
                     GroupId: groupId,
                     DateTime: null,
                     Sender: _currentUser,
-                },
-                    _currentUser.Avatar));
+                }, _currentUser.Avatar));
             $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
 
             let data = new FormData();
@@ -541,6 +540,7 @@ function OpenSubModalDialog(html)
     $(".sub-modal-dialog").html(html);
     // todo посчитать размер окна
 }
+
 
 function hideChats() {
     $(".message-list-wrap ul").removeClass("activeUl");
@@ -722,7 +722,9 @@ function OpenMenu(methodName) {
                 $(".dialog-title > h2").text(data.title);
                 $('.scrollbar-macosx-contacts').scrollbar({ disableBodyScroll: true });
                 $('.scrollbar-macosx-creategroup').scrollbar({ disableBodyScroll: true });
-                document.querySelector(".modal-backdrop").classList.remove("hide");
+                $(".modal-backdrop").removeClass("hide");
+                $(".sub-modal-dialog").addClass("hide");
+
                 calc();
             }
             else {

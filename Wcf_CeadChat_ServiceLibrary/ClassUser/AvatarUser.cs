@@ -7,14 +7,6 @@
         {
 
         }
-        public AvatarUser(AvatarUserWCF avatar, UserBase user)
-        {
-            SmallData = avatar.SmallData;
-            BigData = avatar.BigData;
-            Format = avatar.Format;
-            DateTime = avatar.DateTime;
-            User = user;
-        }
     }
 
 }

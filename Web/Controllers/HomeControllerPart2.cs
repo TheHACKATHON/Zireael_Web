@@ -247,6 +247,10 @@ namespace Web.Controllers
                 {
                     return Json(new {Code = NotifyType.Success, Message = "Аватар изменен успешно!"});
                 }
+                else
+                {
+                    return Json(new { Code = NotifyType.Error, Message = "Не удалось установить аватар!" });
+                }
             }
 
             return Json(new {Code = NotifyType.Error, Message = "Файл не найден!"});

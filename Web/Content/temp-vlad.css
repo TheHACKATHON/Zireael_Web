@@ -104,11 +104,17 @@ a.md_modal_action.md_modal_action_close:hover {
     height: calc(100vh - 31px);
     justify-content: center;
     align-items: center;
+    -webkit-box-shadow: 0px 0px 12px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0px 0px 12px rgba(0,0,0,0.4);
+    box-shadow: 0px 0px 12px rgba(0,0,0,0.4);
 }
 .sub-dialog-container {
     background: white;
     padding: 15px 15px 5px 15px;
     border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 12px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0px 0px 12px rgba(0,0,0,0.4);
+    box-shadow: 0px 0px 12px rgba(0,0,0,0.4);
 }
     .sub-dialog-container h3 {
         margin: 10px 0px;
@@ -202,7 +208,7 @@ a.button.btn-change-password {
     font-weight: bold;
 }
 .new-email {
-    border: 3px solid #0000000f;
+    /*border: 3px solid #0000000f;*/
     padding: 10px;
 }
 a.button.btn-change-email {

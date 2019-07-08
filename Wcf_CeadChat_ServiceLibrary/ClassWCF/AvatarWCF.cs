@@ -10,7 +10,7 @@ namespace Wcf_CeadChat_ServiceLibrary
     [DataContract]
     [KnownType(typeof(AvatarUserWCF))]
     [KnownType(typeof(AvatarGroupWCF))]
-    public class AvatarWCF
+    public abstract class AvatarWCF
     {
         [DataMember]
         public int Id { get; set; }
@@ -25,13 +25,6 @@ namespace Wcf_CeadChat_ServiceLibrary
         public AvatarWCF()
         {
 
-        }
-        public AvatarWCF(Avatar avatar)
-        {
-            SmallData = avatar.SmallData;
-            BigData = avatar.BigData;
-            Format = avatar.Format;
-            DateTime = avatar.DateTime;
         }
     }
 }
