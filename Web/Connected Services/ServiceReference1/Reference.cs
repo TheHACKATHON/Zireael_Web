@@ -1227,6 +1227,12 @@ namespace Web.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetMyProfile", ReplyAction="http://tempuri.org/ICeadChatService/GetMyProfileResponse")]
         System.Threading.Tasks.Task<Web.ServiceReference1.UserWCF> GetMyProfileAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetMessagesAfter", ReplyAction="http://tempuri.org/ICeadChatService/GetMessagesAfterResponse")]
+        Web.ServiceReference1.MessageWCF[] GetMessagesAfter(int groupId, int messageId, int count);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICeadChatService/GetMessagesAfter", ReplyAction="http://tempuri.org/ICeadChatService/GetMessagesAfterResponse")]
+        System.Threading.Tasks.Task<Web.ServiceReference1.MessageWCF[]> GetMessagesAfterAsync(int groupId, int messageId, int count);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1687,6 +1693,14 @@ namespace Web.ServiceReference1 {
         
         public System.Threading.Tasks.Task<Web.ServiceReference1.UserWCF> GetMyProfileAsync() {
             return base.Channel.GetMyProfileAsync();
+        }
+        
+        public Web.ServiceReference1.MessageWCF[] GetMessagesAfter(int groupId, int messageId, int count) {
+            return base.Channel.GetMessagesAfter(groupId, messageId, count);
+        }
+        
+        public System.Threading.Tasks.Task<Web.ServiceReference1.MessageWCF[]> GetMessagesAfterAsync(int groupId, int messageId, int count) {
+            return base.Channel.GetMessagesAfterAsync(groupId, messageId, count);
         }
     }
 }

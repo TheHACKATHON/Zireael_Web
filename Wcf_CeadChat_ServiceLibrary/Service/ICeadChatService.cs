@@ -144,6 +144,8 @@ namespace Wcf_CeadChat_ServiceLibrary
         string GetGroupName(int id);
         [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
         UserWCF GetMyProfile();
+        [OperationContract(ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign)]
+        IEnumerable<MessageWCF> GetMessagesAfter(int groupId, int messageId, int count);
         #endregion
     }
 

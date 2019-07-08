@@ -1,4 +1,4 @@
-﻿function popup(string, status) {// success, notice, warning, error
+﻿function popover(string, status) {// success, notice, warning, error
     if (string == null) {
         string = "Мы потеряли связь с космосом, пытаемся восстановить квантовый соединитель. Попробуйте позже";
     }
@@ -15,6 +15,6 @@
         
     }
     else {
-        setTimeout(() => { popup(string, status ) }, 1000);
+        setTimeout(() => { popover(string, status ) }, 1000);
     }
 }

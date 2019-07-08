@@ -146,11 +146,11 @@ document.addEventListener('click', function (e) {
                         $(".modal-backdrop").addClass("hide");
                     }
                     else {
-                        popup(data.Message, data.Code);
+                        popover(data.Message, data.Code);
                     }
                 }
                 else if (xhr.readyState == 4 && xhr.status == 0) {
-                    popup(null, NotifyType.Error);
+                    popover(null, NotifyType.Error);
                 }
             };
         }
@@ -167,11 +167,11 @@ document.addEventListener('click', function (e) {
                         $(".modal-backdrop").addClass("hide");
                     }
                     else {
-                        popup(data.Message, data.Code);
+                        popover(data.Message, data.Code);
                     }
                 }
                 else if (xhr.readyState == 4 && xhr.status == 0) {
-                    popup(null, NotifyType.Error);
+                    popover(null, NotifyType.Error);
                 }
             };
         }
@@ -207,11 +207,11 @@ document.addEventListener('click', function (e) {
                     $("a.button.new-contact").removeClass("hide");
                 }
                 else {
-                    popup(data.Message, data.Code);
+                    popover(data.Message, data.Code);
                 }
             }
             else if (xhr.readyState == 4 && xhr.status == 0) {
-                popup(null, NotifyType.Error);
+                popover(null, NotifyType.Error);
             }
         };
     }
@@ -234,14 +234,14 @@ document.addEventListener('click', function (e) {
                     $(".profile h3").html(displayName);
                     $("li[sender-id=\"" + _currentUser.Id + "\"] img").attr("src", `/user/${_currentUser.Id}/${Crypto.MD5(_currentUser.DisplayName)}`);
                     $("li[sender-id='" + _currentUser.Id + "'] h3").html(displayName);
-                    popup(data.Message, data.Code);
+                    popover(data.Message, data.Code);
                 }
                 else {
-                    popup(data.Message, data.Code);
+                    popover(data.Message, data.Code);
                 }
             }
             else if (xhr.readyState == 4 && xhr.status == 0) {
-                popup(null, NotifyType.Error);
+                popover(null, NotifyType.Error);
             }
         };
     }
@@ -264,11 +264,11 @@ document.addEventListener('click', function (e) {
                     $(".sub-modal-dialog").addClass("hide");
                 }
                 else {
-                    popup(data.Message, data.Code);
+                    popover(data.Message, data.Code);
                 }
             }
             else if (xhr.readyState == 4 && xhr.status == 0) {
-                popup(null, NotifyType.Error);
+                popover(null, NotifyType.Error);
             }
         };
     }
@@ -287,14 +287,14 @@ document.addEventListener('click', function (e) {
                     $(".sub-modal-dialog").addClass("hide");
                     _currentUser.Login = login;
                     //$(".profile h3").html(login);
-                    popup(data.Message, data.Code);
+                    popover(data.Message, data.Code);
                 }
                 else {
-                    popup(data.Message, data.Code);
+                    popover(data.Message, data.Code);
                 }
             }
             else if (xhr.readyState == 4 && xhr.status == 0) {
-                popup(null, NotifyType.Error);
+                popover(null, NotifyType.Error);
             }
         };
     }
@@ -303,7 +303,7 @@ document.addEventListener('click', function (e) {
         let repNewPass = $(".sub-dialog-container .rep-new-password").val();
         let oldPass = $(".sub-dialog-container .old-password").val();
         if (newPass != repNewPass) {
-            popup("Пароли НЕ совпадают!", NotifyType.Warning);
+            popover("Пароли НЕ совпадают!", NotifyType.Warning);
         }
         else {
             let xhr = new XMLHttpRequest();
@@ -322,14 +322,14 @@ document.addEventListener('click', function (e) {
                         $(".sub-dialog-container .new-password").val("");
                         $(".sub-dialog-container .rep-new-password").val("")
                         $(".sub-dialog-container .old-password").val("");
-                        popup(data.Message, data.Code);
+                        popover(data.Message, data.Code);
                     }
                     else {
-                        popup(data.Message, data.Code);
+                        popover(data.Message, data.Code);
                     }
                 }
                 else if (xhr.readyState == 4 && xhr.status == 0) {
-                    popup(null, NotifyType.Error);
+                    popover(null, NotifyType.Error);
                 }
             };
         }
@@ -352,14 +352,14 @@ document.addEventListener('click', function (e) {
                     _currentUser.Email = _currentUser.tempEmail;
                     _currentUser.tempEmai = undefined;
                     $(".sub-dialog-container .new-email .email").val(_currentUser.Email);
-                    popup(data.Message, data.Code);
+                    popover(data.Message, data.Code);
                 }
                 else {
-                    popup(data.Message, data.Code);
+                    popover(data.Message, data.Code);
                 }
             }
             else if (xhr.readyState == 4 && xhr.status == 0) {
-                popup(null, NotifyType.Error);
+                popover(null, NotifyType.Error);
             }
         };
     }
@@ -384,17 +384,17 @@ document.addEventListener('click', function (e) {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 let data = JSON.parse(xhr.responseText);
                 if (data.Code === NotifyType.Success) {
-                    popup(data.Message, data.Code);
+                    popover(data.Message, data.Code);
                     $(".sub-dialog-container .code").val("");
                     $(".sub-dialog-container .code.hide").removeClass("hide");
                     _currentUser.tempEmail = newEmail;
                 }
                 else {
-                    popup(data.Message, data.Code);
+                    popover(data.Message, data.Code);
                 }
             }
             else if (xhr.readyState == 4 && xhr.status == 0) {
-                popup(null, NotifyType.Error);
+                popover(null, NotifyType.Error);
             }
         };
     }
@@ -454,10 +454,10 @@ document.addEventListener('click', function (e) {
                     $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
                 }
                 else {
-                    popup(data.Error, data.Code);
+                    popover(data.Error, data.Code);
                 }
             } else if (xhr.readyState == 4 && xhr.status == 0) {
-                popup(null, NotifyType.Error);
+                popover(null, NotifyType.Error);
             }
         };
     }
@@ -493,11 +493,11 @@ document.addEventListener('click', function (e) {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     let data = JSON.parse(xhr.responseText);
                     if (data.Code != NotifyType.Success) {
-                        popup(data.Error, data.Code);
+                        popover(data.Error, data.Code);
                     }
                 }
                 else if (xhr.readyState == 4 && xhr.status == 0) {
-                    popup(null, NotifyType.Error);
+                    popover(null, NotifyType.Error);
                 }
             };
         }
@@ -534,11 +534,11 @@ document.addEventListener('click', function (e) {
                         if ($(".panel-write").hasClass("hide")) $(".panel-write").removeClass("hide");
                         if (!$(".panel-select").hasClass("hide")) $(".panel-select").addClass("hide");
                     } else if (data.Code == NotifyType.Error) {
-                        popup(data.Error, NotifyType.Error);
+                        popover(data.Error, NotifyType.Error);
                     }
                 }
                 else if (xhr.readyState == 4 && xhr.status == 0) {
-                    popup(null, NotifyType.Error);
+                    popover(null, NotifyType.Error);
                 }
             };
         }
@@ -608,7 +608,41 @@ $(window).on("resize", function () {
 
 $('.scrollbar-macosx-messages').mousewheel(function (event) {
     if (parseFloat($(".scrollbar-macosx-messages .scroll-element.scroll-y .scroll-bar").css("top")) < 36) {
-        console.log("loading");
+        let activeUl = $(".messages ul.activeUl");
+        if (!activeUl.hasClass("loading")) {
+            activeUl.addClass("loading");
+            //console.log("loading");
+
+            let data = new FormData();
+            data.append("groupId", activeUl.data("id"));
+            data.append("lastMessageId", $(".messages ul.activeUl li").first().data("id"));
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', `/getoldmessages`);
+            xhr.send(data);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    let messages = data.messages;
+                    if (data.Code == NotifyType.Success) {
+                        if (messages != null) {
+                            $('.scrollbar-macosx-messages').scrollTop(200);
+                            messages.forEach((msg, i) => {
+                                activeUl.prepend(Generator.MessageHTML(msg));
+                            });
+                            activeUl.removeClass("loading");
+                            
+                        }
+                        
+                    } else if (data.Code == NotifyType.Error) {
+                        popover(data.Error, NotifyType.Error);
+                    }
+                }
+                else if (xhr.readyState == 4 && xhr.status == 0) {
+                    popover(null, NotifyType.Error);
+                }
+            };
+        }
     }
     //event.preventDefault();
     //if (event.deltaY > 0) {
@@ -681,14 +715,14 @@ document.addEventListener("change", function (e) {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 let data = JSON.parse(xhr.responseText);
                 if (data.Code === NotifyType.Success) {
-                    popup(data.Message, data.Code);
+                    popover(data.Message, data.Code);
                 }
                 else {
-                    popup(data.Message, data.Code);
+                    popover(data.Message, data.Code);
                 }
             }
             else if (xhr.readyState == 4 && xhr.status == 0) {
-                popup(null, NotifyType.Error);
+                popover(null, NotifyType.Error);
             }
         };
     }
@@ -714,10 +748,10 @@ function OpenMenu(methodName) {
                 calc();
             }
             else {
-                popup(data.Error, data.Code);
+                popover(data.Error, data.Code);
             }
         } else if (xhr.readyState == 4 && xhr.status == 0) {
-            popup(null, NotifyType.Error);
+            popover(null, NotifyType.Error);
         }
     };
 }

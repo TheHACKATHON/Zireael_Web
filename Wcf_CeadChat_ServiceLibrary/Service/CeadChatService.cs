@@ -634,6 +634,56 @@ namespace Wcf_CeadChat_ServiceLibrary
             return null;
         }
 
+        public IEnumerable<MessageWCF> GetMessagesAfter(int groupId, int messageId, int count)
+        {
+            var result = TryExecute(() =>
+            {
+                var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();//получаем текущее подключение
+                ChatContext context = Context(userChanged);
+                if (context != null)
+                {
+                    var messages = new List<MessageWCF>();
+                    var sender = _onlineUsers.FirstOrDefault(u => u.Key == userChanged).Value;
+                    sender = context.Users.FirstOrDefault(u => u.Id == sender.Id);
+
+                    if (!context.Groups.ToList().Any(g => g.Id == groupId && g.Users.Any(u => u.Id == sender.Id)))
+                    {
+                        return null;
+                    }
+
+                    var message = context.Messages.SingleOrDefault(m => m.Id.Equals(messageId));
+                    if(message != null)
+                    {
+                        var selectedMessages = context.Messages.ToList()
+                            .OrderByDescending(m => m.DateTime)
+                            .Where(m => m.Group.Id == groupId && m.Group.Users.Contains(sender) && m.IsVisible)
+                            .Where(m => m.DateTime < message.DateTime)
+                            .Take(count);
+
+                        foreach (var item in selectedMessages.AsEnumerable())
+                        {
+                            messages.Add(new MessageWCF(item));
+                        }
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                    
+                    return messages;
+                }
+                else
+                {
+                    return null;
+                }
+            });
+            if (result is IEnumerable<MessageWCF>)
+            {
+                return result as IEnumerable<MessageWCF>;
+            }
+            return null;
+        }
+
         public bool ChangeTextInMessage(MessageWCF message)
         {
             var result = TryExecute(() =>

@@ -2,7 +2,7 @@
     if (data) {
         $("input[type=button]").removeAttr("disabled");
         if (data.includes("/sendcodeforchangepassword")) {
-            popup("Неверный логин или почта...", NotifyType.Warning);
+            popover("Неверный логин или почта...", NotifyType.Warning);
         }
     }
 }
@@ -12,15 +12,15 @@ function ChangePasswordSuccess(data) {
             switch (data.type) {
                 case NotifyType.Warning: {
                     $("input:not([type='email'])").removeAttr("disabled");
-                    popup(data.message, NotifyType.Warning);
+                    popover(data.message, NotifyType.Warning);
                     break;
                 }
                 case NotifyType.Success: {
                     $(".go-to-auth").click();
-                    popup(data.message, NotifyType.Success);
+                    popover(data.message, NotifyType.Success);
                     break;
                 }
-                default: popup(data.message, NotifyType.Notice);
+                default: popover(data.message, NotifyType.Notice);
             }
         }
     }
@@ -44,5 +44,5 @@ $(document).ready(() => {
 })
 
 function OnFailure() {
-    popup("Ошибка", NotifyType.Error);
+    popover("Ошибка", NotifyType.Error);
 }

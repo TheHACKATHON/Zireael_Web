@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AdditionsLibrary;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -10,8 +13,6 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.UI;
-using AdditionsLibrary;
-using Newtonsoft.Json;
 using Web.Models;
 using Web.ServiceReference1;
 
@@ -19,6 +20,7 @@ namespace Web.Controllers
 {
     public partial class HomeController : Controller
     {
+        private const int MESSAGES_COUNT = 20;
         private const string DefaultAvatar = "/Content/Images/Zireael_back_128px.png";
         private readonly CeadChatServiceClient _client;
         private readonly PrivateFontCollection _fonts = new PrivateFontCollection();
@@ -47,7 +49,7 @@ namespace Web.Controllers
                     }
                 }
 
-                return Json(new {Code = NotifyType.Success});
+                return Json(new { Code = NotifyType.Success });
             }
 
             return Json(new NotifyError("Произошла ошибка, обновите страницу или попробуйте позже"));
@@ -58,11 +60,11 @@ namespace Web.Controllers
         {
             if (groupId != null)
             {
-                var messages = await _client.GetMessagesBetweenAsync((int) groupId, 0, 20);
+                var messages = await _client.GetMessagesBetweenAsync((int)groupId, 0, MESSAGES_COUNT);
                 if (messages != null)
                 {
                     messages = messages.OrderBy(m => m.DateTime).ToArray();
-                    return Json(new {Code = NotifyType.Success, messages, groupId});
+                    return Json(new { Code = NotifyType.Success, messages, groupId });
                 }
             }
 
@@ -70,11 +72,26 @@ namespace Web.Controllers
         }
 
         [HttpPost]
+        public async Task<JsonResult> GetOldMessages(int? groupId, int? lastMessageId)
+        {
+            if (groupId != null && lastMessageId != null)
+            {
+                var messages = await _client.GetMessagesAfterAsync((int)groupId, (int)lastMessageId, MESSAGES_COUNT);
+                if (messages != null)
+                {
+                    messages = messages.OrderByDescending(m => m.DateTime).ToArray();
+                    return Json(new { Code = NotifyType.Success, messages, groupId });
+                }
+            }
+            return Json(new { Code = NotifyType.Success, messages = new List<MessageWCF>() });
+        }
+
+        [HttpPost]
         public async Task ReadMessages(int? groupId)
         {
             if (groupId != null)
             {
-                await _client.ReadAllMessagesInGroupAsync((int) groupId);
+                await _client.ReadAllMessagesInGroupAsync((int)groupId);
             }
         }
 
@@ -91,7 +108,7 @@ namespace Web.Controllers
             var messageId = await _client.SendMessageTransactionAsync(msg, hash);
             if (messageId != -1)
             {
-                return Json(new {Code = NotifyType.Success});
+                return Json(new { Code = NotifyType.Success });
             }
 
             return Json(new NotifyError("Не удалось отправить сообщение"));
@@ -137,8 +154,8 @@ namespace Web.Controllers
         private async Task<AvatarWCF> GetAvatar(bool isUserImage, int id, string hash)
         {
             var avatar = isUserImage
-                ? (await _client.GetAvatarUsersAsync(new[] {id}))?.SingleOrDefault()
-                : (await _client.GetAvatarGroupsAsync(new[] {id}))?.SingleOrDefault();
+                ? (await _client.GetAvatarUsersAsync(new[] { id }))?.SingleOrDefault()
+                : (await _client.GetAvatarGroupsAsync(new[] { id }))?.SingleOrDefault();
 
             if (avatar is null)
             {
@@ -149,7 +166,7 @@ namespace Web.Controllers
                     if (username is null) return null;
                     avatar = new AvatarUserWCF
                     {
-                        User = new UserBaseWCF {Id = id, DisplayName = username}
+                        User = new UserBaseWCF { Id = id, DisplayName = username }
                     };
                 }
                 else
@@ -158,10 +175,10 @@ namespace Web.Controllers
                     if (username is null) return null;
                     avatar = new AvatarGroupWCF
                     {
-                        Group = new GroupWCF {Id = id, Name = username}
+                        Group = new GroupWCF { Id = id, Name = username }
                     };
                 }
-
+                
                 var path = HostingEnvironment.MapPath(DefaultAvatar);
                 if (path != null)
                 {
@@ -237,24 +254,24 @@ namespace Web.Controllers
             switch (type)
             {
                 case "reg":
-                {
-                    view = "PartialRegistration";
-                }
+                    {
+                        view = "PartialRegistration";
+                    }
                     break;
                 case "log":
-                {
-                    view = "PartialLogin";
-                }
+                    {
+                        view = "PartialLogin";
+                    }
                     break;
                 case "pass":
-                {
-                    view = "PartialPassword";
-                }
+                    {
+                        view = "PartialPassword";
+                    }
                     break;
                 case "learn":
-                {
-                    view = "PartialLearnMore";
-                }
+                    {
+                        view = "PartialLearnMore";
+                    }
                     break;
                 default: goto case "log";
             }
@@ -278,7 +295,7 @@ namespace Web.Controllers
             }
 
             if (user is null) return Json(new NotifyError("Неверный логин или пароль"));
-            return Json(new {Code = NotifyType.Success});
+            return Json(new { Code = NotifyType.Success });
         }
     }
 }

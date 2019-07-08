@@ -314,6 +314,12 @@
   <wsdl:message name="ICeadChatService_GetMyProfile_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetMyProfileResponse" />
   </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetMessagesAfter_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMessagesAfter" />
+  </wsdl:message>
+  <wsdl:message name="ICeadChatService_GetMessagesAfter_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMessagesAfterResponse" />
+  </wsdl:message>
   <wsdl:message name="ICeadChatService_GiveIdToMessageCallback_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:GiveIdToMessageCallback" />
   </wsdl:message>
@@ -558,6 +564,10 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetMyProfile">
       <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetMyProfile" message="tns:ICeadChatService_GetMyProfile_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetMyProfileResponse" message="tns:ICeadChatService_GetMyProfile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetMessagesAfter">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICeadChatService/GetMessagesAfter" message="tns:ICeadChatService_GetMessagesAfter_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GetMessagesAfterResponse" message="tns:ICeadChatService_GetMessagesAfter_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GiveIdToMessageCallback">
       <wsdl:output wsaw:Action="http://tempuri.org/ICeadChatService/GiveIdToMessageCallback" message="tns:ICeadChatService_GiveIdToMessageCallback_OutputCallbackMessage" />
@@ -1030,6 +1040,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetMyProfile">
       <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetMyProfile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessagesAfter">
+      <soap12:operation soapAction="http://tempuri.org/ICeadChatService/GetMessagesAfter" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
