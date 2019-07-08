@@ -67,6 +67,13 @@
                 message.Hash = hash;
                 ul.appendChild(Generator.MessageHTML(message, null));
                 $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
+                if (ul.classList.contains("activeUl")) {
+                    let data = new FormData();
+                    data.append("groupId", message.GroupId);
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', `/readmessages`);
+                    xhr.send(data);
+                }
             }
         }
     };

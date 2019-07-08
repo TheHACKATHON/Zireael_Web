@@ -126,8 +126,6 @@ document.addEventListener('click', function (e) {
     }
     else if (target.closest(".create-group")) {
         let groupName = $(".group-name").val();
-        //console.log(groupName);
-
         if ($("a.contact.select").length > 0 && groupName.length > 0) {
             let xhr = new XMLHttpRequest();
             xhr.open('POST', `/creategroup`);
@@ -187,7 +185,7 @@ document.addEventListener('click', function (e) {
             </div>
         `);
     }
-    else if (target.closest(".btn-delete-contact")) {//////////////
+    else if (target.closest(".btn-delete-contact")) {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', `/deletecontacts`);
         let data = new FormData();
@@ -286,7 +284,6 @@ document.addEventListener('click', function (e) {
                     $(".sub-dialog-container .login").val("");
                     $(".sub-modal-dialog").addClass("hide");
                     _currentUser.Login = login;
-                    //$(".profile h3").html(login);
                     popover(data.Message, data.Code);
                 }
                 else {
@@ -363,13 +360,6 @@ document.addEventListener('click', function (e) {
             }
         };
     }
-    //else if (target.closest(".profile .wrap-img img")) {
-    //    console.log("картинка");
-    //    var input = document.createElement("input");
-    //    $(input).attr("type", "file");
-    //    $(input).trigger("click"); // opening dialog
-    //    console.log(input.files);
-    //}
     else if (target.closest(".btn-send-code")) {
         let pass = $(".sub-dialog-container .new-email .password").val();
         let newEmail = $(".sub-dialog-container .new-email .email").val();
@@ -415,7 +405,6 @@ document.addEventListener('click', function (e) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 hideChats();
-                //$(window).on('resize', function () {})
                 if ($(window).width() <= 1030) $('.wrap').add('.my-head').addClass('checkDialog');
 
                 let data2 = new FormData();
@@ -568,14 +557,6 @@ function changeActive(elem) {
 
 }
 
-//document.addEventListener("DOMContentLoaded", function () {
-//    $('.scrollbar-macosx-chats').scrollbar({ disableBodyScroll: true });
-//    if ($(window).width() <= 1030) {
-
-//    }
-//});
-//$(document).ready(function () {
-
 function calc() {
     let check = ($(window).width() > 1030) ? true : false;
     let wHeight = $(window).height();
@@ -603,16 +584,13 @@ $(window).on("load", function () {
 
 $(window).on("resize", function () {
     calc();
-})
-//})
+});
 
 $('.scrollbar-macosx-messages').mousewheel(function (event) {
     if (parseFloat($(".scrollbar-macosx-messages .scroll-element.scroll-y .scroll-bar").css("top")) < 36) {
         let activeUl = $(".messages ul.activeUl");
         if (!activeUl.hasClass("loading")) {
             activeUl.addClass("loading");
-            //console.log("loading");
-
             let data = new FormData();
             data.append("groupId", activeUl.data("id"));
             data.append("lastMessageId", $(".messages ul.activeUl li").first().data("id"));
@@ -626,7 +604,7 @@ $('.scrollbar-macosx-messages').mousewheel(function (event) {
                     let messages = data.messages;
                     if (data.Code == NotifyType.Success) {
                         if (messages != null) {
-                            $('.scrollbar-macosx-messages').scrollTop(200);
+                            $('.scrollbar-macosx-messages').scrollTop(1000);
                             messages.forEach((msg, i) => {
                                 activeUl.prepend(Generator.MessageHTML(msg));
                             });
