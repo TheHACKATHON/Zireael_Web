@@ -44,7 +44,10 @@ namespace Wcf_CeadChat_ServiceLibrary
             IsOnline = u.IsOnline;
             Login = u.Login;
             LastTimeOnline = u.LastTimeOnline;
-            DisplayName = u.DisplayName;
+            if(u.DisplayName!= null)
+            {
+                DisplayName = u.DisplayName;
+            }
         }
     }
 }

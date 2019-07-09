@@ -36,7 +36,14 @@ namespace Wcf_CeadChat_ServiceLibrary
             Id = user.Id;
             Login = user.Login;
             Token = user.Token;
-            DisplayName = user.DisplayName;
+            if (user.DisplayName != null)
+            {
+                DisplayName = user.DisplayName;
+            }
+            else
+            {
+                DisplayName = Login;
+            }
             Email = user.Email;
             PasswordHash = user.PasswordHash;
             Session = session;

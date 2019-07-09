@@ -493,12 +493,13 @@ document.addEventListener('click', function (e) {
     else if (target.closest(".message-list li:not(.systemMsg) img")) {
         let obj = target.closest(".message-list li:not(.systemMsg)");
         let login = obj.getAttribute("sender-login");
+        OpenProfile(login);
         
     }
     else if (target.closest(".message-list li:not(.systemMsg) .mega-left h3")) {
         let obj = target.closest(".message-list li:not(.systemMsg)");
         let login = obj.getAttribute("sender-login");
-        
+        OpenProfile(login);
     }
     else if (target.closest(".message-list li:not(.systemMsg)")) {
         let li = target.closest(".message-list li");
@@ -722,6 +723,42 @@ function OpenMenu(methodName) {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', `/` + methodName);
     xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            $("#loading").css("display", "none");
+            let data = JSON.parse(xhr.responseText);
+            if (data.Code === NotifyType.Success) {
+                let div = document.createElement("div");
+                div.innerHTML = data.view;
+                let img = div.querySelector("img");
+                img.setAttribute("src", "/" + _currentUser.Avatar);
+                data.view = div.innerHTML;
+                $(".dialog-container").html("");
+                $(".dialog-container").html(data.view);
+                $(".dialog-title > h2").text(data.title);
+                $('.scrollbar-macosx-contacts').scrollbar({ disableBodyScroll: true });
+                $('.scrollbar-macosx-creategroup').scrollbar({ disableBodyScroll: true });
+                $(".modal-backdrop").removeClass("hide");
+                $(".sub-modal-dialog").addClass("hide");
+
+                calc();
+            }
+            else {
+                popover(data.Error, data.Code);
+            }
+        } else if (xhr.readyState == 4 && xhr.status == 0) {
+            popover(null, NotifyType.Error);
+        }
+    };
+}
+
+function OpenProfile(login) {
+    $("#loading").css("display", "block");
+    let data = new FormData();
+    data.append("login", login);
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', `/` + "OpenProfile");
+    xhr.send(data);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
             $("#loading").css("display", "none");

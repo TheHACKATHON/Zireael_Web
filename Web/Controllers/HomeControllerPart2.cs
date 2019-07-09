@@ -40,7 +40,7 @@ namespace Web.Controllers
             if (friends != null)
             {
                 var view = RazorViewToStringFormat.RenderRazorViewToString(this, "PartialMenuContacts", friends);
-                return Json(new {Code = NotifyType.Success, view, title = "Контакты"});
+                return Json(new { Code = NotifyType.Success, view, title = "Контакты" });
             }
 
             return Json(new NotifyError(FatalError));
@@ -53,7 +53,7 @@ namespace Web.Controllers
             if (friends != null)
             {
                 var view = RazorViewToStringFormat.RenderRazorViewToString(this, "PartialMenuCreateGroup", friends);
-                return Json(new {Code = NotifyType.Success, view, title = "Создание группы"});
+                return Json(new { Code = NotifyType.Success, view, title = "Создание группы" });
             }
 
             return Json(new NotifyError(FatalError));
@@ -66,9 +66,24 @@ namespace Web.Controllers
             if (account != null)
             {
                 var view = RazorViewToStringFormat.RenderRazorViewToString(this, "PartialMenuSettings", account);
-                return Json(new {Code = NotifyType.Success, view, title = "Настройки"});
+                return Json(new { Code = NotifyType.Success, view, title = "Настройки" });
             }
 
+            return Json(new NotifyError(FatalError));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> OpenProfile(string login)
+        {
+            if (!string.IsNullOrWhiteSpace(login))
+            {
+                var account = await _client.FindAsync(login);
+                if (account != null)
+                {
+                    var view = RazorViewToStringFormat.RenderRazorViewToString(this, "PartialProfile", account);
+                    return Json(new { Code = NotifyType.Success, view, title = "Информация о пользователе" });
+                }
+            }
             return Json(new NotifyError(FatalError));
         }
 
@@ -78,10 +93,10 @@ namespace Web.Controllers
             var friend = await _client.AddFriendAsync(login);
             if (friend)
             {
-                return Json(new {Code = NotifyType.Success, Message = $"{login} успешно добавлен!"});
+                return Json(new { Code = NotifyType.Success, Message = $"{login} успешно добавлен!" });
             }
 
-            return Json(new {Code = NotifyType.Warning, Message = $"Пользователь \"{login}\" не добавлен..."});
+            return Json(new { Code = NotifyType.Warning, Message = $"Пользователь \"{login}\" не добавлен..." });
         }
 
         [HttpPost]
@@ -90,21 +105,21 @@ namespace Web.Controllers
             var id = JsonConvert.DeserializeObject<int[]>(idArr);
             foreach (var item in id)
             {
-                await _client.RemoveFriendAsync(new UserBaseWCF {Id = item});
+                await _client.RemoveFriendAsync(new UserBaseWCF { Id = item });
             }
 
-            return Json(new {Code = NotifyType.Success});
+            return Json(new { Code = NotifyType.Success });
         }
 
         [HttpPost]
         public async Task<JsonResult> CreateChat(int id)
         {
-            if (await _client.CreateChatAsync(new UserBaseWCF {Id = id}))
+            if (await _client.CreateChatAsync(new UserBaseWCF { Id = id }))
             {
-                return Json(new {Code = NotifyType.Success});
+                return Json(new { Code = NotifyType.Success });
             }
 
-            return Json(new {Code = NotifyType.Warning, Message = "Новый диалог не создан..."});
+            return Json(new { Code = NotifyType.Warning, Message = "Новый диалог не создан..." });
         }
 
         [HttpPost]
@@ -114,15 +129,15 @@ namespace Web.Controllers
             var id = JsonConvert.DeserializeObject<int[]>(idArr);
             foreach (var item in id)
             {
-                users.Add(new UserBaseWCF {Id = item});
+                users.Add(new UserBaseWCF { Id = item });
             }
 
             if (await _client.CreateGroupAsync(users.ToArray(), groupName))
             {
-                return Json(new {Code = NotifyType.Success});
+                return Json(new { Code = NotifyType.Success });
             }
 
-            return Json(new {Code = NotifyType.Warning, Message = "Новый диалог не создан..."});
+            return Json(new { Code = NotifyType.Warning, Message = "Новый диалог не создан..." });
         }
 
         [HttpPost]
@@ -130,15 +145,15 @@ namespace Web.Controllers
         {
             if (string.IsNullOrWhiteSpace(login))
             {
-                return Json(new {Code = NotifyType.Warning, Message = "Логин не может быть пустым!"});
+                return Json(new { Code = NotifyType.Warning, Message = "Логин не может быть пустым!" });
             }
 
             if (await _client.ChangeProfileInfoAsync(null, login))
             {
-                return Json(new {Code = NotifyType.Success, Message = $"Логин изменен на {login}!"});
+                return Json(new { Code = NotifyType.Success, Message = $"Логин изменен на {login}!" });
             }
 
-            return Json(new {Code = NotifyType.Warning, Message = "Логин не изменен..."});
+            return Json(new { Code = NotifyType.Warning, Message = "Логин не изменен..." });
         }
 
         [HttpPost]
@@ -146,15 +161,15 @@ namespace Web.Controllers
         {
             if (string.IsNullOrWhiteSpace(displayName))
             {
-                return Json(new {Code = NotifyType.Warning, Message = "Имя не может быть пустым!"});
+                return Json(new { Code = NotifyType.Warning, Message = "Имя не может быть пустым!" });
             }
 
             if (await _client.ChangeProfileInfoAsync(displayName, null))
             {
-                return Json(new {Code = NotifyType.Success, Message = $"Имя изменено на {displayName}!"});
+                return Json(new { Code = NotifyType.Success, Message = $"Имя изменено на {displayName}!" });
             }
 
-            return Json(new {Code = NotifyType.Warning, Message = "Имя неЕ изменен..."});
+            return Json(new { Code = NotifyType.Warning, Message = "Имя неЕ изменен..." });
         }
 
         [HttpPost]
@@ -164,20 +179,20 @@ namespace Web.Controllers
                 string.IsNullOrWhiteSpace(repNewPass) &&
                 string.IsNullOrWhiteSpace(oldPass))
             {
-                return Json(new {Code = NotifyType.Warning, Message = "Заполните все поля!"});
+                return Json(new { Code = NotifyType.Warning, Message = "Заполните все поля!" });
             }
 
             if (newPass != repNewPass)
             {
-                return Json(new {Code = NotifyType.Warning, Message = "Пароли не совпадают..."});
+                return Json(new { Code = NotifyType.Warning, Message = "Пароли не совпадают..." });
             }
 
             if (await _client.ChangePasswordAsync(newPass, oldPass))
             {
-                return Json(new {Code = NotifyType.Success, Message = "Пароль изменен успешно!"});
+                return Json(new { Code = NotifyType.Success, Message = "Пароль изменен успешно!" });
             }
 
-            return Json(new {Code = NotifyType.Warning, Message = "Пароль не изменен..."});
+            return Json(new { Code = NotifyType.Warning, Message = "Пароль не изменен..." });
         }
 
         [HttpPost]
@@ -186,20 +201,20 @@ namespace Web.Controllers
             if (string.IsNullOrWhiteSpace(pass) &&
                 string.IsNullOrWhiteSpace(newEmail))
             {
-                return Json(new {Code = NotifyType.Warning, Message = "Заполните все поля!"});
+                return Json(new { Code = NotifyType.Warning, Message = "Заполните все поля!" });
             }
 
             if (Regex.IsMatch(newEmail, PatternEmail))
             {
                 if (await _client.SendCodeForSetNewEmailAsync(newEmail, pass))
                 {
-                    return Json(new {Code = NotifyType.Success, Message = $"Код отправлен на {newEmail}"});
+                    return Json(new { Code = NotifyType.Success, Message = $"Код отправлен на {newEmail}" });
                 }
 
-                return Json(new {Code = NotifyType.Warning, Message = "Проверьте правильность пароля"});
+                return Json(new { Code = NotifyType.Warning, Message = "Проверьте правильность пароля" });
             }
 
-            return Json(new {Code = NotifyType.Warning, Message = "Некорректно введена почта!"});
+            return Json(new { Code = NotifyType.Warning, Message = "Некорректно введена почта!" });
         }
 
         [HttpPost]
@@ -207,15 +222,15 @@ namespace Web.Controllers
         {
             if (string.IsNullOrWhiteSpace(code))
             {
-                return Json(new {Code = NotifyType.Warning, Message = "Введите код с почты!"});
+                return Json(new { Code = NotifyType.Warning, Message = "Введите код с почты!" });
             }
 
             if (await _client.SetNewEmailAsync(code))
             {
-                return Json(new {Code = NotifyType.Success, Message = "Почта изменена успешно!"});
+                return Json(new { Code = NotifyType.Success, Message = "Почта изменена успешно!" });
             }
 
-            return Json(new {Code = NotifyType.Warning, Message = "Почта не изменена..."});
+            return Json(new { Code = NotifyType.Warning, Message = "Почта не изменена..." });
         }
 
         [HttpPost]
@@ -239,13 +254,13 @@ namespace Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return Json(new {Code = NotifyType.Error, Message = "Ошибка обработки файла!"});
+                    return Json(new { Code = NotifyType.Error, Message = "Ошибка обработки файла!" });
                 }
 
-                var avatar = new AvatarUserWCF {BigData = bData, SmallData = sData, Format = ".png"};
+                var avatar = new AvatarUserWCF { BigData = bData, SmallData = sData, Format = ".png" };
                 if (await _client.SetAvatarUserAsync(avatar))
                 {
-                    return Json(new {Code = NotifyType.Success, Message = "Аватар изменен успешно!"});
+                    return Json(new { Code = NotifyType.Success, Message = "Аватар изменен успешно!" });
                 }
                 else
                 {
@@ -253,7 +268,7 @@ namespace Web.Controllers
                 }
             }
 
-            return Json(new {Code = NotifyType.Error, Message = "Файл не найден!"});
+            return Json(new { Code = NotifyType.Error, Message = "Файл не найден!" });
         }
 
         #region Registration
@@ -279,17 +294,17 @@ namespace Web.Controllers
                 {
                     if (await _client.RestorePasswordAsync(loginOrEmail, code, pass))
                     {
-                        return Json(new {message = "Пароль успешно изменен!", type = NotifyType.Success});
+                        return Json(new { message = "Пароль успешно изменен!", type = NotifyType.Success });
                     }
 
                     return Json(new
-                        {message = "Ошибка! Проверте правильность введенных данных.", type = NotifyType.Warning});
+                    { message = "Ошибка! Проверте правильность введенных данных.", type = NotifyType.Warning });
                 }
 
-                return Json(new {message = PasswordMessage, type = NotifyType.Warning});
+                return Json(new { message = PasswordMessage, type = NotifyType.Warning });
             }
 
-            return Json(new {message = "Пароли не совпадают!", type = NotifyType.Warning});
+            return Json(new { message = "Пароли не совпадают!", type = NotifyType.Warning });
         }
 
         [HttpPost]
@@ -302,14 +317,14 @@ namespace Web.Controllers
                 if (code != "")
                 {
                     Response.Cookies.Add(new HttpCookie(NameEmailTokenCookie, token));
-                    return Json(new {message = $"Код отправлен на {email.ToLower()}!", type = NotifyType.Success});
+                    return Json(new { message = $"Код отправлен на {email.ToLower()}!", type = NotifyType.Success });
                 }
 
                 return Json(
-                    new {message = $"Аккаунт с почтой {email.ToLower()} уже создан!", type = NotifyType.Warning});
+                    new { message = $"Аккаунт с почтой {email.ToLower()} уже создан!", type = NotifyType.Warning });
             }
 
-            return Json(new {message = $"Ошибка! Код не отправлен на {email.ToLower()}!", type = NotifyType.Error});
+            return Json(new { message = $"Ошибка! Код не отправлен на {email.ToLower()}!", type = NotifyType.Error });
         }
 
         [HttpPost]
@@ -333,26 +348,28 @@ namespace Web.Controllers
                                     if (emailFromDB != null)
                                     {
                                         if (await _client.RegistrationAsync(new UserWCF
-                                            {Email = emailFromDB, Login = login, PasswordHash = password}))
+                                        { Email = emailFromDB, Login = login, PasswordHash = password }))
                                         {
                                             var html = RazorViewToStringFormat.RenderRazorViewToString(this,
                                                 "PartialLogin", null);
                                             return Json(new
                                             {
-                                                message = "Вы зарегистрированы успешно", type = NotifyType.Success, html
+                                                message = "Вы зарегистрированы успешно",
+                                                type = NotifyType.Success,
+                                                html
                                             });
                                         }
 
-                                        return Json(new {message = FatalError, type = NotifyType.Error});
+                                        return Json(new { message = FatalError, type = NotifyType.Error });
                                     }
 
-                                    return Json(new {message = "Не верный код с почты", type = NotifyType.Warning});
+                                    return Json(new { message = "Не верный код с почты", type = NotifyType.Warning });
                                 }
 
-                                return Json(new {message = "Отправьте код на Вашу почту!", type = NotifyType.Warning});
+                                return Json(new { message = "Отправьте код на Вашу почту!", type = NotifyType.Warning });
                             }
 
-                            return Json(new {message = "Пароли не совпадают!", type = NotifyType.Warning});
+                            return Json(new { message = "Пароли не совпадают!", type = NotifyType.Warning });
                         }
 
                         return Json(new
@@ -363,10 +380,10 @@ namespace Web.Controllers
                     }
 
                     return Json(new
-                        {message = "Пользователь с таким email уже зарегистрирован!", type = NotifyType.Warning});
+                    { message = "Пользователь с таким email уже зарегистрирован!", type = NotifyType.Warning });
                 }
 
-                return Json(new {message = "Логин занят", type = NotifyType.Warning});
+                return Json(new { message = "Логин занят", type = NotifyType.Warning });
             }
 
             return Json(new

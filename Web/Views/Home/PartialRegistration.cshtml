@@ -39,15 +39,15 @@
 
 <script>
     function SendCodeSuccess(data) {
-        popup(data.message, data.type);
+        popover(data.message, data.type);
         //if (data.type.toLowerCase() != "success") {
         $("input").removeAttr("disabled");
         //}
     }
     function RegistrationSuccess(data) {
-        popup(data.message, data.type);
+        popover(data.message, data.type);
         if (data.type.toLowerCase() == "success") {
-            console.log(data.html);
+            //console.log(data.html);
             $("#replace").empty()
                          .append(data.html);
         } else {

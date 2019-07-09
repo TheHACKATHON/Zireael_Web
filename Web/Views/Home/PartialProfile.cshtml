@@ -1,0 +1,33 @@
+﻿@using Web.ServiceReference1;
+@using AdditionsLibrary;
+@{
+    var user = ViewData.Model as UserBaseWCF;
+}
+<div class="settings-header">
+    <div class="profile contact">
+        <div class="wrap-img">
+            <label>
+                <img src="/user/@(user.Id)/@(HashCode.GetMD5(user.DisplayName))" alt="logo">
+            </label>
+        </div>
+        <div class="super">
+            <div class="super-top">
+                <h3>@(user.DisplayName)</h3>
+            </div>
+            <div class="super-bottom">
+                <p class="time">@(user.IsOnline ? "Online" : DateTimeToOnlineStringConverter.Convert(user.LastTimeOnline))</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="settings-container">
+    <div class="profile-info-container">
+        <label class="profile-info-value">@user.DisplayName</label>
+        <label class="profile-info-title">Имя пользователя</label>
+    </div>
+    <div class="profile-info-container">
+        <label class="profile-info-value">@user.Login</label>
+        <label class="profile-info-title">Логин</label>
+    </div>
+    <a class="button setting  open-chat">НАПИСАТЬ</a>
+</div>

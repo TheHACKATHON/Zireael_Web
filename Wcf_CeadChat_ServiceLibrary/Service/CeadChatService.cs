@@ -1451,7 +1451,7 @@ namespace Wcf_CeadChat_ServiceLibrary
             return null;
         }
 
-        public UserWCF LogIn(string login, string password, string token) //user == null если нет совпадений
+        public UserWCF LogIn(string loginOrEmail, string password, string token) //user == null если нет совпадений
         {
             var result = TryExecute(() =>
              {
@@ -1460,9 +1460,9 @@ namespace Wcf_CeadChat_ServiceLibrary
                  string passwordHash = string.Empty;
 
                  context.Database.Log += WriteLog;
-                 if (login == null || password == null)
+                 if (loginOrEmail == null || password == null)
                  {
-                     login = string.Empty;
+                     loginOrEmail = string.Empty;
                      password = string.Empty;
                  }
                  else if (token == null)
@@ -1471,13 +1471,14 @@ namespace Wcf_CeadChat_ServiceLibrary
                      passwordHash = GeneratePasswordHash(password);
                  }
                  var user = context.Users.
-                                   FirstOrDefault(u => (string.Equals(u.Login.ToLower(), login.ToLower()) && u.PasswordHash == passwordHash)
+                                   FirstOrDefault(u => ((string.Equals(u.Login.ToLower(), loginOrEmail.ToLower()) || string.Equals(u.Email.ToLower(), loginOrEmail.ToLower())) 
+                                              && u.PasswordHash == passwordHash)
                                               || (u.Token == token && DbFunctions.DiffDays(u.TokenDate, DateTime.Now) < _tokenLifetime));
                  //получаем учетку пользователя, если данные совпадают
 
                  if (user == null)
                  {
-                     WriteLog($"Не удалось найти пользователя с полученым логином[{login}] и паролем");
+                     WriteLog($"Не удалось найти пользователя [{loginOrEmail}]");
                      return null;
                  }
                  user.LastTimeOnline = DateTime.Now;
@@ -1614,12 +1615,12 @@ namespace Wcf_CeadChat_ServiceLibrary
                 newUser.DateCreated = DateTime.Now;
                 newUser.LastTimeOnline = DateTime.Now;
                 newUser.IsOnline = true;
-                newUser.PasswordHash = GeneratePasswordHash(newUser.PasswordHash);
                 if (!LoginExist(newUser.Login)
                     && !EmailExist(newUser.Email)
                     && Regex.IsMatch(newUser.Login, _patternLogin)
                     && Regex.IsMatch(newUser.PasswordHash, _patternPassword))
                 {
+                    newUser.PasswordHash = GeneratePasswordHash(newUser.PasswordHash);
                     context.Users.Add(new User(newUser));//добавляем в контекст
                     WriteLog($"Добавлен пользователь: {newUser.Login}");
                     context.SaveChanges();
