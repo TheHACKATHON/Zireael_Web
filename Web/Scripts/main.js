@@ -489,7 +489,18 @@ document.addEventListener('click', function (e) {
                 }
             };
         }
-    } else if (target.closest(".message-list li:not(.systemMsg)")) {
+    }
+    else if (target.closest(".message-list li:not(.systemMsg) img")) {
+        let obj = target.closest(".message-list li:not(.systemMsg)");
+        let login = obj.getAttribute("sender-login");
+        
+    }
+    else if (target.closest(".message-list li:not(.systemMsg) .mega-left h3")) {
+        let obj = target.closest(".message-list li:not(.systemMsg)");
+        let login = obj.getAttribute("sender-login");
+        
+    }
+    else if (target.closest(".message-list li:not(.systemMsg)")) {
         let li = target.closest(".message-list li");
         li.classList.toggle("active");
         if ($("ul.activeUl li.active").length > 0) {
@@ -562,8 +573,7 @@ function calc() {
     let wHeight = $(window).height();
     let headHeight = $('.my-head').height() + ((check) ? 20 : 0);
     let panelHeight = $('.panel-write').height() + 10 + (check ? 20 : 20);
-    // console.log(headHeight, $('.my-head').height());
-    //console.log(panelHeight, $('.panel-write').height());
+
     let popupHeaderHeight = $(".dialog-header").height();
     let popupSearchHeight = $(".search-container").height();
     let popupButton = $(".dialog-container .button").height();
@@ -587,7 +597,7 @@ $(window).on("resize", function () {
 });
 
 $('.scrollbar-macosx-messages').mousewheel(function (event) {
-    if (parseFloat($(".scrollbar-macosx-messages .scroll-element.scroll-y .scroll-bar").css("top")) < 36) {
+    if (parseFloat($(".scrollbar-macosx-messages .scroll-element.scroll-y .scroll-bar").css("top")) < 40) {
         let activeUl = $(".messages ul.activeUl");
         if (!activeUl.hasClass("loading")) {
             activeUl.addClass("loading");
@@ -603,7 +613,7 @@ $('.scrollbar-macosx-messages').mousewheel(function (event) {
                     let data = JSON.parse(xhr.responseText);
                     let messages = data.messages;
                     if (data.Code == NotifyType.Success) {
-                        if (messages != null) {
+                        if (messages != null && messages.length > 0) {
                             $('.scrollbar-macosx-messages').scrollTop(1000);
                             messages.forEach((msg, i) => {
                                 activeUl.prepend(Generator.MessageHTML(msg));
@@ -717,6 +727,11 @@ function OpenMenu(methodName) {
             $("#loading").css("display", "none");
             let data = JSON.parse(xhr.responseText);
             if (data.Code === NotifyType.Success) {
+                let div = document.createElement("div");
+                div.innerHTML = data.view;
+                let img = div.querySelector("img");
+                img.setAttribute("src", "/" + _currentUser.Avatar);
+                data.view = div.innerHTML;
                 $(".dialog-container").html("");
                 $(".dialog-container").html(data.view);
                 $(".dialog-title > h2").text(data.title);

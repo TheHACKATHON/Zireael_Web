@@ -1,4 +1,7 @@
-﻿
+﻿.message-list img {
+    cursor: pointer;
+}
+
 .wrap {
     margin: auto;
     width: 1010px;
@@ -210,12 +213,14 @@ a.checked-btn-on {
 .mega-left {
     width: calc(100% - 300px);
     padding-right: 10px;
+    
 }
 
     .mega-left h3 {
         line-height: normal;
         font-size: 14px;
         color: #284665;
+        cursor: pointer;
     }
 
 .mega-right p.time {

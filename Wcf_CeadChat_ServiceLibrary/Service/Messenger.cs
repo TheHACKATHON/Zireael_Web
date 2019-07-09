@@ -27,12 +27,12 @@ namespace Wcf_CeadChat_ServiceLibrary
         }
 
         public static event Action<Dictionary<long, int>> MessagesReachedDB;
-        private static readonly ConcurrentBag<MessageHash> UncommitedMessages;
+        private static readonly ConcurrentQueue<MessageHash> UncommitedMessages;
         private const int ThreadTimeout = 3000;
 
         static Messenger()
         {
-            UncommitedMessages = new ConcurrentBag<MessageHash>();
+            UncommitedMessages = new ConcurrentQueue<MessageHash>();
             Task.Factory.StartNew(async () =>
             {
                 var stopwatch = new Stopwatch();
@@ -44,7 +44,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                     MessageHash messageHash = null;
                     do
                     {
-                        UncommitedMessages.TryTake(out messageHash);
+                        UncommitedMessages.TryDequeue(out messageHash);
                         if (messageHash != null)
                         {
                             try
@@ -153,7 +153,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                         msg.IsRead = false;
                         sender.LastTimeOnline = DateTime.Now;
                         sender.IsOnline = true;
-                        UncommitedMessages.Add(new MessageHash(msg, hash));
+                        UncommitedMessages.Enqueue(new MessageHash(msg, hash));
                         //context.Messages.Add(msg);
                         //context.SaveChanges();
 
