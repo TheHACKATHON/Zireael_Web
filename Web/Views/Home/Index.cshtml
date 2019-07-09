@@ -1,5 +1,7 @@
-﻿@{
+﻿@using Web.ServiceReference1;
+@{
     ViewBag.Title = "Home Page";
+    UserWCF myProfile = ViewData["myProfile"] as UserWCF;
 }
 
 @Styles.Render("~/bundles/indexcss")
@@ -70,6 +72,9 @@
                         <a class="tg_head_btn tg_head_peer_search_btn">
                             <i class="icon icon-search"></i>
                         </a>
+                        <a class="tg_head_peer_search_btn profile-btn hide">
+                            <i class="icon icon-contacts profile-icon"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -85,7 +90,7 @@
                 @{
                     if (ViewBag.Groups != null)
                     {
-                        foreach (var group in ViewBag.Groups)
+                        foreach (GroupWCF group in ViewBag.Groups)
                         {
                             var md5 = AdditionsLibrary.HashCode.GetMD5(group.Name);
 
@@ -100,9 +105,16 @@
                             //    }
                             //}
 
-                            var time = group.LastMessage?.DateTime?.ToShortTimeString();
+                            var time = group.LastMessage?.DateTime.ToShortTimeString();
                             <li>
-                                <a data-id="@group.Id" class="group">
+                                @{ 
+                                    string userLogin = "";
+                                    if(group.Type == GroupType.SingleUser)
+                                    {
+                                        userLogin = group.Users.FirstOrDefault(u => u.Id != myProfile.Id)?.Login;
+                                    }
+                                }
+                                <a data-id="@group.Id" data-userlogin="@userLogin" class="group">
                                     <div class="wrap-img">
                                         <img src="/group/@group.Id/@(md5)" alt="logo">
                                     </div>
