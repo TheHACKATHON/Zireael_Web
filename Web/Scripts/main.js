@@ -45,6 +45,7 @@ document.addEventListener('click', function (e) {
         if (element != null) {
             let groupId = element.getAttribute("data-id");
             openGroup(groupId, element.parentElement);
+            $("a.profile-btn").removeClass("hide");
         }
         $(".modal-backdrop").addClass("hide");
         
