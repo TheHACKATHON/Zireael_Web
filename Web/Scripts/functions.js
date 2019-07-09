@@ -1,5 +1,6 @@
 ﻿function openGroup(groupId, newActiveElem) {
     hideChats();
+    let k = '.message-list-wrap ul[data-id="' + groupId + '"]';
     let groupUl = document.querySelector('.message-list-wrap ul[data-id="' + groupId + '"]');
     if (groupUl != null) {
         groupUl.classList.add("activeUl");

@@ -109,12 +109,15 @@
                             <li>
                                 @{ 
                                     string userLogin = "";
+                                    string userId = "";
                                     if(group.Type == GroupType.SingleUser)
                                     {
-                                        userLogin = group.Users.FirstOrDefault(u => u.Id != myProfile.Id)?.Login;
+                                        var user = group.Users.FirstOrDefault(u => u.Id != myProfile.Id);
+                                        userLogin = user?.Login;
+                                        userId = $"{user?.Id}";
                                     }
                                 }
-                                <a data-id="@group.Id" data-userlogin="@userLogin" class="group">
+                                <a data-id="@group.Id" data-userid="@userId" data-userlogin="@userLogin" class="group">
                                     <div class="wrap-img">
                                         <img src="/group/@group.Id/@(md5)" alt="logo">
                                     </div>

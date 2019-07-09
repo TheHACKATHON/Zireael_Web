@@ -41,9 +41,13 @@ document.addEventListener('click', function (e) {
     else if (target.matches(".contact:not(.profile) .open-profile")) {
         let a = target.closest("a.contact:not(.profile)");
         let userId = a.getAttribute("data-id");
-        let element = document.querySelector(`.chats li a[data-id="${userId}"]`);
-        //if()
-        openGroup();
+        let element = document.querySelector(`.chats li a[data-userid="${userId}"]`);
+        if (element != null) {
+            let groupId = element.getAttribute("data-id");
+            openGroup(groupId, element.parentElement);
+        }
+        $(".modal-backdrop").addClass("hide");
+        
     }
     else if (target.closest(".contact:not(.profile)")) {
         target.closest(".contact").classList.toggle("select");

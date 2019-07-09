@@ -11,12 +11,15 @@
         }
         console.log(group);
         let login = "";
+        let userId = "";
         if (group.Type == 0) {
-            login = group.Users[0].Id == _currentUser.Id ? group.Users[1].Login : group.Users[0].Login;
+            let user = group.Users[0].Id == _currentUser.Id ? group.Users[1] : group.Users[0];
+            login = user.Login;
+            userId = user.Id;
         }
         let li = document.createElement("li");
         li.innerHTML =
-            `<a data-id="${group.Id}" data-userlogin="${login}" class="group">
+            `<a data-id="${group.Id}" data-userid="${userId}" data-userlogin="${login}" class="group">
         <div class="wrap-img">
             <img src="${avatar}" alt="logo">
         </div>
