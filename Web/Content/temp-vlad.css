@@ -242,3 +242,14 @@ label.profile-info-title {
 a.button.open-chat {
     margin-top: 10px;
 }
+.open-profile {
+    font-size: 40px;
+    /* text-align: center; */
+    display: flex;
+    align-items: center;
+    color: lightgray;
+}
+    .open-profile:hover {
+        /* background: lightgray; */
+        color: #2f6da5;
+    }

@@ -10,7 +10,7 @@
             foreach (var user in ViewData.Model as UserBaseWCF[])
             {
                 var md5 = AdditionsLibrary.HashCode.GetMD5(user.DisplayName);
-                <li>
+                <li class="li-contact">
                     <a data-id="@user.Id" class="contact">
                         <div class="wrap-img">
                             <img src="/user/@user.Id/@md5" alt="logo">
@@ -23,6 +23,7 @@
                                 <p class="time">@(AdditionsLibrary.DateTimeToOnlineStringConverter.Convert(user.LastTimeOnline))</p>
                             </div>
                         </div>
+                        <div class="open-profile">></div>
                     </a>
                 </li>
             }

@@ -132,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <p class="time">последний онлайн ${date.toLocaleDateString()} ${date.toLocaleTimeString()}</p>
                             </div>
                         </div>
+                        <div class="open-profile">></div>
                     </a>
                 </li>
             `;
