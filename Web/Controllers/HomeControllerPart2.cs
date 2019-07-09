@@ -78,8 +78,11 @@ namespace Web.Controllers
             if (!string.IsNullOrWhiteSpace(login))
             {
                 var account = await _client.FindAsync(login);
+                var myAccount = await _client.GetMyProfileAsync();
+                
                 if (account != null)
                 {
+                    ViewData["myProfile"] = myAccount;
                     var view = RazorViewToStringFormat.RenderRazorViewToString(this, "PartialProfile", account);
                     return Json(new { Code = NotifyType.Success, view, title = "Информация о пользователе" });
                 }
