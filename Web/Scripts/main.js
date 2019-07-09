@@ -45,9 +45,17 @@ document.addEventListener('click', function (e) {
         if (element != null) {
             let groupId = element.getAttribute("data-id");
             openGroup(groupId, element.parentElement);
+            $(".modal-backdrop").addClass("hide");
         }
-        $(".modal-backdrop").addClass("hide");
-        
+        else {
+            createSingleGroup(userId, () => {
+                $(".modal-backdrop").addClass("hide");
+                element = document.querySelector(`.chats li a[data-userid="${userId}"]`);
+                let groupId = element.getAttribute("data-id");
+                openGroup(groupId, element.parentElement);
+                changeActive(element.parentElement);
+            });
+        }        
     }
     else if (target.closest(".contact:not(.profile)")) {
         target.closest(".contact").classList.toggle("select");
@@ -164,25 +172,7 @@ document.addEventListener('click', function (e) {
             };
         }
         else if ($("a.contact.select").length == 1) {
-            let xhr = new XMLHttpRequest();
-            xhr.open('POST', `/createchat`);
-            let data = new FormData();
-            data.append("id", $("a.contact.select").data("id"));
-            xhr.send(data);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    let data = JSON.parse(xhr.responseText);
-                    if (data.Code === NotifyType.Success) {
-                        $(".modal-backdrop").addClass("hide");
-                    }
-                    else {
-                        popover(data.Message, data.Code);
-                    }
-                }
-                else if (xhr.readyState == 4 && xhr.status == 0) {
-                    popover(null, NotifyType.Error);
-                }
-            };
+            createSingleGroup($("a.contact.select").data("id"), () => $(".modal-backdrop").addClass("hide"));
         }
     }
     else if (target.closest(".delete-contact")) {

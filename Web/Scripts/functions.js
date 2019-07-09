@@ -58,6 +58,30 @@
     }
 }
 
+function createSingleGroup(userId, success = null) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', `/createchat`);
+    let data = new FormData();
+    data.append("id", userId);
+    xhr.send(data);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            let data = JSON.parse(xhr.responseText);
+            if (data.Code === NotifyType.Success) {
+                if (success != null) {
+                    success();
+                }
+            }
+            else {
+                popover(data.Message, data.Code);
+            }
+        }
+        else if (xhr.readyState == 4 && xhr.status == 0) {
+            popover(null, NotifyType.Error);
+        }
+    };
+}
+
 function hideChats() {
     $(".message-list-wrap ul").removeClass("activeUl");
     $(".panel-write").addClass("hide");

@@ -9,7 +9,6 @@
         if (parseInt(notReadMessageCount) > 0) {
             notReadMessageElem = `<span class="count-unred-messages">${notReadMessageCount}</span>`;
         }
-        console.log(group);
         let login = "";
         let userId = "";
         if (group.Type == 0) {
