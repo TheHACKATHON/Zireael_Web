@@ -46,6 +46,7 @@ document.addEventListener('click', function (e) {
             let groupId = element.getAttribute("data-id");
             openGroup(groupId, element.parentElement);
             $(".modal-backdrop").addClass("hide");
+            $("a.profile-btn").removeClass("hide");
         }
         else {
             createSingleGroup(userId, () => {
