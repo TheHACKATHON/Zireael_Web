@@ -276,6 +276,7 @@
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\2.5.3-crypto-md5.js" />
     <Content Include="Scripts\auth.js" />
+    <Content Include="Scripts\functions.js" />
     <Content Include="Scripts\generator.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery.mousewheel.min.js" />

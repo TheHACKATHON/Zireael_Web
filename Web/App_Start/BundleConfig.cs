@@ -48,6 +48,7 @@ namespace Web
             bundles.Add(new ScriptBundle("~/bundles/indexjs").Include(
                "~/Scripts/jquery.signalR-2.4.1.min.js",
                "~/Scripts/2.5.3-crypto-md5.js",
+               "~/Scripts/functions.js",
                "~/Scripts/generator.js",
                "~/Scripts/signal-callback.js",
                "~/Scripts/modal-dialogs.js",
@@ -58,17 +59,17 @@ namespace Web
 
             #endregion
 
-            foreach (var item in bundles)
-            {
-                if(item is ScriptBundle)
-                {
-                    item.Transforms.Add(new JsMinify());
-                }
-                else if(item is StyleBundle)
-                {
-                    item.Transforms.Add(new CssMinify());
-                }
-            }
+            //foreach (var item in bundles)
+            //{
+            //    if(item is ScriptBundle)
+            //    {
+            //        item.Transforms.Add(new JsMinify());
+            //    }
+            //    else if(item is StyleBundle)
+            //    {
+            //        item.Transforms.Add(new CssMinify());
+            //    }
+            //}
         }
     }
 }

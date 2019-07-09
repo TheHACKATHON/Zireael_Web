@@ -1,20 +1,4 @@
-﻿
-function hideChats() {
-    $(".message-list-wrap ul").removeClass("activeUl");
-    $(".panel-write").addClass("hide");
-    $(".chats li.active").removeClass("active");
-}
-
-function changeActive(elem) {
-    $(".chats li.active").removeClass("active");
-    elem.classList.add("active");
-    var unreadMessages = elem.querySelector(".count-unred-messages");
-    if (unreadMessages != null) unreadMessages.remove();
-    $(".panel-write").removeClass("hide");
-
-}
-
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
     var chat = $.connection.chatHub;
 
     chat.client.addChat = function (group, creatorId) {
