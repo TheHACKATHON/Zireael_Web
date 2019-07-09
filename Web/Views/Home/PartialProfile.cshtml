@@ -21,11 +21,12 @@
         </div>
     </div>
 </div>
-<div class="settings-container">
-    <div class="profile-info-container">
-        <label class="profile-info-value">@user.DisplayName</label>
-        <label class="profile-info-title">Имя пользователя</label>
-    </div>
+<div class="settings-container"  data-id="@user.Id">
+    @*имя мы и так видим выше*@
+    @*<div class="profile-info-container">
+            <label class="profile-info-value">@user.DisplayName</label>
+            <label class="profile-info-title">Имя пользователя</label>
+        </div>*@
     <div class="profile-info-container">
         <label class="profile-info-value">@user.Login</label>
         <label class="profile-info-title">Логин</label>
@@ -33,7 +34,10 @@
     @{
         if (myProfile == null || myProfile.Id != user.Id)
         {
-            <a class="button setting  open-chat">НАПИСАТЬ</a>
+            <a class="button setting open-chat">Написать</a>
         }
+        <a class="button setting">Заблокировать</a>
+        <a class="button setting">Добавить в контакты</a>
+        <a class="button setting">Удалить диалог</a>
     }
 </div>

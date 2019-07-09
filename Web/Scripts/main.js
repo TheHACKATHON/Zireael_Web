@@ -56,7 +56,7 @@ document.addEventListener('click', function (e) {
                 openGroup(groupId, element.parentElement);
                 changeActive(element.parentElement);
             });
-        }        
+        }
     }
     else if (target.closest(".contact:not(.profile)")) {
         target.closest(".contact").classList.toggle("select");
@@ -450,7 +450,7 @@ document.addEventListener('click', function (e) {
         let obj = target.closest(".message-list li:not(.systemMsg)");
         let login = obj.getAttribute("sender-login");
         OpenProfile(login);
-        
+
     }
     else if (target.closest(".message-list li:not(.systemMsg) .mega-left h3")) {
         let obj = target.closest(".message-list li:not(.systemMsg)");
@@ -501,6 +501,26 @@ document.addEventListener('click', function (e) {
                     popover(null, NotifyType.Error);
                 }
             };
+        }
+    }
+    else if (target.matches(".dialog .button.open-chat")) {
+        let a = target.closest(".settings-container");
+        let userId = a.getAttribute("data-id");
+        let element = document.querySelector(`.chats li a[data-userid="${userId}"]`);
+        if (element != null) {
+            let groupId = element.getAttribute("data-id");
+            openGroup(groupId, element.parentElement);
+            $(".modal-backdrop").addClass("hide");
+            $("a.profile-btn").removeClass("hide");
+        }
+        else {
+            createSingleGroup(userId, () => {
+                $(".modal-backdrop").addClass("hide");
+                element = document.querySelector(`.chats li a[data-userid="${userId}"]`);
+                let groupId = element.getAttribute("data-id");
+                openGroup(groupId, element.parentElement);
+                changeActive(element.parentElement);
+            });
         }
     }
 
