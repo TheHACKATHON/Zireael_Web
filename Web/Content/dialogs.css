@@ -221,6 +221,7 @@ a.checked-btn-on {
         font-size: 14px;
         color: #284665;
         cursor: pointer;
+        display: inline-block;
     }
 
 .mega-right p.time {
