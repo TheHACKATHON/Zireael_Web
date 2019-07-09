@@ -2,6 +2,7 @@
 @using AdditionsLibrary;
 @{
     var user = ViewData.Model as UserBaseWCF;
+    var myProfile = ViewData["myProfile"] as UserBaseWCF;
 }
 <div class="settings-header">
     <div class="profile contact">
@@ -29,5 +30,10 @@
         <label class="profile-info-value">@user.Login</label>
         <label class="profile-info-title">Логин</label>
     </div>
-    <a class="button setting  open-chat">НАПИСАТЬ</a>
+    @{
+        if (myProfile == null || myProfile.Id != user.Id)
+        {
+            <a class="button setting  open-chat">НАПИСАТЬ</a>
+        }
+    }
 </div>
