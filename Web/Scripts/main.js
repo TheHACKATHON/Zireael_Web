@@ -712,11 +712,6 @@ function OpenProfile(login) {
             $("#loading").css("display", "none");
             let data = JSON.parse(xhr.responseText);
             if (data.Code === NotifyType.Success) {
-                let div = document.createElement("div");
-                div.innerHTML = data.view;
-                let img = div.querySelector("img");
-                img.setAttribute("src", "/" + _currentUser.Avatar);
-                data.view = div.innerHTML;
                 $(".dialog-container").html("");
                 $(".dialog-container").html(data.view);
                 $(".dialog-title > h2").text(data.title);
