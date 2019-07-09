@@ -1,4 +1,20 @@
-﻿document.addEventListener('DOMContentLoaded', () => {
+﻿
+function hideChats() {
+    $(".message-list-wrap ul").removeClass("activeUl");
+    $(".panel-write").addClass("hide");
+    $(".chats li.active").removeClass("active");
+}
+
+function changeActive(elem) {
+    $(".chats li.active").removeClass("active");
+    elem.classList.add("active");
+    var unreadMessages = elem.querySelector(".count-unred-messages");
+    if (unreadMessages != null) unreadMessages.remove();
+    $(".panel-write").removeClass("hide");
+
+}
+
+document.addEventListener('DOMContentLoaded', () => {
     var chat = $.connection.chatHub;
 
     chat.client.addChat = function (group, creatorId) {
@@ -6,7 +22,14 @@
         if (group.Name == null) {
             group.Name = group.Users.find(u => u.Id != _currentUser.Id).DisplayName;
         }
-        chats.insertBefore(Generator.DialogHTML(group), chats.firstChild);
+        let a = chats.querySelector(`li a[data-id="${group.Id}"]`);
+        if (a != null) {
+            hideChats();
+            changeActive(a.closest("li"));
+        }
+        else {
+            chats.insertBefore(Generator.DialogHTML(group), chats.firstChild);
+        }
 
     };
 

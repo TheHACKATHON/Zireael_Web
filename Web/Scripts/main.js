@@ -553,20 +553,7 @@ function OpenSubModalDialog(html)
 }
 
 
-function hideChats() {
-    $(".message-list-wrap ul").removeClass("activeUl");
-    $(".panel-write").addClass("hide");
-    $(".chats li.active").removeClass("active");
-}
 
-function changeActive(elem) {
-    $(".chats li.active").removeClass("active");
-    elem.classList.add("active");
-    var unreadMessages = elem.querySelector(".count-unred-messages");
-    if (unreadMessages != null) unreadMessages.remove();
-    $(".panel-write").removeClass("hide");
-
-}
 
 function calc() {
     let check = ($(window).width() > 1030) ? true : false;
@@ -729,8 +716,11 @@ function OpenMenu(methodName) {
             if (data.Code === NotifyType.Success) {
                 let div = document.createElement("div");
                 div.innerHTML = data.view;
-                let img = div.querySelector("img");
-                img.setAttribute("src", "/" + _currentUser.Avatar);
+                if (methodName == "menusettings") {
+                    let img = div.querySelector("img");
+                    img.setAttribute("src", "/" + _currentUser.Avatar);
+                }
+                
                 data.view = div.innerHTML;
                 $(".dialog-container").html("");
                 $(".dialog-container").html(data.view);
