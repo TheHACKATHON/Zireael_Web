@@ -9,10 +9,14 @@
         if (parseInt(notReadMessageCount) > 0) {
             notReadMessageElem = `<span class="count-unred-messages">${notReadMessageCount}</span>`;
         }
-
+        console.log(group);
+        let login = "";
+        if (group.Type == 0) {
+            login = group.Users[0].Id == _currentUser.Id ? group.Users[1].Login : group.Users[0].Login;
+        }
         let li = document.createElement("li");
         li.innerHTML =
-`<a data-id="${group.Id}" class="group">
+            `<a data-id="${group.Id}" data-userlogin="${login}" class="group">
         <div class="wrap-img">
             <img src="${avatar}" alt="logo">
         </div>

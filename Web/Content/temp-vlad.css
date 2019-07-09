@@ -253,3 +253,20 @@ a.button.open-chat {
         /* background: lightgray; */
         color: #2f6da5;
     }
+
+i.icon.icon-contacts.profile-icon {
+    margin:0px;
+}
+a.tg_head_peer_search_btn.profile-btn:hover {
+    color: #fff;
+    text-decoration: none;
+    background: #1d2b3a;
+    border-radius: 5px;
+}
+.tg_head_peer_search_btn {
+    float: right;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 19px;
+    padding-right: 19px;
+}

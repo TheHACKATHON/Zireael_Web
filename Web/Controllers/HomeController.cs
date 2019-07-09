@@ -241,7 +241,7 @@ namespace Web.Controllers
                             : g.Name);
 
                     ViewBag.Groups = user.Groups.OrderByDescending(g => g.LastMessage.DateTime);
-
+                    ViewData["myProfile"] = await _client.GetMyProfileAsync();
                     return View("Index");
                 }
             }

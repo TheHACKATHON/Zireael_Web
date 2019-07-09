@@ -390,10 +390,18 @@ document.addEventListener('click', function (e) {
     }
     else if (target.matches('.backBtn')) {
         $('.wrap').add('.my-head').removeClass('checkDialog');
+        $("a.profile-btn").addClass("hide");
         hideChats();
     }
     else if (target.closest(".group")) {
         let groupHtml = target.closest(".group");
+        let userLogin = groupHtml.getAttribute("data-userlogin");
+        if (userLogin == null || userLogin == "") {
+            $("a.profile-btn").addClass("hide");
+        }
+        else {
+            $("a.profile-btn").removeClass("hide");
+        }
         openGroup(groupHtml.getAttribute("data-id"), target.closest(".group").parentElement);
        
     }
@@ -446,6 +454,10 @@ document.addEventListener('click', function (e) {
     else if (target.closest(".message-list li:not(.systemMsg) .mega-left h3")) {
         let obj = target.closest(".message-list li:not(.systemMsg)");
         let login = obj.getAttribute("sender-login");
+        OpenProfile(login);
+    }
+    else if (target.closest("a.profile-btn")) {
+        let login = $("li.active > a.group").data("userlogin");
         OpenProfile(login);
     }
     else if (target.closest(".message-list li:not(.systemMsg)")) {
