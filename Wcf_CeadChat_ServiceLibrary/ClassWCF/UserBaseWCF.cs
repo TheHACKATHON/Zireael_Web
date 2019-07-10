@@ -21,6 +21,8 @@ namespace Wcf_CeadChat_ServiceLibrary
         public DateTime LastTimeOnline { get; set; }
         [DataMember]
         public bool IsOnline { get; set; }
+        [DataMember]
+        public bool IsBlocked { get; set; }
 
         public UserBaseWCF()
         {

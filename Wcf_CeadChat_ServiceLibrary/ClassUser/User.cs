@@ -26,10 +26,13 @@ namespace Wcf_CeadChat_ServiceLibrary
         public DateTime TokenDate { get; set; }
         [NotMapped]
         public string SessionId { get; set; }
+        public int AuthTry { get; set; }
+        public DateTime LastTry { get; set; }
         public User() : base()
         {
             DateCreated = DateTime.Now;
             TokenDate = DateTime.Now;
+            LastTry = DateTime.Now;
             //Friends = new List<User>();
             Groups = new List<Group>();
         }
