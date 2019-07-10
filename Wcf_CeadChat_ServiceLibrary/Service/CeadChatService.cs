@@ -1471,7 +1471,7 @@ namespace Wcf_CeadChat_ServiceLibrary
                  ChatContext context = new ChatContext();
                  var tempUser = context.Users.
                                    FirstOrDefault(u => string.Equals(u.Login.ToLower(), loginOrEmail.ToLower()) || string.Equals(u.Email.ToLower(), loginOrEmail.ToLower()));
-                 if(tempUser == null || ( tempUser.AuthTry > TRY_COUNT && (DateTime.Now - tempUser.LastTry).TotalHours < 24 ))
+                 if(tempUser == null && ( tempUser.AuthTry > TRY_COUNT && (DateTime.Now - tempUser.LastTry).TotalHours < 24 ))
                  {
                      var blockedUser = new UserWCF();
                      blockedUser.IsBlocked = true;
