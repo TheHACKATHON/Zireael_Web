@@ -295,6 +295,10 @@ namespace Web.Controllers
             UserWCF user = null;
 
             user = await _client.LogInAsync(login, password, null);
+            if(user != null && user.IsBlocked)
+            {
+                return Json(new { Code = NotifyType.Error, Error = "Ваш аккаунт заблокирован на 24 часа, попробуйте зайти позже" });
+            }
             if (user != null)
             {
                 //Session.Add("token", user.Session);

@@ -1466,8 +1466,17 @@ namespace Wcf_CeadChat_ServiceLibrary
         {
             var result = TryExecute(() =>
              {
+                 const int TRY_COUNT = 10;
                  var userChanged = OperationContext.Current.GetCallbackChannel<IUserChanged>();//получаем текущее подключение клиента
                  ChatContext context = new ChatContext();
+                 var tempUser = context.Users.
+                                   FirstOrDefault(u => string.Equals(u.Login.ToLower(), loginOrEmail.ToLower()) || string.Equals(u.Email.ToLower(), loginOrEmail.ToLower()));
+                 if(tempUser == null || ( tempUser.AuthTry > TRY_COUNT && (DateTime.Now - tempUser.LastTry).TotalHours < 24 ))
+                 {
+                     var blockedUser = new UserWCF();
+                     blockedUser.IsBlocked = true;
+                     return blockedUser;
+                 }
                  string passwordHash = string.Empty;
 
                  context.Database.Log += WriteLog;
@@ -1489,9 +1498,18 @@ namespace Wcf_CeadChat_ServiceLibrary
 
                  if (user == null)
                  {
+                     user = context.Users.
+                                    FirstOrDefault(u => string.Equals(u.Login.ToLower(), loginOrEmail.ToLower()) || string.Equals(u.Email.ToLower(), loginOrEmail.ToLower()));
+                     if(user != null)
+                     {
+                         user.AuthTry++;
+                         user.LastTry = DateTime.Now;
+                         context.SaveChanges();
+                     }
                      WriteLog($"Не удалось найти пользователя [{loginOrEmail}]");
                      return null;
                  }
+                 user.AuthTry = 0;
                  user.LastTimeOnline = DateTime.Now;
                  user.IsOnline = true;
                  user.Token = CreateToken(user);

@@ -19,6 +19,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="DisplayName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="IsBlocked" type="xs:boolean" />
       <xs:element minOccurs="0" name="IsOnline" type="xs:boolean" />
       <xs:element minOccurs="0" name="LastTimeOnline" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Login" nillable="true" type="xs:string" />
