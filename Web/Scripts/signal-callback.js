@@ -46,7 +46,18 @@
         if (message) {
             let li = document.querySelector('.chats li a[data-id="' + message.GroupId + '"]');
             li = li.parentElement;
-            li.querySelector(".last-message").textContent = message.Text.length > 25 ? message.Text.substring(0, 25) + "..." : message.Text;
+
+            let lastMessageSender = message.Sender.DisplayName;
+            let you = lastMessageSender.length > 9 ? lastMessageSender.substring(0, 7) : lastMessageSender;
+            if (li.getAttribute("data-userid") != null) {
+                you = _currentUser.Id == message.Sender.Id ? "Вы: " : "";
+            }
+            else {
+                you = _currentUser.Id == message.Sender.Id ? "Вы: " : you + ": ";
+            }
+            li.querySelector(".system").textContent = you;
+
+            li.querySelector(".last-message").textContent = message.Text.length > 22 ? message.Text.substring(0, 19) + "..." : message.Text;
             li.querySelector("p.time").textContent = convertDateToShortTimeString(message.DateTime);
             if (message.Sender.Id != _currentUser.Id) {
                 let unreadElement = li.querySelector("span.count-unred-messages");

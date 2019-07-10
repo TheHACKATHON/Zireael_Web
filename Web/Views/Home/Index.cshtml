@@ -110,11 +110,18 @@
                                 @{ 
                                     string userLogin = "";
                                     string userId = "";
+                                    string lastMessageSender = group.LastMessage.Sender.DisplayName;
+                                    string you = lastMessageSender.Length > 9 ? lastMessageSender.Substring(0, 7) : lastMessageSender;
                                     if(group.Type == GroupType.SingleUser)
                                     {
                                         var user = group.Users.FirstOrDefault(u => u.Id != myProfile.Id);
                                         userLogin = user?.Login;
                                         userId = $"{user?.Id}";
+                                        you = myProfile.Id == group.LastMessage.Sender.Id ? "Вы: " : "";
+                                    }
+                                    else
+                                    {
+                                        you = myProfile.Id == group.LastMessage.Sender.Id? "Вы: " : you + ": ";
                                     }
                                 }
                                 <a data-id="@group.Id" data-userid="@userId" data-userlogin="@userLogin" class="group">
@@ -127,7 +134,10 @@
                                             <p class="time">@time</p>
                                         </div>
                                         <div class="super-bottom">
-                                            <p class="last-message">@(group.LastMessage.Text.Length > 25 ? group.LastMessage.Text.Substring(0, 23) + "..." : group.LastMessage.Text)</p>
+                                            <div class="flex-row">
+                                                <p class="system">@(you)</p>
+                                                <p class="last-message">@(group.LastMessage.Text.Length > 22 ? group.LastMessage.Text.Substring(0, 19) + "..." : group.LastMessage.Text)</p>
+                                            </div>
                                             @{
                                                 if (@ViewBag.DontReaded[group.Id] > 0)
                                                 {
@@ -162,6 +172,7 @@
             </div>
 
             <div class="panel-select hide">
+                <a class="button btn-forward-messages">Переслать</a>
                 <a class="button btn-remove-messages">Удалить</a>
             </div>
         </div>

@@ -468,9 +468,23 @@ document.addEventListener('click', function (e) {
             if (!$(".panel-write").hasClass("hide")) $(".panel-write").addClass("hide");
             if ($(".panel-select").hasClass("hide")) $(".panel-select").removeClass("hide");
 
+            let iterator = 0;
+            $("ul.activeUl li.active").each((i, selected) => {
+                if (selected.getAttribute("sender-id") != _currentUser.Id) {
+                    iterator++;
+                }
+            });
+            if (iterator == 0) {
+                $(".btn-remove-messages").removeClass("hide");
+            }
+            else {
+                $(".btn-remove-messages").addClass("hide");
+            }
+
         } else {
             if ($(".panel-write").hasClass("hide")) $(".panel-write").removeClass("hide");
             if (!$(".panel-select").hasClass("hide")) $(".panel-select").addClass("hide");
+            $(".btn-remove-messages").removeClass("hide");
         }
     }
     else if (target.matches("a.btn-remove-messages")) {

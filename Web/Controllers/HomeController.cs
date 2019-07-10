@@ -64,6 +64,14 @@ namespace Web.Controllers
                 var messages = await _client.GetMessagesBetweenAsync((int)groupId, 0, MESSAGES_COUNT);
                 if (messages != null)
                 {
+                    for (int i = 0; i < messages.Count(); i++)
+                    {
+                        if (messages[i] is MessageFileWCF messageFile)
+                        {
+                            messages[i] = messageFile;
+                            messageFile.File.Hash = SizeSuffix(messageFile.File.Lenght);
+                        }
+                    }
                     messages = messages.OrderBy(m => m.DateTime).ToArray();
                     return Json(new { Code = NotifyType.Success, messages, groupId });
                 }
@@ -299,5 +307,37 @@ namespace Web.Controllers
             if (user is null) return Json(new NotifyError("Неверный логин или пароль"));
             return Json(new { Code = NotifyType.Success });
         }
-    }
+
+        private readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+        private string SizeSuffix(long value, int decimalPlaces = 1)
+        {
+            if (decimalPlaces < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(decimalPlaces));
+            }
+
+            if (value < 0)
+            {
+                return "-" + SizeSuffix(-value);
+            }
+
+            if (value.Equals(0))
+            {
+                return string.Format("{0:n" + decimalPlaces + "} bytes", 0);
+            }
+
+            var mag = (int)Math.Log(value, 1024);
+            var adjustedSize = (decimal)value / (1L << (mag * 10));
+
+            if (Math.Round(adjustedSize, decimalPlaces) >= 1000)
+            {
+                mag += 1;
+                adjustedSize /= 1024;
+            }
+
+            return string.Format("{0:n" + decimalPlaces + "} {1}",
+                adjustedSize,
+                SizeSuffixes[mag]);
+        }
+    }    
 }

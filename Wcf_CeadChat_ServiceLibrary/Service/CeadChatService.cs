@@ -71,7 +71,10 @@ namespace Wcf_CeadChat_ServiceLibrary
                 {
                     user.GiveIdToMessageCallback(messages.Where(m => groupMessages.Any(gM => gM.Id.Equals(m.Value))), GetConnectionId(user, _onlineUsers[user].SessionId));
                 });
+
+                group.LastMessage = groupMessages.OrderByDescending(m => m.DateTime).First();
             }
+            context.SaveChanges();
         }
 
 
@@ -618,7 +621,15 @@ namespace Wcf_CeadChat_ServiceLibrary
                         .Take(count);
                     foreach (var item in selectedMessages)
                     {
-                        messages.Add(new MessageWCF(item));
+                        if(item is MessageFile messageFile)
+                        {
+                            messages.Add(new MessageFileWCF(messageFile));
+                        }
+                        else
+                        {
+                            messages.Add(new MessageWCF(item));
+                        }
+                        
                     }
                     sender.LastTimeOnline = DateTime.Now;
                     sender.IsOnline = true;

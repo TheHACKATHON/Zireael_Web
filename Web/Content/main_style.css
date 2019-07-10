@@ -5,6 +5,10 @@
     list-style: none;
 }
 
+a.button.hide {
+    display: none;
+}
+
 .noselect {
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -24,9 +28,6 @@
     /*-webkit-box-shadow: 10px 0px 24px -9px rgba(0,0,0,0.53);
     -moz-box-shadow: 10px 0px 24px -9px rgba(0,0,0,0.53);
     box-shadow: 10px 0px 24px -9px rgba(0,0,0,0.53);*/
-}
-
-.tg_head_logo_wrap {
 }
 
 .dropdown {
@@ -520,7 +521,7 @@ a:active, a:hover {
 
 .mega-left p {
     width: 360px;
-    word-break: break-all;
+    word-break: break-word;
 }
 /*https://frontender.info/fullscreen/*/
 @media screen and (max-width:1030px) {

@@ -9,12 +9,21 @@
         if (parseInt(notReadMessageCount) > 0) {
             notReadMessageElem = `<span class="count-unred-messages">${notReadMessageCount}</span>`;
         }
+        group.Name = group.Name.length > 20 ? group.Name.substring(0, 17) + "..." : group.Name;
+        group.LastMessage.Text = group.LastMessage.Text.length > 22 ? group.Name.substring(0, 19) + "..." : group.Name;
+
         let login = "";
         let userId = "";
+        let lastMessageSender = group.LastMessage.Sender.DisplayName;
+        let you = lastMessageSender.length > 9 ? lastMessageSender.substring(0, 7) : lastMessageSender;
         if (group.Type == 0) {
             let user = group.Users[0].Id == _currentUser.Id ? group.Users[1] : group.Users[0];
             login = user.Login;
             userId = user.Id;
+            you = _currentUser.Id == group.LastMessage.Sender.Id ? "Вы: " : "";
+        }
+        else {
+            you = _currentUser.Id == group.LastMessage.Sender.Id ? "Вы: " : you + ": ";
         }
         let li = document.createElement("li");
         li.innerHTML =
@@ -28,7 +37,7 @@
                 <p class="time">${dateString}</p>
             </div>
             <div class="super-bottom">
-                <p class="last-message">${group.LastMessage.Text}</p>
+                <p class="last-message">${you}${group.LastMessage.Text}</p>
                 ${notReadMessageElem}
             </div>
         </div>
@@ -68,8 +77,9 @@
             dateString = "загрузка";
         }
 
-        li.innerHTML =
-`<div class="checked-btn">
+        if (message.Text != null) {
+            li.innerHTML =
+                `<div class="checked-btn">
    <a href="#" class="checked-btn-on" style="background-image: url(../Content/Images/Icons2.png);background-repeat: no-repeat; background-position: -9px -481px;"></a>
 </div>
 <div class="wrap-img letter">
@@ -82,6 +92,39 @@
 <div class="mega-right">
     <p class="time">${dateString}</p >
 </div>`;
+        }
+        else if (message.File != null) {
+            li.innerHTML =
+                `<div class="checked-btn">
+   <a href="#" class="checked-btn-on" style="background-image: url(../Content/Images/Icons2.png);background-repeat: no-repeat; background-position: -9px -481px;"></a>
+</div>
+<div class="wrap-img letter">
+    <img src="/${avatar}" alt="logo">
+</div>
+<div class="mega-left">
+   <h3>${message.Sender.DisplayName}</h3>
+   <div class="im_message_document">
+    <a class="im_message_file_button">
+      <i class="im_message_file_button_icon"></i>
+    </a>
+
+    <div class="im_message_document_info">
+      <div class="im_message_document_name_wrap">
+        <a href="" class="im_message_document_name" data-name="${message.File.Name}"></a>
+        <span class="im_message_document_size">${message.File.Hash}</span> 
+      </div>
+      <div class="im_message_document_actions">
+        <a class="nocopy" href="" data-content="Download" style=""></a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mega-right">
+    <p class="time">${dateString}</p >
+</div>`;/*в File.Hash временно лежит размер в текстовом виде*/
+        }
+
+        
         return li;
     },
     UnreadMessages: () => {

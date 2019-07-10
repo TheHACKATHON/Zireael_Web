@@ -148,14 +148,14 @@ namespace Wcf_CeadChat_ServiceLibrary
                             {
                                 IsVisible = true
                             };
-                            group.LastMessage = msg;
+                            //group.LastMessage = msg;
                         }
                         msg.IsRead = false;
                         sender.LastTimeOnline = DateTime.Now;
                         sender.IsOnline = true;
                         UncommitedMessages.Enqueue(new MessageHash(msg, hash));
                         //context.Messages.Add(msg);
-                        //context.SaveChanges();
+                        context.SaveChanges();
 
                         //else
                         //{

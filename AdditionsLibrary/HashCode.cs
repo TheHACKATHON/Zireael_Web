@@ -11,7 +11,7 @@ namespace AdditionsLibrary
         {
             using (MD5 md5 = MD5.Create())
             {
-                byte[] inputBytes = Encoding.ASCII.GetBytes(data);
+                byte[] inputBytes = Encoding.UTF8.GetBytes(data);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
                 
                 StringBuilder sb = new StringBuilder();

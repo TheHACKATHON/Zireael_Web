@@ -16,6 +16,99 @@
     box-shadow: 10px 10px 24px -9px rgba(0,0,0,0.53);*/
 }
 
+/*.panel-select {
+    display: flex;
+}*/
+
+.nocopy::before {
+    content: attr(data-content);
+}
+
+a.nocopy:focus, a.nocopy:hover {
+    color: #3a6d99;
+    text-decoration: underline;
+}
+
+a.nocopy {
+    color: #3a6d99;
+    text-decoration: none;
+}
+
+.im_message_document_name_wrap {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 265px;
+    padding: 0 0 1px;
+}
+
+a.im_message_document_name{
+    text-decoration:none;
+}
+
+a.im_message_document_name:hover {
+    text-decoration: underline;
+}
+
+.im_message_document_size {
+    color: #999;
+    padding-left: 2px;
+    vertical-align: text-top;
+}
+
+.im_message_document_name {
+    color: #3a6d99;
+    display: inline-block;
+    font-weight: 700;
+    max-width: 170px;
+    overflow: hidden;
+    vertical-align: text-top;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.im_message_document_name:after {
+    content: attr(data-name);
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.im_message_file_button {
+    display: block;
+    background: rgba(218,228,234,.5);
+    float: left;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.im_message_file_button_icon {
+    display: inline-block;
+    line-height: 0;
+    width: 12px;
+    height: 18px;
+    margin: 12px 15px;
+    background-image: url(../Content/Images/Icons.png);
+    background-repeat: no-repeat;
+    background-position: -14px -509px;
+}
+
+.system {
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.active:hover .system {
+    color: #fff;
+}
+
+    .flex-row {
+        display: flex;
+        align-items: flex-start;
+    }
+
 .chats {
     width: 340px;
     /*TODO адаптивность*/
