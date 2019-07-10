@@ -135,7 +135,7 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        //[OutputCache(Duration = 600, Location = OutputCacheLocation.Client)]
+        [OutputCache(Duration = 3600, Location = OutputCacheLocation.Client)]
         public async Task<ActionResult> UserImage(int userId = 0, string hash = "", int number = 0)
         {
             if (number > 1000) number = 0;
@@ -149,7 +149,7 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        //[OutputCache(Duration = 600, Location = OutputCacheLocation.Client)]
+        [OutputCache(Duration = 3600, Location = OutputCacheLocation.Client)]
         public async Task<ActionResult> GroupImage(int groupId = 0, string hash = "", int number = 0)
         {
             var avatar = await GetAvatar(false, groupId, hash, number);

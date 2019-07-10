@@ -12,6 +12,7 @@ namespace AdditionsLibrary
     public static class ImageWork
     {
         public static readonly int MinimumSize = 128;
+        public static readonly int MaximumSize = 400;
         public static void ImageForDB(Stream stream, out byte[] imageB, out byte[] bigImageB)
         {
             imageB = null;
@@ -44,14 +45,14 @@ namespace AdditionsLibrary
 
                 using (var bigStream = new MemoryStream())
                 {
-                    var bigImage = ResizeImage(newImage, 1024);
+                    var bigImage = ResizeImage(newImage, MaximumSize);
                     bigImage.Save(bigStream, ImageFormat.Png);
                     bigImageB = bigStream.ToArray();
                 }
 
                 using (var smallStream = new MemoryStream())
                 {
-                    var smallImage = ResizeImage(newImage, 128);
+                    var smallImage = ResizeImage(newImage, MinimumSize);
                     smallImage.Save(smallStream, ImageFormat.Png);
                     imageB = smallStream.ToArray();
                 }
