@@ -42,6 +42,7 @@ namespace Wcf_CeadChat_ServiceLibrary
             Login = user.Login;
             Token = user.Token;
             DisplayName = user.DisplayName;
+            LastTry = DateTime.Now;
             Email = user.Email;
             PasswordHash = user.PasswordHash;
             DateCreated = user.DateCreated;
