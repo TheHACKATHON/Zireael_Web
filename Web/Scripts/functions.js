@@ -3,8 +3,11 @@
     let k = '.message-list-wrap ul[data-id="' + groupId + '"]';
     let groupUl = document.querySelector('.message-list-wrap ul[data-id="' + groupId + '"]');
     if (groupUl != null) {
+        if ($(window).width() <= 1030) $('.wrap').add('.my-head').addClass('checkDialog');
         groupUl.classList.add("activeUl");
         changeActive(newActiveElem);
+        calc();
+        $('.scrollbar-macosx-messages').scrollTop($('.scrollbar-macosx-messages').height() * 100);
     }
     else {
         let data = new FormData();
