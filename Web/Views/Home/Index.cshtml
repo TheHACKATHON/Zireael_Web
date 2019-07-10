@@ -104,8 +104,16 @@
                             //        classletter = "letter";
                             //    }
                             //}
-
-                            var time = group.LastMessage?.DateTime.ToShortTimeString();
+                            string time = string.Empty;
+                            var dateTime = group.LastMessage.DateTime;
+                            if (dateTime.DayOfYear == DateTime.Now.DayOfYear && dateTime.Year == DateTime.Now.Year)
+                            {
+                                time = group.LastMessage?.DateTime.ToShortTimeString();
+                            }
+                            else
+                            {
+                                time = group.LastMessage?.DateTime.ToShortDateString();
+                            }
                             <li>
                                 @{ 
                                     string userLogin = "";
